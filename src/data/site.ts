@@ -28,7 +28,7 @@ export const site = {
   tagline: '计算机科学与岩土工程交叉背景，关注 AI、图像识别、微信小程序与工程软件开发。',
   location: '沈阳 / 山东',
   email: '2865574175@qq.com',
-  avatar: 'images/avatar.png',
+  avatar: 'images/avatar-20260625.png',
   badges: ['硕士在读', 'Java / Vue / 小程序', 'AI & 图像识别'],
   sourceUrl: 'https://github.com/MZH-0108/personal-site',
 };
