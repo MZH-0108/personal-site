@@ -1,0 +1,34 @@
+---
+import { navItems, site, socials } from '../data/site';
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-profile">
+        <img class="footer-avatar" src={site.avatar} alt="" loading="lazy" />
+        <div>
+          <p class="footer-name">{site.name}</p>
+          <p class="footer-subtitle">{site.role}</p>
+        </div>
+      </div>
+      <p class="copyright">© 2026 · <a href={site.sourceUrl}>Source</a></p>
+    </div>
+    <div>
+      <p class="footer-heading">Explore</p>
+      <div class="footer-links">
+        {navItems.slice(0, 4).map((item) => <a href={item.href}>{item.label}</a>)}
+      </div>
+    </div>
+    <div>
+      <p class="footer-heading">Connect</p>
+      <div class="socials">
+        {socials.map((social) => (
+          <a href={social.href} aria-label={social.label} target="_blank" rel="noreferrer">
+            <i class={social.icon} aria-hidden="true"></i>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>

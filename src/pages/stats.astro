@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title="Stats" description={`${site.name} personal stats`}>
+  <section class="page-section container centered">
+    <h1 class="page-title">Stats</h1>
+    <p class="lead">[占位] A lightweight snapshot of work, writing, projects, and learning momentum.</p>
+    <div class="stat-grid">
+      <div class="stat"><strong>3</strong><span>Projects</span></div>
+      <div class="stat"><strong>3</strong><span>Notes</span></div>
+      <div class="stat"><strong>7</strong><span>Skills</span></div>
+      <div class="stat"><strong>0</strong><span>Secrets Leaked</span></div>
+    </div>
+  </section>
+</BaseLayout>

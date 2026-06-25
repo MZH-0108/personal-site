@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects, site } from '../data/site';
+---
+
+<BaseLayout title="Archive" description={`${site.name} project archive`}>
+  <section class="page-section container">
+    <h1 class="page-title">Archive</h1>
+    <p class="lead" style="margin-left:0">
+      [占位] A compact archive of selected projects, experiments, and public work.
+    </p>
+    <div class="card-grid">
+      {projects.map((project) => <ProjectCard {...project} />)}
+    </div>
+  </section>
+</BaseLayout>

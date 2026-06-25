@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { education, experience, skills, site } from '../data/site';
+---
+
+<BaseLayout title="Resume" description={`${site.name} resume`}>
+  <section class="page-section container centered">
+    <h1 class="page-title">Resume</h1>
+    <p class="lead">
+      [占位] Product-minded engineering profile with experience building fast websites, content systems, and practical
+      AI workflows. Replace this summary with your real career positioning.
+    </p>
+    <div class="tabs" aria-label="Resume sections">
+      <button class="tab active" type="button">Experience</button>
+      <button class="tab" type="button">Education</button>
+      <button class="tab" type="button">Skills</button>
+      <button class="tab" type="button">Courses</button>
+      <button class="tab" type="button">References</button>
+    </div>
+  </section>
+
+  <section class="page-section container">
+    <h2 class="section-title page-title centered">Experience</h2>
+    <div class="resume-list">
+      {experience.map((item) => (
+        <article class="resume-card">
+          <p class="resume-meta">{item.period} · {item.organization}</p>
+          <h2>{item.title}</h2>
+          <p>{item.summary}</p>
+          <ul>
+            {item.bullets.map((bullet) => <li>{bullet}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="page-section container">
+    <h2 class="section-title page-title centered">Education</h2>
+    <div class="resume-list">
+      {education.map((item) => (
+        <article class="resume-card">
+          <p class="resume-meta">{item.period} · {item.organization}</p>
+          <h2>{item.title}</h2>
+          <p>{item.summary}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="page-section container centered">
+    <h2 class="section-title page-title">Skills</h2>
+    <div class="badge-row">
+      {skills.map((skill) => <span class="badge">{skill}</span>)}
+    </div>
+  </section>
+</BaseLayout>

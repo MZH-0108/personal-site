@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, socials } from '../data/site';
+---
+
+<BaseLayout title="Contact" description={`Contact ${site.name}`}>
+  <section class="page-section container centered">
+    <h1 class="page-title">Contact</h1>
+    <p class="lead">
+      [占位] Want to collaborate, hire, or just say hello? Use the links below. The form is local-only until you add a
+      free form backend key.
+    </p>
+  </section>
+
+  <section class="page-section container">
+    <div class="card-grid">
+      <article class="contact-card">
+        <h2>Connect</h2>
+        <p>{site.location}</p>
+        <div class="socials" style="margin-top:22px">
+          {socials.map((social) => (
+            <a href={social.href} aria-label={social.label} target="_blank" rel="noreferrer">
+              <i class={social.icon} aria-hidden="true"></i>
+            </a>
+          ))}
+        </div>
+      </article>
+      <article class="contact-card" style="grid-column: span 2">
+        <h2>Send a message</h2>
+        <form class="contact-form" action={`mailto:${site.email}`} method="post" enctype="text/plain">
+          <label class="field">
+            Name
+            <input name="name" autocomplete="name" required />
+          </label>
+          <label class="field">
+            Email
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label class="field">
+            Message
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <button class="button primary" type="submit">Send Message</button>
+        </form>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

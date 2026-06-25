@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { skills, site } from '../data/site';
+---
+
+<BaseLayout title="About" description={`About ${site.name}`}>
+  <section class="page-section container">
+    <h1 class="page-title">About</h1>
+    <div class="prose">
+      <p>
+        [占位] I build products, websites, and systems across AI, software engineering, and personal knowledge work.
+        Today, this site is the home base for my projects, resume, writing, and ways to collaborate.
+      </p>
+      <p>
+        The visual language intentionally follows a calm dark portfolio style: strong typography, generous spacing,
+        soft panels, and just enough blue to guide attention without shouting.
+      </p>
+      <p>
+        In my spare time, I enjoy learning new tools, writing notes that make ideas easier to reuse, and turning rough
+        thoughts into small shipped things.
+      </p>
+    </div>
+
+    <div class="tabs" aria-label="About sections">
+      <button class="tab active" type="button">Some History</button>
+      <button class="tab" type="button">I Like</button>
+      <button class="tab" type="button">Skills</button>
+      <button class="tab" type="button">Fun Facts</button>
+      <button class="tab" type="button">I Dream Of</button>
+    </div>
+
+    <div class="card-grid">
+      <article class="card">
+        <h2>What I Do</h2>
+        <p>[占位] Product thinking, frontend development, content systems, and AI-assisted workflows.</p>
+      </article>
+      <article class="card">
+        <h2>How I Work</h2>
+        <p>[占位] Clear brief first, small increments, fast feedback, and calm execution.</p>
+      </article>
+      <article class="card">
+        <h2>Skills</h2>
+        <div class="tag-row">
+          {skills.map((skill) => <span class="tag">{skill}</span>)}
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

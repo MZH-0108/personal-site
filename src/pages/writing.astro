@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { posts, site } from '../data/site';
+import { formatDate } from '../utils';
+---
+
+<BaseLayout title="Writing" description={`${site.name} writing archive`}>
+  <section class="page-section container">
+    <h1 class="page-title">Writing</h1>
+    <p class="lead" style="margin-left:0">
+      [占位] Essays, technical notes, and project reflections. Add Markdown posts later for a full writing archive.
+    </p>
+    <div class="resume-list">
+      {posts.map((post) => (
+        <article class="resume-card">
+          <p class="resume-meta">{formatDate(post.date)}</p>
+          <h2><a href={post.href}>{post.title}</a></h2>
+          <p>{post.summary}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { posts, projects, site } from '../data/site';
+import { formatDate } from '../utils';
+---
+
+<BaseLayout title={site.name} description={site.tagline}>
+  <section class="hero">
+    <img class="avatar" src={site.avatar} alt={`${site.name} avatar`} width="192" height="192" fetchpriority="high" />
+    <h1 class="hero-title">{site.name}</h1>
+    <p class="hero-copy">
+      {site.tagline}
+      <br />
+      Currently exploring <a class="blue-link" href="/projects">personal products</a> and
+      <a class="blue-link" href="/writing">clear technical writing</a>.
+    </p>
+    <div class="badge-row" aria-label="Highlights">
+      {site.badges.map((badge) => <span class="badge">{badge}</span>)}
+    </div>
+    <div class="cta-row">
+      <a class="button primary" href="/about">About Me</a>
+      <a class="button" href="/resume">View Resume</a>
+    </div>
+  </section>
+
+  <section class="page-section container">
+    <h2 class="section-title page-title centered">Selected Work</h2>
+    <div class="card-grid">
+      {projects.map((project) => <ProjectCard {...project} />)}
+    </div>
+  </section>
+
+  <section class="page-section container">
+    <h2 class="section-title page-title centered">Latest Writing</h2>
+    <div class="card-grid">
+      {posts.map((post) => (
+        <article class="card">
+          <h2><a href={post.href}>{post.title}</a></h2>
+          <p class="resume-meta">{formatDate(post.date)}</p>
+          <p>{post.summary}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

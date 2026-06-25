@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const { title = site.name, description = site.tagline } = Astro.props;
+const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#101010" />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      const preferredTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = savedTheme || preferredTheme;
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header pathname={Astro.url.pathname} />
+    <main class="page-main" id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline>
+      const header = document.querySelector('.site-header');
+      const menuButton = document.querySelector('[data-menu-button]');
+      const themeButton = document.querySelector('[data-theme-toggle]');
+      const themeIcon = document.querySelector('[data-theme-icon]');
+
+      function setTheme(theme) {
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem('theme', theme);
+        if (themeIcon) {
+          themeIcon.className = theme === 'dark' ? 'fa-regular fa-sun' : 'fa-regular fa-moon';
+        }
+        if (themeButton) {
+          themeButton.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+      }
+
+      setTheme(document.documentElement.dataset.theme || 'dark');
+
+      menuButton?.addEventListener('click', () => {
+        const open = header?.classList.toggle('menu-open');
+        menuButton.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      themeButton?.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        setTheme(next);
+      });
+    </script>
+  </body>
+</html>

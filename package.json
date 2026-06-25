@@ -1,0 +1,26 @@
+{
+  "name": "personal-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "astro check"
+  },
+  "dependencies": {
+    "@fontsource/raleway": "^5.2.8",
+    "@fontsource/source-sans-3": "^5.2.8",
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "astro": "^5.16.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
+  }
+}
