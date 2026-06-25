@@ -5,7 +5,7 @@ This project is static Astro output and can be deployed for free on multiple hos
 ## Primary free site: GitHub Pages
 
 - Repository target: `MZH-0108/personal-site`
-- Expected URL after successful workflow: `https://mzh-0108.github.io/personal-site/`
+- Live URL: `https://mzh-0108.github.io/personal-site/`
 - Build command: `npm run build`
 - Output directory: `dist`
 - Workflow: `.github/workflows/deploy-github-pages.yml`

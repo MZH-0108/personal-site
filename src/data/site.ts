@@ -31,7 +31,7 @@ export const site = {
   email: 'hello@example.com',
   avatar: 'images/avatar.png',
   badges: ['Personal Website', 'AI Builder', 'Open Source Learner'],
-  sourceUrl: 'https://github.com/your-name/personal-site',
+  sourceUrl: 'https://github.com/MZH-0108/personal-site',
 };
 
 export const socials = [
