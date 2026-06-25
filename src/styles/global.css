@@ -20,8 +20,8 @@
   --blue-strong: #4e9df2;
   --blue-soft: rgba(99, 170, 248, 0.2);
   --shadow: 0 20px 70px rgba(0, 0, 0, 0.42);
-  --font-body: 'Source Sans 3', 'Source Sans Pro', Helvetica, Arial, sans-serif;
-  --font-heading: Raleway, Helvetica, Arial, sans-serif;
+  --font-body: 'Source Sans 3', 'Source Sans Pro', 'PingFang SC', 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+  --font-heading: Raleway, 'PingFang SC', 'Microsoft YaHei', Helvetica, Arial, sans-serif;
 }
 
 :root[data-theme='light'] {

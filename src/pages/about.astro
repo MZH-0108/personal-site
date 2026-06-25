@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { skills, site } from '../data/site';
+import { withBase } from '../paths';
 ---
 
 <BaseLayout title="About" description={`About ${site.name}`}>
@@ -8,16 +9,16 @@ import { skills, site } from '../data/site';
     <h1 class="page-title">About</h1>
     <div class="prose">
       <p>
-        [占位] I build products, websites, and systems across AI, software engineering, and personal knowledge work.
-        Today, this site is the home base for my projects, resume, writing, and ways to collaborate.
+        我是马志昊，本科是计算机科学与技术，现在在沈阳建筑大学读岩土工程硕士。我的兴趣点在工程问题和软件能力的交叉处：
+        用全栈开发把工具做出来，用 AI 和图像识别把工程场景里的数据用起来。
       </p>
       <p>
-        The visual language intentionally follows a calm dark portfolio style: strong typography, generous spacing,
-        soft panels, and just enough blue to guide attention without shouting.
+        过去我做过企业采购平台、招标小程序、外卖平台训练项目，也参与过隧道病害图像识别相关工作。最近的个人项目是
+        <a href={withBase('/projects')}>orderToZhu 家庭点餐本微信小程序</a>，从需求边界、微信登录、后台接口到云部署和测试都由我推进。
       </p>
       <p>
-        In my spare time, I enjoy learning new tools, writing notes that make ideas easier to reuse, and turning rough
-        thoughts into small shipped things.
+        我喜欢把复杂任务拆小、把经验写下来，再把“能用”的东西一点点做成“好用”。这个网站会作为我的项目、简历、
+        学习笔记和联系方式的公开主页。
       </p>
     </div>
 
@@ -32,11 +33,11 @@ import { skills, site } from '../data/site';
     <div class="card-grid">
       <article class="card">
         <h2>What I Do</h2>
-        <p>[占位] Product thinking, frontend development, content systems, and AI-assisted workflows.</p>
+        <p>Web 前端、微信小程序、Java 后端接口、工程数据处理，以及 AI / 图像识别方向的学习和实践。</p>
       </article>
       <article class="card">
         <h2>How I Work</h2>
-        <p>[占位] Clear brief first, small increments, fast feedback, and calm execution.</p>
+        <p>先明确目标和边界，再小步实现、持续测试、沉淀文档；遇到复杂问题时优先把流程理顺。</p>
       </article>
       <article class="card">
         <h2>Skills</h2>

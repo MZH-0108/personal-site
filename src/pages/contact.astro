@@ -7,8 +7,7 @@ import { site, socials } from '../data/site';
   <section class="page-section container centered">
     <h1 class="page-title">Contact</h1>
     <p class="lead">
-      [占位] Want to collaborate, hire, or just say hello? Use the links below. The form is local-only until you add a
-      free form backend key.
+      如果你想交流项目、实习/合作机会、工程软件、AI 图像识别或微信小程序，可以通过邮箱联系我。
     </p>
   </section>
 
@@ -25,7 +24,7 @@ import { site, socials } from '../data/site';
           ))}
         </div>
       </article>
-      <article class="contact-card" style="grid-column: span 2">
+      <article class="contact-card" style="grid-column: 1 / -1">
         <h2>Send a message</h2>
         <form class="contact-form" action={`mailto:${site.email}`} method="post" enctype="text/plain">
           <label class="field">
