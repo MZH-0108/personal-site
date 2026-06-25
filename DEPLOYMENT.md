@@ -16,7 +16,8 @@ This project is static Astro output and can be deployed for free on multiple hos
 ## Second free site: EdgeOne Pages
 
 - Project ID: `makers-cfgd83de0uhb`
-- Live URL: `https://personal-site-p3qcklv4.edgeone.cool/`
+- Project domain: `https://personal-site-p3qcklv4.edgeone.cool/`
+- Important: for the China/global acceleration modes, EdgeOne's `edgeone.cool` project/deployment domain may require a system-generated preview URL with temporary authentication. The temporary preview link is valid for about 3 hours. For a stable public China-mainland URL, bind a custom domain and complete ICP filing if required.
 - Deployment command used:
 
 ```bash

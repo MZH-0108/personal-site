@@ -5,7 +5,7 @@ A dark minimal personal website inspired by the visual style of https://mldangel
 ## Live site
 
 - GitHub Pages: https://mzh-0108.github.io/personal-site/
-- EdgeOne Pages: https://personal-site-p3qcklv4.edgeone.cool/
+- EdgeOne Pages preview: generated from the EdgeOne console or CLI. The `edgeone.cool` preview/project URL may require a temporary `eo_token` link and is not a stable public China-mainland URL without a custom domain/ICP setup.
 - Repository: https://github.com/MZH-0108/personal-site
 
 ## Local development
