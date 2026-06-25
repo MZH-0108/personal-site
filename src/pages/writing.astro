@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { posts, site } from '../data/site';
+import { withBase } from '../paths';
 import { formatDate } from '../utils';
 ---
 
@@ -14,7 +15,7 @@ import { formatDate } from '../utils';
       {posts.map((post) => (
         <article class="resume-card">
           <p class="resume-meta">{formatDate(post.date)}</p>
-          <h2><a href={post.href}>{post.title}</a></h2>
+          <h2><a href={withBase(post.href)}>{post.title}</a></h2>
           <p>{post.summary}</p>
         </article>
       ))}

@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../paths';
+
 type Props = {
   title: string;
   description: string;
@@ -10,7 +12,7 @@ const { title, description, tags = [], href } = Astro.props;
 ---
 
 <article class="card">
-  <h2><a href={href}>{title}</a></h2>
+  <h2><a href={withBase(href)}>{title}</a></h2>
   <p>{description}</p>
   {tags.length > 0 && (
     <div class="tag-row" aria-label="Tags">

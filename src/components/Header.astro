@@ -1,5 +1,6 @@
 ---
 import { navItems, site } from '../data/site';
+import { withBase } from '../paths';
 import { activeNavKey } from '../utils';
 
 type Props = {
@@ -11,10 +12,10 @@ const active = activeNavKey(Astro.props.pathname);
 
 <header class="site-header">
   <nav class="nav-shell" aria-label="Primary navigation">
-    <a class="brand" href="/" aria-label={`${site.name} home`}>{site.initials}</a>
+    <a class="brand" href={withBase('/')} aria-label={`${site.name} home`}>{site.initials}</a>
     <div class="nav-links" id="primary-menu">
       {navItems.map((item) => (
-        <a class="nav-link" href={item.href} aria-current={active === item.key ? 'page' : undefined}>
+        <a class="nav-link" href={withBase(item.href)} aria-current={active === item.key ? 'page' : undefined}>
           {item.label}
         </a>
       ))}

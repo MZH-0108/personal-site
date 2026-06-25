@@ -1,7 +1,8 @@
 ---
 import { navItems, site, socials } from '../data/site';
+import { withBase } from '../paths';
 
-const avatarUrl = `${import.meta.env.BASE_URL}${site.avatar}`;
+const avatarUrl = withBase(site.avatar);
 ---
 
 <footer class="site-footer">
@@ -19,7 +20,7 @@ const avatarUrl = `${import.meta.env.BASE_URL}${site.avatar}`;
     <div>
       <p class="footer-heading">Explore</p>
       <div class="footer-links">
-        {navItems.slice(0, 4).map((item) => <a href={item.href}>{item.label}</a>)}
+        {navItems.slice(0, 4).map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
       </div>
     </div>
     <div>

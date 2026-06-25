@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../paths';
 ---
 
 <BaseLayout title="Not Found" description="Page not found">
   <section class="page-section container centered">
     <h1 class="page-title">404</h1>
     <p class="lead">This page wandered off. The archive may know where it went.</p>
-    <a class="button primary" href="/">Back Home</a>
+    <a class="button primary" href={withBase('/')}>Back Home</a>
   </section>
 </BaseLayout>
