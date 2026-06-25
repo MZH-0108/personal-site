@@ -29,7 +29,7 @@ export const site = {
     '[占位] I build useful digital products across AI, web engineering, and personal knowledge systems.',
   location: '[占位] China / Remote',
   email: 'hello@example.com',
-  avatar: '/images/avatar.png',
+  avatar: 'images/avatar.png',
   badges: ['Personal Website', 'AI Builder', 'Open Source Learner'],
   sourceUrl: 'https://github.com/your-name/personal-site',
 };

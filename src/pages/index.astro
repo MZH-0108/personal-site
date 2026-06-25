@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
+
+const avatarUrl = `${import.meta.env.BASE_URL}${site.avatar}`;
 ---
 
 <BaseLayout title={site.name} description={site.tagline}>
   <section class="hero">
-    <img class="avatar" src={site.avatar} alt={`${site.name} avatar`} width="192" height="192" fetchpriority="high" />
+    <img class="avatar" src={avatarUrl} alt={`${site.name} avatar`} width="192" height="192" fetchpriority="high" />
     <h1 class="hero-title">{site.name}</h1>
     <p class="hero-copy">
       {site.tagline}

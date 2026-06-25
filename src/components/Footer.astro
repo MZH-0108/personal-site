@@ -1,12 +1,14 @@
 ---
 import { navItems, site, socials } from '../data/site';
+
+const avatarUrl = `${import.meta.env.BASE_URL}${site.avatar}`;
 ---
 
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
       <div class="footer-profile">
-        <img class="footer-avatar" src={site.avatar} alt="" loading="lazy" />
+        <img class="footer-avatar" src={avatarUrl} alt="" loading="lazy" />
         <div>
           <p class="footer-name">{site.name}</p>
           <p class="footer-subtitle">{site.role}</p>
