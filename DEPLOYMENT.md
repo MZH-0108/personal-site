@@ -16,11 +16,9 @@ This project is static Astro output and can be deployed for free on multiple hos
 - Project ID: `makers-cfgd83de0uhb`
 - Project domain: `https://personal-site-p3qcklv4.edgeone.cool/`
 - Important: for the China/global acceleration modes, EdgeOne's `edgeone.cool` project/deployment domain may require a system-generated preview URL with temporary authentication. The temporary preview link is valid for about 3 hours. For a stable public China-mainland URL, bind a custom domain and complete ICP filing if required.
-- Deployment command used:
-
-```bash
-npx edgeone makers deploy ./dist -n personal-site -e production -a global
-```
+- Current project provider: `Github`.
+- Deployment path: push to GitHub first, then let EdgeOne's GitHub integration build from the repository.
+- Note: direct local folder deployment with `npx edgeone makers deploy ./dist ...` is only supported for EdgeOne projects whose provider is `Upload`. It is not supported for the current `Github` provider project.
 
 ## Other free site candidates
 
