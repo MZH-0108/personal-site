@@ -23,8 +23,7 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
     <title>{pageTitle}</title>
     <script is:inline>
       const savedTheme = localStorage.getItem('theme');
-      const preferredTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-      document.documentElement.dataset.theme = savedTheme || preferredTheme;
+      document.documentElement.dataset.theme = savedTheme || 'dark';
     </script>
   </head>
   <body>

@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import { posts, projects, site } from '../data/site';
-import { formatDate } from '../utils';
+import { site } from '../data/site';
 ---
 
 <BaseLayout title={site.name} description={site.tagline}>
@@ -21,26 +19,6 @@ import { formatDate } from '../utils';
     <div class="cta-row">
       <a class="button primary" href="/about">About Me</a>
       <a class="button" href="/resume">View Resume</a>
-    </div>
-  </section>
-
-  <section class="page-section container">
-    <h2 class="section-title page-title centered">Selected Work</h2>
-    <div class="card-grid">
-      {projects.map((project) => <ProjectCard {...project} />)}
-    </div>
-  </section>
-
-  <section class="page-section container">
-    <h2 class="section-title page-title centered">Latest Writing</h2>
-    <div class="card-grid">
-      {posts.map((post) => (
-        <article class="card">
-          <h2><a href={post.href}>{post.title}</a></h2>
-          <p class="resume-meta">{formatDate(post.date)}</p>
-          <p>{post.summary}</p>
-        </article>
-      ))}
     </div>
   </section>
 </BaseLayout>
