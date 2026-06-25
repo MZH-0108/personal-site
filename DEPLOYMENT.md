@@ -13,11 +13,22 @@ This project is static Astro output and can be deployed for free on multiple hos
 
 ## Second free site candidates
 
-The best second-host choice depends on which account is logged in:
+## Second free site: EdgeOne Pages
 
-1. EdgeOne Pages — preferred for mainland China testing because Tencent's edge network may perform better domestically. Astro lists EdgeOne Pages as an official deployment target: https://docs.astro.build/en/guides/deploy/edgeone-pages/
-2. Cloudflare Pages — excellent global free static hosting, but mainland China stability is not guaranteed without enterprise/China-network arrangements. Astro deployment reference: https://docs.astro.build/en/guides/deploy/cloudflare/
-3. Vercel Hobby — very convenient free deployment, but no guarantee of mainland China stability. Astro deployment reference: https://docs.astro.build/en/guides/deploy/vercel/
+- Project ID: `makers-cfgd83de0uhb`
+- Live URL: `https://personal-site-p3qcklv4.edgeone.cool/`
+- Deployment command used:
+
+```bash
+npx edgeone makers deploy ./dist -n personal-site -e production -a global
+```
+
+## Other free site candidates
+
+If a third mirror is needed:
+
+1. Cloudflare Pages — excellent global free static hosting, but mainland China stability is not guaranteed without enterprise/China-network arrangements. Astro deployment reference: https://docs.astro.build/en/guides/deploy/cloudflare/
+2. Vercel Hobby — very convenient free deployment, but no guarantee of mainland China stability. Astro deployment reference: https://docs.astro.build/en/guides/deploy/vercel/
 
 ## Mainland China stability note
 

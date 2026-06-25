@@ -5,6 +5,7 @@ A dark minimal personal website inspired by the visual style of https://mldangel
 ## Live site
 
 - GitHub Pages: https://mzh-0108.github.io/personal-site/
+- EdgeOne Pages: https://personal-site-p3qcklv4.edgeone.cool/
 - Repository: https://github.com/MZH-0108/personal-site
 
 ## Local development

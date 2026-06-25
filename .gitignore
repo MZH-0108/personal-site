@@ -11,3 +11,7 @@ coverage/
 playwright-report/
 test-results/
 .design-evidence/
+
+# Tencent Cloud EdgeOne
+.edgeone/*
+.tef_dist/*
