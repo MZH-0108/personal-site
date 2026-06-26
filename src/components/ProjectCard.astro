@@ -19,10 +19,11 @@ const {
 } = Astro.props;
 
 const imageUrl = image ? withBase(image) : undefined;
+const hrefUrl = href ? withBase(href) : undefined;
 const CardTag = href ? 'a' : 'article';
 const cardProps = href
   ? {
-      href,
+      href: hrefUrl,
       class: 'project-card',
       target: href.startsWith('http') ? '_blank' : undefined,
       rel: href.startsWith('http') ? 'noreferrer' : undefined,
