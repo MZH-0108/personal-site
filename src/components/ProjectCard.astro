@@ -1,22 +1,62 @@
 ---
 import { withBase } from '../paths';
+import type { Project } from '../data/site';
 
-type Props = {
-  title: string;
-  description: string;
-  tags?: string[];
-  href: string;
-};
+type Props = Project;
 
-const { title, description, tags = [], href } = Astro.props;
+const {
+  title,
+  subtitle,
+  description,
+  tags = [],
+  year,
+  href,
+  image,
+  imageAlt,
+  visualTitle,
+  visualSubtitle,
+  accent,
+} = Astro.props;
+
+const imageUrl = image ? withBase(image) : undefined;
+const CardTag = href ? 'a' : 'article';
+const cardProps = href
+  ? {
+      href,
+      class: 'project-card',
+      target: href.startsWith('http') ? '_blank' : undefined,
+      rel: href.startsWith('http') ? 'noreferrer' : undefined,
+      style: `--project-accent: ${accent}`,
+    }
+  : {
+      class: 'project-card',
+      style: `--project-accent: ${accent}`,
+    };
 ---
 
-<article class="card">
-  <h2><a href={withBase(href)}>{title}</a></h2>
-  <p>{description}</p>
-  {tags.length > 0 && (
-    <div class="tag-row" aria-label="Tags">
-      {tags.map((tag) => <span class="tag">{tag}</span>)}
-    </div>
-  )}
-</article>
+<CardTag {...cardProps}>
+  <div class:list={['project-visual', { 'project-visual--image': Boolean(imageUrl) }]}>
+    {
+      imageUrl ? (
+        <img src={imageUrl} alt={imageAlt ?? ''} loading="lazy" />
+      ) : (
+        <div class="project-visual-copy" aria-hidden="true">
+          <span>{visualTitle ?? title}</span>
+          {visualSubtitle && <small>{visualSubtitle}</small>}
+        </div>
+      )
+    }
+  </div>
+
+  <div class="project-content">
+    <h2>{title}</h2>
+    <p class="project-subtitle">{subtitle}</p>
+    <p class="project-description">{description}</p>
+    {tags.length > 0 && (
+      <div class="tag-row" aria-label="Tags">
+        {tags.map((tag) => <span class="tag">{tag}</span>)}
+      </div>
+    )}
+    <p class="project-year">{year}</p>
+  </div>
+</CardTag>

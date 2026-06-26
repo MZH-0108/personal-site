@@ -2,16 +2,50 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { projects, site } from '../data/site';
+
+const projectSections = [
+  {
+    title: 'Products & Platforms',
+    intro: '近期个人产品和企业平台建设经历。',
+    categories: ['selected', 'work'],
+  },
+  {
+    title: 'Research & Training',
+    intro: '工程研究、图像识别、培训项目与教学实践。',
+    categories: ['research', 'training'],
+  },
+];
 ---
 
 <BaseLayout title="Archive" description={`${site.name} project archive`}>
-  <section class="page-section container">
+  <section class="archive-hero container">
     <h1 class="page-title">Archive</h1>
-    <p class="lead" style="margin-left:0">
-      这里收集我做过或正在打磨的项目。当前重点是 orderToZhu 家庭点餐本微信小程序，也包括企业项目、图像识别实践和训练项目。
+    <p class="lead">
+      从学生时代训练项目，到企业平台、图像识别和个人产品的项目归档。
     </p>
-    <div class="card-grid">
-      {projects.map((project) => <ProjectCard {...project} />)}
-    </div>
+  </section>
+
+  <section class="archive-sections container" aria-label="Project archive">
+    {
+      projectSections.map((section) => {
+        const sectionProjects = projects.filter((project) => section.categories.includes(project.category));
+
+        if (sectionProjects.length === 0) {
+          return null;
+        }
+
+        return (
+          <section class="archive-group" aria-labelledby={`archive-${section.title.toLowerCase().replaceAll(' ', '-')}`}>
+            <div class="archive-group-heading">
+              <h2 id={`archive-${section.title.toLowerCase().replaceAll(' ', '-')}`}>{section.title}</h2>
+              <p>{section.intro}</p>
+            </div>
+            <div class="project-grid">
+              {sectionProjects.map((project) => <ProjectCard {...project} />)}
+            </div>
+          </section>
+        );
+      })
+    }
   </section>
 </BaseLayout>

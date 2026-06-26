@@ -12,6 +12,21 @@ export type ResumeEntry = {
   bullets: string[];
 };
 
+export type Project = {
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  year: string;
+  href?: string;
+  image?: string;
+  imageAlt?: string;
+  visualTitle?: string;
+  visualSubtitle?: string;
+  category: 'selected' | 'work' | 'research' | 'training';
+  accent: string;
+};
+
 export const navItems: NavItem[] = [
   { label: 'About', href: '/about', key: 'about' },
   { label: 'Resume', href: '/resume', key: 'resume' },
@@ -38,34 +53,66 @@ export const socials = [
   { label: 'Email', href: `mailto:${site.email}`, icon: 'fa-regular fa-envelope' },
 ];
 
-export const projects = [
+export const projects: Project[] = [
   {
     title: 'orderToZhu 家庭点餐本微信小程序',
+    subtitle: '个人项目 / 家庭点餐 MVP',
     description:
-      '面向家庭内部菜谱记录与点餐准备的微信小程序 MVP，包含真实微信登录、菜单浏览、已选菜、点餐记录、家庭管理员、菜品图片上传、订阅提醒与操作审计。',
-    tags: ['微信小程序', 'Spring Boot', '云托管', 'MySQL', 'JUnit'],
-    href: '/projects',
+      '面向家庭内部菜谱记录与点餐准备的微信小程序，支持真实微信登录、菜单浏览、已选菜、点餐记录、家庭管理员、菜品图片上传、订阅提醒与操作审计。',
+    tags: ['微信小程序', 'Spring Boot', 'MySQL', '云托管', 'JUnit'],
+    year: '2026',
+    image: 'images/projects/order-to-zhu-cart.png',
+    imageAlt: 'orderToZhu 微信小程序点餐界面',
+    category: 'selected',
+    accent: '#63aaf8',
   },
   {
     title: '采购平台与招标小程序',
+    subtitle: '前端开发工程师 / 企业项目',
     description:
-      '参与企业采购平台与招标小程序建设，负责登录注册、首页、分类、商品详情、邀标列表、小程序页面与数据迁移等前端与接口协作工作。',
+      '参与企业采购平台与招标小程序建设，负责登录注册、首页、分类、商品详情、邀标列表、小程序页面与数据迁移等前端和接口协作工作。',
     tags: ['Vue', 'ElementUI', 'Spring Boot', 'Redis', 'MyBatis'],
-    href: '/projects',
+    year: '2022–2024',
+    visualTitle: 'PROCUREMENT',
+    visualSubtitle: '采购 · 招标 · 小程序',
+    category: 'work',
+    accent: '#7c9cff',
   },
   {
     title: '隧道病害图像识别与标注',
+    subtitle: '图像识别工程师 / 研究实践',
     description:
-      '在岩土工程研究场景中参与隧道病害图像识别代码开发、数据标注与内部文档整理，持续学习深度学习和计算机视觉方法。',
+      '在岩土工程研究场景中参与隧道病害图像识别代码开发、人工标注与内部文档整理，持续学习深度学习、计算机视觉与工程检测方法。',
     tags: ['Python', '深度学习', '图像识别', '数据标注'],
-    href: '/projects',
+    year: '2025',
+    visualTitle: 'TUNNEL AI',
+    visualSubtitle: '视觉识别 · 工程检测',
+    category: 'research',
+    accent: '#6ee7b7',
   },
   {
     title: '阿里外卖平台训练项目',
+    subtitle: '项目组组长 / 东软教育集团培训',
     description:
-      '东软教育集团培训期间担任项目组组长，完成外卖平台的 Vue2 前端、Java 后端、数据库搭建、测试与维护协作。',
+      '担任项目组组长，完成外卖平台的 Vue2 前端、Java 后端、数据库搭建、测试与维护协作，形成从需求拆分到交付的完整训练经历。',
     tags: ['Vue2', 'Java', 'Database', 'Team Lead'],
-    href: '/projects',
+    year: '2020',
+    visualTitle: 'TAKEOUT APP',
+    visualSubtitle: '团队协作 · 全栈训练',
+    category: 'training',
+    accent: '#f59e0b',
+  },
+  {
+    title: '机器人与少儿编程课程',
+    subtitle: '金牌讲师 / 教学实践',
+    description:
+      '教授 C、Python、Scratch、XRmaker 等课程，负责课堂讲授、课程规划、比赛信息整理与学生项目辅导，把技术内容转化成可理解、可动手的学习路径。',
+    tags: ['Python', 'Scratch', 'C', '机器人编程'],
+    year: '2024',
+    visualTitle: 'CODING CLASS',
+    visualSubtitle: '编程教学 · 项目辅导',
+    category: 'training',
+    accent: '#a78bfa',
   },
 ];
 
@@ -94,7 +141,7 @@ export const experience: ResumeEntry[] = [
   {
     title: '实习',
     organization: '山东省禹城市住房与城乡建设局',
-    period: '2026.01 — 2026.02',
+    period: '2026.01 – 2026.02',
     summary: '参与办公室文档处理、材料整理、问题分析与跨部门沟通协作。',
     bullets: [
       '负责部分文件撰写、编辑与归档，提升行政材料的结构化和可读性。',
@@ -104,7 +151,7 @@ export const experience: ResumeEntry[] = [
   {
     title: '图像识别工程师',
     organization: '辽宁省交通科学研究院',
-    period: '2025.03 — 2025.08',
+    period: '2025.03 – 2025.08',
     summary: '参与隧道病害图像识别相关代码开发、数据标注与内部文档沉淀。',
     bullets: [
       '围绕隧道病害检测场景开发图像识别代码，并参与人工标注流程。',
@@ -114,7 +161,7 @@ export const experience: ResumeEntry[] = [
   {
     title: '金牌讲师',
     organization: '莱凯创客机器人编程俱乐部',
-    period: '2024.03 — 2024.10',
+    period: '2024.03 – 2024.10',
     summary: '教授少儿编程、机器人与竞赛相关课程，覆盖 C、Python、Scratch、XRmaker 等内容。',
     bullets: [
       '独立完成课程备课、课堂讲授、学习反馈与比赛信息跟进。',
@@ -124,7 +171,7 @@ export const experience: ResumeEntry[] = [
   {
     title: '前端开发工程师',
     organization: '禹王投资控股有限公司',
-    period: '2022.02 — 2024.03',
+    period: '2022.02 – 2024.03',
     summary: '参与采购平台与公司招标小程序建设，长期承担前端开发、接口联调和文档沉淀。',
     bullets: [
       '使用 Vue、JavaScript、ElementUI 等完成登录注册、首页、分类、商品详情和邀标列表等页面。',
@@ -135,7 +182,7 @@ export const experience: ResumeEntry[] = [
   {
     title: '项目组组长',
     organization: '东软教育集团（培训）',
-    period: '2020.09 — 2020.12',
+    period: '2020.09 – 2020.12',
     summary: '在 Java、JavaScript、Vue 和数据库培训中担任项目组组长，完成阿里外卖平台训练项目。',
     bullets: [
       '负责 Vue2 前端页面、Java 后端代码、数据库搭建与测试维护协作。',
@@ -148,14 +195,14 @@ export const education = [
   {
     title: '岩土工程 硕士研究生',
     organization: '沈阳建筑大学',
-    period: '2025.09 — 至今',
+    period: '2025.09 – 至今',
     summary:
       '研究方向关注工程场景中的 AI、图像识别与数据处理；担任班级团支书、研究生会学术部成员。',
   },
   {
     title: '计算机科学与技术 本科',
     organization: '齐鲁理工学院',
-    period: '2018.09 — 2022.07',
+    period: '2018.09 – 2022.07',
     summary:
       '专业成绩前 10%，GPA 3.66；曾任班级副班长，获得国家励志奖学金和山东省电子与信息大赛三等奖。',
   },
