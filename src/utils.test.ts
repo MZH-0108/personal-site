@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activeNavKey, formatDate, normalizePath } from './utils';
+import { activeNavKey, formatDate, normalizePath, stripBasePath } from './utils';
 
 describe('navigation helpers', () => {
   it('normalizes trailing slashes without changing the home route', () => {
@@ -11,6 +11,12 @@ describe('navigation helpers', () => {
     expect(activeNavKey('/resume')).toBe('resume');
     expect(activeNavKey('/projects/example')).toBe('projects');
     expect(activeNavKey('/')).toBeUndefined();
+  });
+
+  it('strips deployment base paths before detecting active nav items', () => {
+    expect(stripBasePath('/personal-site/projects/', '/personal-site')).toBe('/projects');
+    expect(activeNavKey('/personal-site/projects/example', '/personal-site')).toBe('projects');
+    expect(activeNavKey('/personal-site/', '/personal-site')).toBeUndefined();
   });
 });
 

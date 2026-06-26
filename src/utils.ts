@@ -5,8 +5,21 @@ export function normalizePath(pathname: string): string {
   return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
 }
 
-export function activeNavKey(pathname: string): string | undefined {
+export function stripBasePath(pathname: string, base = '/'): string {
   const normalized = normalizePath(pathname);
+  const normalizedBase = normalizePath(base.startsWith('/') ? base : `/${base}`);
+
+  if (normalizedBase === '/') return normalized;
+  if (normalized === normalizedBase) return '/';
+  if (normalized.startsWith(`${normalizedBase}/`)) {
+    return normalized.slice(normalizedBase.length) || '/';
+  }
+
+  return normalized;
+}
+
+export function activeNavKey(pathname: string, base = import.meta.env.BASE_URL): string | undefined {
+  const normalized = stripBasePath(pathname, base);
   return navItems.find((item) => normalized === item.href || normalized.startsWith(`${item.href}/`))?.key;
 }
 
