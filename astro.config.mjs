@@ -11,4 +11,7 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
+  vite: {
+    cacheDir: '.vite-cache',
+  },
 });

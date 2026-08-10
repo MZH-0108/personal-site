@@ -1,27 +1,72 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site } from '../data/site';
+import { posts, projects, site } from '../data/site';
 import { withBase } from '../paths';
 
-const avatarUrl = withBase(site.avatar);
+const homePortraitUrl = withBase('images/avatar-home-ivory.png');
+const featuredProject = projects.find((project) => project.category === 'selected') ?? projects[0];
+const featuredImageUrl = featuredProject.image ? withBase(featuredProject.image) : undefined;
+const formatDate = (date: string) => date.replaceAll('-', ' / ');
 ---
 
 <BaseLayout title={site.name} description={site.tagline}>
-  <section class="hero">
-    <img class="avatar" src={avatarUrl} alt={`${site.name} avatar`} width="192" height="192" fetchpriority="high" />
-    <h1 class="hero-title">{site.name}</h1>
-    <p class="hero-copy">
-      {site.tagline}
-      <br />
-      正在打磨 <a class="blue-link" href={withBase('/projects')}>orderToZhu 家庭点餐本</a>，
-      也持续整理 <a class="blue-link" href={withBase('/writing')}>工程与 AI 学习笔记</a>。
-    </p>
-    <div class="badge-row" aria-label="Highlights">
-      {site.badges.map((badge) => <span class="badge">{badge}</span>)}
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="home-hero-copy">
+      <h1 id="home-title">{site.name}</h1>
+      <p class="home-role">{site.role}</p>
+      <p class="home-statement">把工程问题，做成可用的软件。</p>
+      <p class="home-intro">{site.tagline}</p>
+      <div class="home-actions">
+        <a class="button primary" href={withBase('/about')}>关于我</a>
+        <a class="button" href={withBase('/resume')}>查看简历</a>
+      </div>
     </div>
-    <div class="cta-row">
-      <a class="button primary" href={withBase('/about')}>About Me</a>
-      <a class="button" href={withBase('/resume')}>View Resume</a>
+
+    <div class="home-portrait">
+      <img
+        src={homePortraitUrl}
+        alt={`${site.name}的彩色肖像`}
+        width="720"
+        height="720"
+        fetchpriority="high"
+      />
     </div>
+  </section>
+
+  <section class="home-overview" aria-label="代表项目与最近写作">
+    <article class="home-featured">
+      <h2>代表项目</h2>
+      <div class="home-featured-body">
+        {
+          featuredImageUrl && (
+            <a class="home-project-image" href={withBase('/projects')} aria-label={`查看${featuredProject.title}`}>
+              <img src={featuredImageUrl} alt={featuredProject.imageAlt ?? ''} loading="lazy" />
+            </a>
+          )
+        }
+        <div class="home-project-copy">
+          <h3><a href={withBase('/projects')}>{featuredProject.title}</a></h3>
+          <p class="home-project-type">{featuredProject.subtitle}</p>
+          <p>{featuredProject.description}</p>
+          <div class="home-project-tags" aria-label="项目技术标签">
+            {featuredProject.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}
+          </div>
+          <a class="home-text-link" href={withBase('/projects')}>查看项目 <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </article>
+
+    <section class="home-latest" aria-labelledby="latest-title">
+      <h2 id="latest-title">最近写作</h2>
+      <div class="home-post-list">
+        {posts.slice(0, 3).map((post) => (
+          <a class="home-post" href={withBase(post.href)}>
+            <time datetime={post.date}>{formatDate(post.date)}</time>
+            <span>{post.title}</span>
+          </a>
+        ))}
+      </div>
+      <a class="home-text-link" href={withBase('/writing')}>查看全部文章 <span aria-hidden="true">→</span></a>
+    </section>
   </section>
 </BaseLayout>

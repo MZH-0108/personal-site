@@ -38,6 +38,6 @@ Free global hosts can be usable from China, but none can guarantee consistently 
 ## Current public-content status
 
 - `src/data/site.ts` now contains 马志昊的公开简历摘要、教育经历、工作经历、技能和精选项目。
-- `orderToZhu` is listed as the first featured project.
+- `馬哥小馆儿` is listed as the first featured project.
 - Phone number and the source PDF resume are intentionally not published.
 - If deploying somewhere other than GitHub Pages, keep `DEPLOY_TARGET` unset so Astro uses root-relative paths.

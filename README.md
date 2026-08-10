@@ -11,7 +11,7 @@ A dark minimal personal website inspired by the visual style of https://mldangel
 ## Current content
 
 - Resume content: extracted and summarized from the provided PDF resume.
-- Featured project: `E:\APP\orderToZhu` is included as the first project, `orderToZhu 家庭点餐本微信小程序`.
+- Featured project: 微信小程序 `馬哥小馆儿` is included as the first project.
 - Privacy: phone number and the original PDF resume are not committed or published.
 
 ## Local development

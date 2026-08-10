@@ -55,14 +55,14 @@ export const socials = [
 
 export const projects: Project[] = [
   {
-    title: 'orderToZhu 家庭点餐本微信小程序',
-    subtitle: '个人项目 / 家庭点餐 MVP',
+    title: '馬哥小馆儿',
+    subtitle: '微信小程序 / 家庭点餐',
     description:
       '面向家庭内部菜谱记录与点餐准备的微信小程序，支持真实微信登录、菜单浏览、已选菜、点餐记录、家庭管理员、菜品图片上传、订阅提醒与操作审计。',
     tags: ['微信小程序', 'Spring Boot', 'MySQL', '云托管', 'JUnit'],
     year: '2026',
-    image: 'images/projects/order-to-zhu-cart.png',
-    imageAlt: 'orderToZhu 微信小程序点餐界面',
+    image: 'images/projects/mage-xiaoguan-feature.png',
+    imageAlt: '馬哥小馆儿微信小程序点餐界面',
     category: 'selected',
     accent: '#63aaf8',
   },
@@ -118,7 +118,7 @@ export const projects: Project[] = [
 
 export const posts = [
   {
-    title: 'orderToZhu 家庭点餐本开发复盘（整理中）',
+    title: '馬哥小馆儿开发复盘（整理中）',
     date: '2026-06-24',
     summary: '从需求边界、个人主体合规、微信登录、云托管到自动化测试的项目复盘。',
     href: '/writing',
