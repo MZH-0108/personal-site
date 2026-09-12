@@ -5,9 +5,9 @@ import { withBase } from '../paths';
 import '../styles/notes-contact.css';
 ---
 <BaseLayout title="笔记与思考" description="围绕个人产品、微信小程序与工程图像识别的开发笔记与设计思考。">
-  <section class="portfolio-wrap editorial-head"><p class="eyebrow">NOTES / THINKING IN PUBLIC</p><h1>做过，也想明白。</h1><p>记录做产品时的判断，也记录跨学科学习中的追问。<br />让经验从“做过一次”，变成下次可以使用的方法。</p></section>
+  <section class="portfolio-wrap editorial-head"><p class="eyebrow">NOTES</p><h1>开发笔记</h1><p>产品设计、小程序开发与工程图像实践。</p></section>
   <section class="portfolio-wrap writing-list" aria-label="文章列表">
     {notes.map((note,index)=><a class="writing-row" href={withBase(`/writing/${note.slug}`)}><span class="writing-number">0{index+1}</span><div><span class="eyebrow">{note.category} · {note.minutes} 分钟阅读</span><h2>{note.title}</h2><p>{note.summary}</p></div><span aria-hidden="true">↗</span></a>)}
-    <aside class="writing-footnote">这些笔记根据公开项目经历整理，侧重设计方法与工作思路。过往 CSDN 写作经历见<a href={withBase('/resume#experience')}>完整简历</a>。</aside>
+    <aside class="writing-footnote">根据公开项目经历整理。<a href={withBase('/resume#experience')}>查看 CSDN 写作经历 →</a></aside>
   </section>
 </BaseLayout>

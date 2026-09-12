@@ -18,15 +18,18 @@ export function inspectHtml(html) {
   const ids = new Set();
   const duplicateIds = new Set();
   const references = [];
+  let emptyLinks = 0;
   const visit = (node) => {
     const attributes = Object.fromEntries((node.attrs || []).map(({ name, value }) => [name, value]));
+    const isEmptyLink = node.tagName === 'a' && Object.prototype.hasOwnProperty.call(attributes, 'href') && ['', '#'].includes(attributes.href.trim());
+    if (isEmptyLink) emptyLinks += 1;
     if (attributes.id) {
       if (ids.has(attributes.id)) duplicateIds.add(attributes.id);
       ids.add(attributes.id);
     }
     if (node.tagName === 'a' && attributes.name) ids.add(attributes.name);
     for (const attribute of ['href', 'src', 'poster']) {
-      if (attributes[attribute]) references.push({ value: attributes[attribute], kind: node.tagName === 'a' ? 'link' : 'asset', tag: node.tagName });
+      if (attributes[attribute] && !(attribute === 'href' && isEmptyLink)) references.push({ value: attributes[attribute], kind: node.tagName === 'a' ? 'link' : 'asset', tag: node.tagName });
     }
     if (attributes.srcset && !attributes.srcset.startsWith('data:')) {
       for (const item of attributes.srcset.split(',')) references.push({ value: item.trim().split(/\s+/)[0], kind: 'asset', tag: node.tagName });
@@ -36,7 +39,7 @@ export function inspectHtml(html) {
     if (node.content) visit(node.content);
   };
   visit(parse(html));
-  return { ids, duplicateIds, references };
+  return { ids, duplicateIds, references, emptyLinks };
 }
 
 export async function verifyBuild({ directory = path.join(root, 'dist'), base = '/', origin = 'https://build-audit.invalid' } = {}) {
@@ -48,13 +51,15 @@ export async function verifyBuild({ directory = path.join(root, 'dist'), base = 
   const documents = new Map();
   const failures = [];
   const assetTargets = new Set();
-  const counts = { htmlPages: 0, localPageLinks: 0, anchorReferences: 0, localAssetReferences: 0, cssAssetReferences: 0, uniqueLocalAssets: 0, sitemapEntries: 0 };
+  const counts = { htmlPages: 0, localPageLinks: 0, anchorReferences: 0, emptyLinks: 0, localAssetReferences: 0, cssAssetReferences: 0, uniqueLocalAssets: 0, sitemapEntries: 0 };
   const relative = (file) => path.relative(dist, file).split(path.sep).join('/');
   const publicUrl = (file) => new URL(basePath + relative(file).replace(/(^|\/)index\.html$/, '$1'), siteOrigin);
   for (const file of files.filter((entry) => entry.endsWith('.html'))) {
     const document = inspectHtml(await readFile(file, 'utf8'));
     documents.set(file, document);
     for (const id of document.duplicateIds) failures.push(`${relative(file)}: duplicate id #${id}`);
+    counts.emptyLinks += document.emptyLinks;
+    if (document.emptyLinks) failures.push(`${relative(file)}: ${document.emptyLinks} empty link target(s) (href="" or href="#")`);
   }
   counts.htmlPages = documents.size;
   if (!documents.size) failures.push('No HTML pages found in the build.');

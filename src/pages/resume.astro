@@ -9,7 +9,7 @@ import '../styles/experience.css';
 const resumeSections = [
   { id: 'experience', label: '工作与实践' },
   { id: 'education', label: '教育背景' },
-  { id: 'skills', label: '能力与证据' },
+  { id: 'skills', label: '技术能力' },
   { id: 'projects', label: '项目索引' },
   { id: 'awards', label: '荣誉与责任' },
 ];
@@ -20,11 +20,18 @@ const experienceProjects: Record<string, { slug: string; label: string }> = {
   '禹王投资控股有限公司': { slug: 'procurement', label: '采购平台与招标小程序' },
   '东软教育集团（培训）': { slug: 'takeout-training', label: '外卖平台训练项目' },
 };
+const experienceIds: Record<string, string> = {
+  '山东省禹城市住房与城乡建设局': 'housing-internship',
+  '辽宁省交通科学研究院': 'tunnel-ai',
+  '莱凯创客机器人编程俱乐部': 'coding-class',
+  '禹王投资控股有限公司': 'procurement',
+  '东软教育集团（培训）': 'takeout-training',
+};
 const capabilities = [
-  { title: '前端与小程序', description: '从业务页面到真实交互，关注完整的使用流程。', tools: ['JavaScript', 'Vue', 'ElementUI', '微信小程序'], slug: 'procurement', evidence: '企业采购与招标业务' },
-  { title: '后端与交付', description: '把页面、接口、数据与部署串成可运行的产品。', tools: ['Java', 'Spring Boot', 'MySQL', 'JUnit', '云托管'], slug: 'mage-xiaoguan', evidence: '馬哥小馆儿 · 全流程实践' },
-  { title: 'AI 与工程场景', description: '从真实图像与标注出发，探索工程检测中的视觉方法。', tools: ['Python', '图像识别', '数据标注', '深度学习'], slug: 'tunnel-ai', evidence: '隧道病害识别实践' },
-  { title: '沟通与知识表达', description: '在技术协作、课堂教学和文档整理中，让复杂内容更易理解。', tools: ['技术文档', '课程规划', '项目分工', '跨部门协作'], slug: 'coding-class', evidence: '编程课程与学生项目辅导' },
+  { title: '前端与小程序', description: '业务页面开发、接口联调与数据迁移。', tools: ['JavaScript', 'Vue', 'ElementUI', '微信小程序'], slug: 'procurement', evidence: '查看企业采购与招标项目' },
+  { title: '后端与部署', description: '点餐接口、微信登录、云部署与测试。', tools: ['Java', 'Spring Boot', 'MySQL', 'JUnit', '云托管'], slug: 'mage-xiaoguan', evidence: '查看馬哥小馆儿' },
+  { title: '图像识别', description: '识别代码开发、人工标注与资料整理。', tools: ['Python', '图像识别', '数据标注'], slug: 'tunnel-ai', evidence: '查看隧道病害识别实践' },
+  { title: '编程教学', description: '备课、课堂讲授、学习反馈与项目辅导。', tools: ['C', 'Python', 'Scratch', 'XRmaker'], slug: 'coding-class', evidence: '查看课程与教学实践' },
 ];
 ---
 
@@ -33,8 +40,8 @@ const capabilities = [
     <header class="cv-hero">
       <div>
         <p class="journey-eyebrow">RESUME / THE JOURNEY</p>
-        <h1>{site.name}<span>经历有跨度，能力有来处。</span></h1>
-        <p class="cv-intro">从企业前端到微信小程序，从编程课堂到工程现场。以计算机科学为起点，在真实问题中积累开发、协作与表达能力。</p>
+        <h1>{site.name}<span>全栈开发 · 图像识别 · 岩土工程</span></h1>
+        <p class="cv-intro">计算机科学本科，岩土工程硕士在读。企业前端、个人产品、研究与教学经历。</p>
         <p class="cv-contact"><span>{site.role}</span><span>{site.location}</span><a href={'mailto:' + site.email}>{site.email}</a></p>
       </div>
       <div class="cv-actions">
@@ -42,33 +49,31 @@ const capabilities = [
           <Icon name="print" />
           打印 / 保存为 PDF
         </button>
-        <a href={withBase('/contact')}>聊聊合作机会 <span aria-hidden="true">↗</span></a>
+        <a href={withBase('/contact')}>联系我 <span aria-hidden="true">↗</span></a>
       </div>
     </header>
 
     <section class="cv-overview anchor-section" id="overview" aria-labelledby="cv-overview-title">
-      <div class="cv-overview-heading"><span class="journey-eyebrow">AT A GLANCE</span><h2 id="cv-overview-title">面试速览</h2></div>
-      <a href="#education"><span class="cv-overview-label">01 / 交叉背景</span><strong>计算机科学 × 岩土工程</strong><span>本科软件基础，硕士关注 AI 与工程数据。</span><span class="cv-overview-arrow" aria-hidden="true">↗</span></a>
-      <a href={withBase('/projects/mage-xiaoguan')}><span class="cv-overview-label">02 / 代表作品</span><strong>馬哥小馆儿</strong><span>小程序、后端接口、云部署与自动化测试。</span><span class="cv-overview-arrow" aria-hidden="true">↗</span></a>
-      <a href="#experience"><span class="cv-overview-label">03 / 实践广度</span><strong>开发 · 研究 · 教学 · 协作</strong><span>在不同场景中理解需求，把技术讲清楚。</span><span class="cv-overview-arrow" aria-hidden="true">↗</span></a>
+      <div class="cv-overview-heading"><span class="journey-eyebrow">AT A GLANCE</span><h2 id="cv-overview-title">简历速览</h2></div>
+      <a href="#education"><span class="cv-overview-label">01 / 教育</span><strong>计算机科学 × 岩土工程</strong><span>齐鲁理工学院 → 沈阳建筑大学</span><span class="cv-overview-arrow" aria-hidden="true">↗</span></a>
+      <a href={withBase('/projects/mage-xiaoguan')}><span class="cv-overview-label">02 / 代表作品</span><strong>馬哥小馆儿</strong><span>微信小程序 · Spring Boot · MySQL</span><span class="cv-overview-arrow" aria-hidden="true">↗</span></a>
+      <a href="#experience"><span class="cv-overview-label">03 / 工作与实践</span><strong>开发 · 研究 · 教学</strong><span>查看职责、时间与相关项目</span><span class="cv-overview-arrow" aria-hidden="true">↗</span></a>
     </section>
 
     <div class="cv-layout">
       <aside class="cv-sidebar">
         <span class="journey-eyebrow">IN THIS RESUME</span>
         <SectionNav label="简历目录" items={resumeSections} />
-        <p>每段经历都有上下文。<br />点击项目链接，继续了解具体实践。</p>
       </aside>
       <div class="cv-content">
         <section class="cv-section anchor-section" id="experience" aria-labelledby="experience-title">
           <div class="journey-section-heading"><span>01</span><div><p class="journey-eyebrow">EXPERIENCE</p><h2 id="experience-title">工作与实践</h2></div></div>
           <div class="journey-timeline">
             {experience.map((item) => (
-              <article class="journey-entry">
+              <article class="journey-entry" id={`experience-${experienceIds[item.organization]}`}>
                 <p class="journey-period">{item.period}</p>
                 <h3>{item.title}</h3>
                 <p class="journey-organization">{item.organization}</p>
-                <p class="journey-summary">{item.summary}</p>
                 <ul>{item.bullets.map((bullet) => <li>{bullet}</li>)}</ul>
                 {experienceProjects[item.organization] && <a class="journey-evidence-link" href={withBase('/projects/' + experienceProjects[item.organization].slug)}>相关实践：{experienceProjects[item.organization].label}<span aria-hidden="true">↗</span></a>}
               </article>
@@ -84,10 +89,9 @@ const capabilities = [
         </section>
 
         <section class="cv-section anchor-section" id="skills" aria-labelledby="skills-title">
-          <div class="journey-section-heading"><span>03</span><div><p class="journey-eyebrow">CAPABILITIES & EVIDENCE</p><h2 id="skills-title">能力与证据</h2></div></div>
-          <p class="cv-section-intro">用做过的事情说明能力，也保留继续学习的空间。</p>
+          <div class="journey-section-heading"><span>03</span><div><p class="journey-eyebrow">TECHNICAL SKILLS</p><h2 id="skills-title">技术能力</h2></div></div>
           <div class="cv-capabilities">
-            {capabilities.map((item) => <article class="cv-capability"><h3>{item.title}</h3><p>{item.description}</p><div class="journey-pills">{item.tools.map((tool) => <span>{tool}</span>)}</div><a class="journey-evidence-link" href={withBase('/projects/' + item.slug)}>{item.evidence}<span aria-hidden="true">↗</span></a></article>)}
+            {capabilities.map((item) => <a class="cv-capability" href={withBase('/projects/' + item.slug)}><h3>{item.title}</h3><p>{item.description}</p><div class="journey-pills">{item.tools.map((tool) => <span>{tool}</span>)}</div><span class="journey-evidence-link">{item.evidence}<span aria-hidden="true">↗</span></span></a>)}
           </div>
         </section>
 
@@ -103,8 +107,8 @@ const capabilities = [
           <div class="cv-recognition">
             <article><span class="journey-eyebrow">硕士阶段 / 沈阳建筑大学</span><h3>校级奖学金二等奖</h3></article>
             <article><span class="journey-eyebrow">本科阶段 / 齐鲁理工学院</span><h3>国家励志奖学金</h3><p>专业成绩前 10%，GPA 3.66。</p></article>
-            <article><span class="journey-eyebrow">省级竞赛 / 山东省</span><h3>电子与信息大赛三等奖</h3><p>在本科阶段参与电子与信息方向竞赛。</p></article>
-            <article><span class="journey-eyebrow">校园责任</span><h3>在团队中承担具体的事</h3><p>本科担任班级副班长；硕士阶段担任班级团支书、研究生会学术部成员。</p></article>
+            <article><span class="journey-eyebrow">省级竞赛 / 山东省</span><h3>电子与信息大赛三等奖</h3></article>
+            <article><span class="journey-eyebrow">学生工作</span><h3>班级与研究生会任职</h3><p>本科副班长；硕士班级团支书、研究生会学术部成员。</p></article>
           </div>
         </section>
       </div>

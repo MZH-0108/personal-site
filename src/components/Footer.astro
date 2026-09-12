@@ -8,23 +8,23 @@ import { withBase } from '../paths';
   <div class="shell-footer-inner">
     <div class="shell-footer-main">
       <div>
-        <p class="shell-eyebrow">LET’S BUILD SOMETHING USEFUL</p>
-        <h2>下一个有意思的问题，<br />一起聊聊？</h2>
-        <p class="shell-footer-description">关于开发、工程与 AI，也关于一个值得认真做的想法。</p>
+        <p class="shell-eyebrow">CONTACT</p>
+        <h2>联系我</h2>
+        <p class="shell-footer-description">岗位 / 实习机会 · 项目合作 · 技术交流</p>
       </div>
       <div class="shell-footer-contact">
         <a class="shell-email-link" href={`mailto:${site.email}`}><span class="shell-email-address">{site.email}</span><span aria-hidden="true">↗</span></a>
         <div class="shell-footer-contact-actions">
           <button type="button" data-copy-email>复制邮箱</button>
           <a href="https://github.com/MZH-0108" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-          <a href={withBase('/contact')}>更多联系方式 <span aria-hidden="true">↗</span></a>
+          <a href={withBase('/contact')}>写邮件 <span aria-hidden="true">↗</span></a>
         </div>
-        <p>{site.location} · 欢迎交流与合作</p>
+        <p>{site.location}</p>
       </div>
     </div>
     <div class="shell-footer-bottom">
-      <p>© {new Date().getFullYear()} 马志昊 <span>保持好奇，认真交付。</span></p>
-      <div><a href={withBase('/stats')}>成长足迹</a><a href={site.sourceUrl} target="_blank" rel="noopener noreferrer">网站源码 ↗</a><button type="button" data-search-open>探索网站 <kbd>⌘ K</kbd></button></div>
+      <p>© {new Date().getFullYear()} 马志昊</p>
+      <div><a href={withBase('/stats')}>能力索引</a><a href={site.sourceUrl} target="_blank" rel="noopener noreferrer">网站源码 ↗</a><button type="button" data-search-open>搜索网站 <kbd>⌘ K</kbd></button></div>
     </div>
   </div>
 </footer>

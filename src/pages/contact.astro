@@ -6,16 +6,16 @@ import { caseStudies } from '../data/case-studies';
 import { withBase } from '../paths';
 import '../styles/notes-contact.css';
 ---
-<BaseLayout title="聊聊你的想法" description="联系马志昊，交流开发岗位、实习合作、工程软件与微信小程序项目。">
-<section class="portfolio-wrap editorial-head"><p class="eyebrow">CONTACT / START A CONVERSATION</p><h1>好的合作，<br />从一次对话开始。</h1><p>聊聊岗位机会、产品想法，或一个值得解决的工程问题。</p></section>
+<BaseLayout title="联系我" description="联系马志昊，交流开发岗位、实习合作、工程软件与微信小程序项目。">
+<section class="portfolio-wrap editorial-head"><p class="eyebrow">CONTACT</p><h1>联系我</h1><p>岗位 / 实习机会 · 项目合作 · 技术交流</p></section>
 <section class="portfolio-wrap contact-layout">
-  <div class="contact-direct"><span class="eyebrow">SAY HELLO</span><a class="contact-address" href={`mailto:${site.email}`}>{site.email}</a><div class="action-row"><button class="p-button" type="button" data-copy-email>复制邮箱 <Icon name="copy" /></button><a class="p-text-link" href="https://github.com/MZH-0108" target="_blank" rel="noreferrer">GitHub ↗</a></div><div class="contact-topics"><h2>这些话题，我很愿意聊</h2><p>前端与全栈开发 · 微信小程序<br />工程软件 · 图像识别 · 技术分享</p><p><Icon name="location-dot" /> {site.location}</p></div><a class="p-text-link" href={withBase('/resume')}>先看看我的完整经历 <span aria-hidden="true">→</span></a></div>
-  <div class="contact-compose"><h2>整理一封邮件</h2><p>填写后生成草稿，再通过你的邮件应用发送。</p>
+  <div class="contact-direct"><span class="eyebrow">EMAIL</span><a class="contact-address" href={`mailto:${site.email}`}>{site.email}</a><div class="action-row"><button class="p-button" type="button" data-copy-email>复制邮箱 <Icon name="copy" /></button><a class="p-text-link" href="https://github.com/MZH-0108" target="_blank" rel="noreferrer">GitHub ↗</a></div><div class="contact-topics"><h2>相关项目</h2><div class="contact-project-links"><a href={withBase('/projects/mage-xiaoguan')}>微信小程序 <span aria-hidden="true">↗</span></a><a href={withBase('/projects/procurement')}>企业前端 <span aria-hidden="true">↗</span></a><a href={withBase('/projects/tunnel-ai')}>工程图像识别 <span aria-hidden="true">↗</span></a><a href={withBase('/projects/coding-class')}>编程教学 <span aria-hidden="true">↗</span></a></div><p><Icon name="location-dot" /> {site.location}</p></div><a class="p-text-link" href={withBase('/resume')}>查看简历 <span aria-hidden="true">→</span></a></div>
+  <div class="contact-compose"><h2>邮件草稿</h2><p>填写内容，打开邮件应用后确认发送。</p>
     <form id="draft-form" data-email={site.email} data-projects={JSON.stringify(caseStudies.map(({slug,title}) => ({slug,title})))}>
       <fieldset id="draft-fields" disabled>
       <label>聊什么<select name="topic"><option value="岗位 / 实习机会">岗位 / 实习机会</option><option value="项目合作">项目合作</option><option value="技术交流">技术交流</option></select></label>
       <label>你的称呼<input name="name" autocomplete="name" maxlength="80" placeholder="怎么称呼你？" required /></label>
-      <label>想聊的内容<textarea name="message" rows="5" maxlength="2000" placeholder="可以简单介绍公司 / 项目，以及希望一起解决的问题。" required></textarea></label>
+      <label>想聊的内容<textarea name="message" rows="5" maxlength="2000" placeholder="介绍岗位或项目，以及希望交流的问题。" required></textarea></label>
       <button class="p-button p-button-primary" type="submit">生成邮件草稿 <Icon name="arrow-right" /></button>
       </fieldset>
     </form>

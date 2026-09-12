@@ -28,6 +28,35 @@ describe('built-site link verification', () => {
     expect(result.references.map((reference) => reference.value)).toEqual(['/resume#skills']);
   });
 
+  it('counts empty href values but permits anchors without an href', () => {
+    const result = inspectHtml('<a href="#">Placeholder</a><a href="">Empty</a><a href=" # ">Padded placeholder</a><a href=" ">Blank</a><a data-email-draft>Draft</a><a name="legacy">Named anchor</a><a href="#valid">Valid</a><script>const sample = \'<a href="#">\';</script>');
+    expect(result.emptyLinks).toBe(4);
+    expect(result.references.map((reference) => reference.value)).toEqual(['#valid']);
+    expect([...result.ids]).toEqual(['legacy']);
+  });
+
+  it('accepts real same-page and cross-page anchors with their target sections', async () => {
+    const directory = await fixture({
+      'index.html': '<section id="valid">Valid</section><a href="#valid">Here</a><a href="/path#existing">Path</a><a data-email-draft>Draft</a>',
+      'path/index.html': '<section id="existing">Existing</section>',
+    });
+    const result = await verifyBuild({ directory });
+    expect(result.failures).toEqual([]);
+    expect(result).toMatchObject({ htmlPages: 2, localPageLinks: 2, anchorReferences: 2, emptyLinks: 0, passed: true });
+  });
+
+  it('rejects placeholder and empty links and identifies every source page', async () => {
+    const directory = await fixture({
+      'index.html': '<a href="#">Placeholder</a><a href="">Empty</a>',
+      'about/index.html': '<a href=" # ">Padded placeholder</a><a href=" ">Blank</a><a data-email-draft>Draft</a>',
+    });
+    const result = await verifyBuild({ directory });
+    expect(result).toMatchObject({ emptyLinks: 4, passed: false });
+    expect(result.failures).toHaveLength(2);
+    expect(result.failures).toContain('index.html: 2 empty link target(s) (href="" or href="#")');
+    expect(result.failures).toContain('about/index.html: 2 empty link target(s) (href="" or href="#")');
+  });
+
   it('resolves base-prefixed pages, encoded anchors, srcset and CSS assets', async () => {
     const directory = await fixture({
       'index.html': '<a href="/personal-site/about#%E6%8A%80%E8%83%BD">About</a><img src="/personal-site/avatar.png" srcset="/personal-site/avatar.png 1x, /personal-site/avatar@2x.png 2x"><link rel="stylesheet" href="/personal-site/styles/main.css">',

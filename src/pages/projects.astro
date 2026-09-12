@@ -11,8 +11,8 @@ import '../styles/projects.css';
   <div class="portfolio-wrap work-page">
     <header class="work-intro">
       <p class="work-eyebrow">SELECTED WORK / 2020—2026</p>
-      <h1>经历不止一面，<br /><span>作品可以细看。</span></h1>
-      <div class="work-intro-bottom"><p>从企业平台到家庭小程序，从工程图像到编程课堂。<br class="work-desktop-break" />这里记录我做过什么、如何参与，以及从中学到了什么。</p><a class="work-text-link" href={withBase('/resume')}>查看完整经历 <span aria-hidden="true">↗</span></a></div>
+      <h1>项目与实践</h1>
+      <div class="work-intro-bottom"><p>个人产品 · 企业开发 · 图像识别 · 编程教学</p><a class="work-text-link" href={withBase('/resume')}>完整简历 <span aria-hidden="true">↗</span></a></div>
     </header>
     <section class="work-collection" aria-label="筛选项目" data-work-browser>
       <div class="work-toolbar">
@@ -25,13 +25,13 @@ import '../styles/projects.css';
       <div class="work-results-line"><p data-work-count role="status" aria-live="polite">共 {caseStudies.length} 段项目与实践</p><a href="#work-list">跳到项目列表 ↓</a></div>
       <div class="work-grid" id="work-list">
         {caseStudies.map((project, index) => (
-          <article id={project.slug} class:list={['work-card', { 'work-card-featured': index === 0 }]} data-work-card data-category={project.category} data-search={`${project.title} ${project.title.replaceAll('馬', '马')} ${project.subtitle} ${project.description} ${project.organization} ${project.tags.join(' ')}`}>
-            <a class:list={['work-visual-link', `work-visual-${project.slug}`]} href={withBase(`/projects/${project.slug}`)} aria-label={`查看${project.title}项目详情`}>
+          <a href={withBase(`/projects/${project.slug}`)} id={project.slug} class:list={['work-card', { 'work-card-featured': index === 0 }]} data-work-card data-category={project.category} data-search={`${project.title} ${project.title.replaceAll('馬', '马')} ${project.subtitle} ${project.description} ${project.organization} ${project.tags.join(' ')}`}>
+            <div class:list={['work-visual-link', `work-visual-${project.slug}`]} aria-hidden="true">
               {index === 0 ? <Image src={projectScene} alt="" widths={[480, 760, 1100]} sizes="(max-width: 700px) 100vw, 55vw" format="webp" loading="eager" /> : <div class="work-type-visual"><span class="work-visual-index">0{index + 1}</span><span class="work-visual-label">{project.category === 'work' ? 'BUILDING\nFOR BUSINESS' : project.category === 'research' ? 'CODE MEETS\nENGINEERING' : project.slug === 'coding-class' ? 'TEACH.\nBUILD. REPEAT.' : 'FROM LEARNING\nTO BUILDING'}</span><span class="work-visual-detail">{project.tags.slice(0, 3).join(' / ')}</span><span class="work-visual-arrow">↗</span></div>}
               {index === 0 && <><span class="work-feature-flag">FEATURED · 代表作品</span><span class="work-scene-label">项目场景示意</span></>}
-            </a>
-            <div class="work-card-body"><div class="work-card-meta"><span>{project.categoryLabel}</span><span>{project.year}</span></div><h2><a href={withBase(`/projects/${project.slug}`)}>{project.title}<span aria-hidden="true">↗</span></a></h2><p class="work-card-role">{project.role} · {project.organization}</p><p class="work-card-description">{project.description}</p><ul class="work-tags" aria-label="技术与技能">{project.tags.slice(0, 4).map((tag) => <li>{tag}</li>)}</ul><div class="work-card-footer"><span>{project.contribution[0]}</span><a href={withBase(`/projects/${project.slug}`)} aria-label={`阅读${project.title}的实践详解`}>阅读实践详解 <span aria-hidden="true">→</span></a></div></div>
-          </article>
+            </div>
+            <div class="work-card-body"><div class="work-card-meta"><span>{project.categoryLabel}</span><span>{project.year}</span></div><h2>{project.title}<span aria-hidden="true">↗</span></h2><p class="work-card-role">{project.role} · {project.organization}</p><p class="work-card-description">{project.description}</p><ul class="work-tags" aria-label="技术与技能">{project.tags.slice(0, 4).map((tag) => <li>{tag}</li>)}</ul><div class="work-card-footer"><span>{project.contribution[0]}</span><span class="work-card-cta">查看项目 <span aria-hidden="true">→</span></span></div></div>
+          </a>
         ))}
       </div>
       <div class="work-empty" data-work-empty hidden><span aria-hidden="true">⌕</span><h2>暂时没有匹配的项目</h2><p>可以试试「Vue」「Python」或「小程序」，也可以查看全部经历。</p><button type="button" data-work-reset>清除筛选，查看全部</button></div>

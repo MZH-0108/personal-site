@@ -12,8 +12,8 @@ const otherNotes = notes.filter(item=>item.slug!==note.slug);
   <header class="editorial-head"><a class="p-text-link" href={withBase('/writing')}>← 所有笔记</a><p class="eyebrow">{note.category} / {note.minutes} 分钟阅读</p><h1>{note.title}</h1><p>{note.summary}</p><div class="note-meta"><span>马志昊 · 2026 年 9 月整理</span><button type="button" class="note-font-button" aria-pressed="false" id="note-font">加大字号 Aa</button></div></header>
   <div class="note-body-layout"><nav class="note-toc" aria-label="文章目录"><span class="eyebrow">本文内容</span>{note.sections.map(section=><a href={`#${section.id}`}>{section.heading}</a>)}</nav>
   <div class="note-content" id="note-content">{note.sections.map(section=><section id={section.id}><h2>{section.heading}</h2>{section.paragraphs.map(paragraph=><p>{paragraph}</p>)}{section.points&&<ul>{section.points.map(point=><li>{point}</li>)}</ul>}</section>)}
-    {note.relatedProject&&<a class="note-related p-text-link" href={withBase(`/projects/${note.relatedProject}`)}>看看对应的项目案例 <span aria-hidden="true">→</span></a>}
-    <aside class="note-end"><p class="eyebrow">CONTINUE READING</p>{otherNotes.map(other=><a href={withBase(`/writing/${other.slug}`)}>{other.title}<span aria-hidden="true">↗</span></a>)}</aside>
+    {note.relatedProject&&<a class="note-related p-text-link" href={withBase(`/projects/${note.relatedProject}`)}>查看相关项目 <span aria-hidden="true">→</span></a>}
+    <aside class="note-end"><p class="eyebrow">其他笔记</p>{otherNotes.map(other=><a href={withBase(`/writing/${other.slug}`)}>{other.title}<span aria-hidden="true">↗</span></a>)}</aside>
   </div></div>
 </article>
 </BaseLayout>

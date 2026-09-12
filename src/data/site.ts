@@ -58,7 +58,7 @@ export const projects: Project[] = [
     title: '馬哥小馆儿',
     subtitle: '微信小程序 / 家庭点餐',
     description:
-      '面向家庭内部菜谱记录与点餐准备的微信小程序，支持真实微信登录、菜单浏览、已选菜、点餐记录、家庭管理员、菜品图片上传、订阅提醒与操作审计。',
+      '家庭点餐微信小程序：浏览菜谱、选择菜品、查看记录，支持微信登录与家庭管理。',
     tags: ['微信小程序', 'Spring Boot', 'MySQL', '云托管', 'JUnit'],
     year: '2026',
     image: 'images/projects/mage-xiaoguan-feature.png',
@@ -70,7 +70,7 @@ export const projects: Project[] = [
     title: '采购平台与招标小程序',
     subtitle: '前端开发工程师 / 企业项目',
     description:
-      '参与企业采购平台与招标小程序建设，负责登录注册、首页、分类、商品详情、邀标列表、小程序页面与数据迁移等前端和接口协作工作。',
+      '参与采购平台与招标小程序的前端开发、接口联调和数据迁移。',
     tags: ['Vue', 'ElementUI', 'Spring Boot', 'Redis', 'MyBatis'],
     year: '2022–2024',
     visualTitle: 'PROCUREMENT',
@@ -82,7 +82,7 @@ export const projects: Project[] = [
     title: '隧道病害图像识别与标注',
     subtitle: '图像识别工程师 / 研究实践',
     description:
-      '在岩土工程研究场景中参与隧道病害图像识别代码开发、人工标注与内部文档整理，持续学习深度学习、计算机视觉与工程检测方法。',
+      '参与隧道病害图像识别代码开发、人工标注与技术资料整理。',
     tags: ['Python', '深度学习', '图像识别', '数据标注'],
     year: '2025',
     visualTitle: 'TUNNEL AI',
@@ -94,7 +94,7 @@ export const projects: Project[] = [
     title: '阿里外卖平台训练项目',
     subtitle: '项目组组长 / 东软教育集团培训',
     description:
-      '担任项目组组长，完成外卖平台的 Vue2 前端、Java 后端、数据库搭建、测试与维护协作，形成从需求拆分到交付的完整训练经历。',
+      '东软培训项目：担任组长，参与 Vue2、Java、数据库开发与测试。',
     tags: ['Vue2', 'Java', 'Database', 'Team Lead'],
     year: '2020',
     visualTitle: 'TAKEOUT APP',
@@ -106,7 +106,7 @@ export const projects: Project[] = [
     title: '机器人与少儿编程课程',
     subtitle: '金牌讲师 / 教学实践',
     description:
-      '教授 C、Python、Scratch、XRmaker 等课程，负责课堂讲授、课程规划、比赛信息整理与学生项目辅导，把技术内容转化成可理解、可动手的学习路径。',
+      '教授 C、Python、Scratch、XRmaker，负责课程规划与学生项目辅导。',
     tags: ['Python', 'Scratch', 'C', '机器人编程'],
     year: '2024',
     visualTitle: 'CODING CLASS',
