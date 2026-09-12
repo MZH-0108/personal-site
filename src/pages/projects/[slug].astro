@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import projectScene from '../../../public/images/projects/mage-xiaoguan-feature.png';
+import { caseStudies, type CaseStudy } from '../../data/case-studies';
+import { withBase } from '../../paths';
+import '../../styles/projects.css';
+
+export function getStaticPaths() {
+  return caseStudies.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+const { project } = Astro.props as { project: CaseStudy };
+const next = caseStudies[(caseStudies.findIndex((item) => item.slug === project.slug) + 1) % caseStudies.length];
+const isMage = project.slug === 'mage-xiaoguan';
+const sampleDishes = [
+  { name: '番茄炒蛋', detail: '家常经典 · 清爽下饭', icon: '🍅' },
+  { name: '红烧肉', detail: '慢炖入味 · 软糯鲜香', icon: '🍲' },
+  { name: '清炒时蔬', detail: '应季蔬菜 · 简单新鲜', icon: '🥬' },
+];
+---
+
+<BaseLayout title={project.title} description={`${project.title}项目详解：${project.description}`}>
+  <article class="portfolio-wrap case-page">
+    <nav class="case-breadcrumb" aria-label="面包屑"><a href={withBase('/projects')}>← 全部项目与实践</a><span>{project.categoryLabel}</span></nav>
+    <header class="case-header"><p class="work-eyebrow">CASE STUDY / {project.year}</p><h1>{project.title}</h1><p class="case-lead">{project.description}</p><dl class="case-facts"><div><dt>我的角色</dt><dd>{project.role}</dd></div><div><dt>项目背景</dt><dd>{project.organization}</dd></div><div><dt>实践时间</dt><dd>{project.year}</dd></div></dl><ul class="work-tags" aria-label="技术与技能">{project.tags.map((tag) => <li>{tag}</li>)}</ul></header>
+    {isMage && <figure class="case-cover"><Image src={projectScene} alt="馬哥小馆儿项目场景示意，家庭餐桌旁展示点餐手机界面" widths={[640, 960, 1200]} sizes="(max-width: 1200px) 100vw, 1200px" format="webp" loading="eager" /><figcaption>项目场景示意 · 了解实际功能与边界请阅读下方说明</figcaption></figure>}
+    <div class="case-body-grid">
+      <nav class="case-toc" aria-label="本页目录"><p>ON THIS PAGE</p><a href="#context">01 背景与问题</a><a href="#contribution">02 我的工作</a><a href="#decisions">03 选择与思考</a>{isMage && <a href="#demo">04 交互体验</a>}<a href="#reflection">{isMage ? '05' : '04'} 经验与复盘</a><a href="#evidence">公开说明</a></nav>
+      <div class="case-content">
+        <section class="case-section" id="context"><span class="case-section-number">01 / CONTEXT</span><h2>从什么问题开始</h2><p class="case-context">{project.problem}</p></section>
+        <section class="case-section" id="contribution"><span class="case-section-number">02 / CONTRIBUTION</span><h2>我具体做了什么</h2><ul class="case-contribution-tags">{project.contribution.map((item) => <li>{item}</li>)}</ul><div class="case-step-list">{project.implementation.map((step, index) => <div class="case-step"><span aria-hidden="true">0{index + 1}</span><div><h3>{step.title}</h3><p>{step.text}</p></div></div>)}</div></section>
+        <section class="case-section" id="decisions"><span class="case-section-number">03 / THINKING</span><h2>不止实现，也思考选择</h2><div class="case-decisions">{project.decisions.map((item) => <article><span aria-hidden="true">↗</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section>
+        {isMage && <section class="case-section" id="demo"><span class="case-section-number">04 / TRY IT</span><h2>把一次点餐，交给你体验</h2><p class="case-demo-disclaimer">交互演示 · 示例数据，不产生真实订单</p><div class="case-demo" data-order-demo><div class="case-demo-heading"><div><span>馬哥小馆儿</span><h3>今晚，想吃点什么？</h3></div><span class="case-demo-mark" aria-hidden="true">食</span></div><p class="case-demo-intro">选几道家常菜，体验「选择 → 确认 → 记录」的流程。</p><div class="case-demo-dishes">{sampleDishes.map((dish) => <div class="case-demo-dish" data-demo-dish data-dish-name={dish.name}><span class="case-demo-dish-icon" aria-hidden="true">{dish.icon}</span><div class="case-demo-dish-copy"><h4>{dish.name}</h4><p>{dish.detail}</p></div><div class="case-demo-quantity" role="group" aria-label={`${dish.name}份数`}><button type="button" data-order-minus aria-label={`减少${dish.name}`} disabled>−</button><output data-order-quantity aria-label={`${dish.name}已选份数`}>0</output><button type="button" data-order-plus disabled aria-label={`添加${dish.name}`}>+</button></div></div>)}</div><div class="case-demo-summary"><div><p>已选菜品</p><p data-order-summary>还没有选菜，先添加一道试试。</p></div><strong data-order-total>0 份</strong></div><div class="case-demo-actions"><button type="button" class="case-demo-confirm" data-order-confirm disabled>确认这份菜单 <span aria-hidden="true">→</span></button><button type="button" class="case-demo-reset" data-order-reset disabled>重新选择</button></div><p class="case-demo-status" data-order-status role="status" aria-live="polite" aria-atomic="true">所有操作仅在当前页面内演示，不保存个人数据。</p><div class="case-demo-record" data-order-record hidden><span aria-hidden="true">✓</span><div><h4>示例菜单已确认</h4><p data-order-record-items></p><small>这是本地演示记录，刷新页面后清除。</small></div></div></div><noscript><p class="case-demo-disclaimer">开启 JavaScript 后可操作交互演示；上方项目内容可正常阅读。</p></noscript></section>}
+        <section class="case-section" id="reflection"><span class="case-section-number">{isMage ? '05' : '04'} / REFLECTION</span><h2>带走的不只是代码</h2><ul class="case-lessons">{project.lessons.map((lesson) => <li><span aria-hidden="true">↳</span>{lesson}</li>)}</ul></section>
+        <aside class="case-evidence" id="evidence"><p class="work-eyebrow">PUBLIC NOTES</p><h2>{project.evidence}</h2><p>{project.evidenceNote}</p><a href={withBase(`/contact?project=${project.slug}`)}>交流这段实践 <span aria-hidden="true">↗</span></a></aside>
+      </div>
+    </div>
+    <a class="case-next" href={withBase(`/projects/${next.slug}`)}><div><span>继续了解 / {next.categoryLabel}</span><h2>{next.title}</h2><p>{next.role}</p></div><span class="case-next-arrow" aria-hidden="true">↗</span></a>
+  </article>
+</BaseLayout>
+
+<script>
+  const demo = document.querySelector<HTMLElement>('[data-order-demo]');
+  if (demo) {
+    const dishes = Array.from(demo.querySelectorAll<HTMLElement>('[data-demo-dish]'));
+    const quantities = dishes.map(() => 0);
+    const summary = demo.querySelector<HTMLElement>('[data-order-summary]');
+    const total = demo.querySelector<HTMLElement>('[data-order-total]');
+    const confirm = demo.querySelector<HTMLButtonElement>('[data-order-confirm]');
+    const status = demo.querySelector<HTMLElement>('[data-order-status]');
+    const record = demo.querySelector<HTMLElement>('[data-order-record]');
+    const recordItems = demo.querySelector<HTMLElement>('[data-order-record-items]');
+    demo.querySelectorAll<HTMLButtonElement>('[data-order-plus], [data-order-reset]').forEach((button) => { button.disabled = false; });
+    const chosen = () => dishes.map((dish, index) => quantities[index] ? `${dish.dataset.dishName} × ${quantities[index]}` : '').filter(Boolean).join('、');
+    const update = (message: string) => {
+      const sum = quantities.reduce((acc, value) => acc + value, 0);
+      dishes.forEach((dish, index) => {
+        const output = dish.querySelector<HTMLOutputElement>('[data-order-quantity]');
+        const minus = dish.querySelector<HTMLButtonElement>('[data-order-minus]');
+        const plus = dish.querySelector<HTMLButtonElement>('[data-order-plus]');
+        if (output) output.value = String(quantities[index]);
+        if (minus) minus.disabled = quantities[index] === 0;
+        if (plus) plus.disabled = quantities[index] >= 9;
+      });
+      if (summary) summary.textContent = chosen() || '还没有选菜，先添加一道试试。';
+      if (total) total.textContent = `${sum} 份`;
+      if (confirm) confirm.disabled = sum === 0;
+      if (record) record.hidden = true;
+      if (status) status.textContent = message;
+    };
+    dishes.forEach((dish, index) => {
+      dish.querySelector('[data-order-plus]')?.addEventListener('click', () => { quantities[index] = Math.min(9, quantities[index] + 1); update(`${dish.dataset.dishName}已选 ${quantities[index]} 份。菜单共 ${quantities.reduce((sum, n) => sum + n, 0)} 份。`); });
+      dish.querySelector('[data-order-minus]')?.addEventListener('click', () => { quantities[index] = Math.max(0, quantities[index] - 1); update(`${dish.dataset.dishName}已选 ${quantities[index]} 份。菜单共 ${quantities.reduce((sum, n) => sum + n, 0)} 份。`); });
+    });
+    confirm?.addEventListener('click', () => {
+      if (!quantities.some((quantity) => quantity > 0)) return;
+      if (recordItems) recordItems.textContent = chosen();
+      if (record) record.hidden = false;
+      if (status) status.textContent = `示例菜单已确认：${chosen()}。没有产生真实订单。`;
+      confirm.disabled = true;
+    });
+    demo.querySelector('[data-order-reset]')?.addEventListener('click', () => { quantities.fill(0); update('已清空示例菜单，可以重新选择。'); dishes[0]?.querySelector<HTMLButtonElement>('[data-order-plus]')?.focus(); });
+  }
+</script>

@@ -1,37 +1,30 @@
 ---
-import { navItems, site, socials } from '../data/site';
+import { site } from '../data/site';
 import { withBase } from '../paths';
 
-const avatarUrl = withBase(site.avatar);
 ---
 
-<footer class="site-footer">
-  <div class="container footer-grid">
-    <div>
-      <div class="footer-profile">
-        <img class="footer-avatar" src={avatarUrl} alt="" loading="lazy" />
-        <div>
-          <p class="footer-name">{site.name}</p>
-          <p class="footer-subtitle">{site.role}</p>
+<footer class="shell-footer">
+  <div class="shell-footer-inner">
+    <div class="shell-footer-main">
+      <div>
+        <p class="shell-eyebrow">LET’S BUILD SOMETHING USEFUL</p>
+        <h2>下一个有意思的问题，<br />一起聊聊？</h2>
+        <p class="shell-footer-description">关于开发、工程与 AI，也关于一个值得认真做的想法。</p>
+      </div>
+      <div class="shell-footer-contact">
+        <a class="shell-email-link" href={`mailto:${site.email}`}><span class="shell-email-address">{site.email}</span><span aria-hidden="true">↗</span></a>
+        <div class="shell-footer-contact-actions">
+          <button type="button" data-copy-email>复制邮箱</button>
+          <a href="https://github.com/MZH-0108" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+          <a href={withBase('/contact')}>更多联系方式 <span aria-hidden="true">↗</span></a>
         </div>
-      </div>
-      <p class="copyright">© 2026 · <a href={site.sourceUrl}>Source</a></p>
-    </div>
-    <div>
-      <p class="footer-heading">Explore</p>
-      <div class="footer-links">
-        {navItems.slice(0, 4).map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
+        <p>{site.location} · 欢迎交流与合作</p>
       </div>
     </div>
-    <div>
-      <p class="footer-heading">Connect</p>
-      <div class="socials">
-        {socials.map((social) => (
-          <a href={social.href} aria-label={social.label} target="_blank" rel="noreferrer">
-            <i class={social.icon} aria-hidden="true"></i>
-          </a>
-        ))}
-      </div>
+    <div class="shell-footer-bottom">
+      <p>© {new Date().getFullYear()} 马志昊 <span>保持好奇，认真交付。</span></p>
+      <div><a href={withBase('/stats')}>成长足迹</a><a href={site.sourceUrl} target="_blank" rel="noopener noreferrer">网站源码 ↗</a><button type="button" data-search-open>探索网站 <kbd>⌘ K</kbd></button></div>
     </div>
   </div>
 </footer>

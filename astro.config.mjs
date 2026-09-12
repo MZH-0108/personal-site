@@ -5,7 +5,7 @@ import { defineConfig } from 'astro/config';
 const isGitHubPages = process.env.DEPLOY_TARGET === 'github-pages';
 
 export default defineConfig({
-  site: isGitHubPages ? 'https://mzh-0108.github.io' : 'https://example.com',
+  site: isGitHubPages ? 'https://mzh-0108.github.io' : process.env.SITE_URL || undefined,
   base: isGitHubPages ? '/personal-site' : '/',
   output: 'static',
   devToolbar: {

@@ -1,51 +1,70 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import { projects, site } from '../data/site';
-
-const projectSections = [
-  {
-    title: 'Products & Platforms',
-    intro: '近期个人产品和企业平台建设经历。',
-    categories: ['selected', 'work'],
-  },
-  {
-    title: 'Research & Training',
-    intro: '工程研究、图像识别、培训项目与教学实践。',
-    categories: ['research', 'training'],
-  },
-];
+import { Image } from 'astro:assets';
+import projectScene from '../../public/images/projects/mage-xiaoguan-feature.png';
+import { caseStudies, caseCategories } from '../data/case-studies';
+import { withBase } from '../paths';
+import '../styles/projects.css';
 ---
 
-<BaseLayout title="Archive" description={`${site.name} project archive`}>
-  <section class="archive-hero container">
-    <h1 class="page-title">Archive</h1>
-    <p class="lead">
-      从学生时代训练项目，到企业平台、图像识别和个人产品的项目归档。
-    </p>
-  </section>
-
-  <section class="archive-sections container" aria-label="Project archive">
-    {
-      projectSections.map((section) => {
-        const sectionProjects = projects.filter((project) => section.categories.includes(project.category));
-
-        if (sectionProjects.length === 0) {
-          return null;
-        }
-
-        return (
-          <section class="archive-group" aria-labelledby={`archive-${section.title.toLowerCase().replaceAll(' ', '-')}`}>
-            <div class="archive-group-heading">
-              <h2 id={`archive-${section.title.toLowerCase().replaceAll(' ', '-')}`}>{section.title}</h2>
-              <p>{section.intro}</p>
-            </div>
-            <div class="project-grid">
-              {sectionProjects.map((project) => <ProjectCard {...project} />)}
-            </div>
-          </section>
-        );
-      })
-    }
-  </section>
+<BaseLayout title="项目与实践" description="马志昊的项目与实践：微信小程序、企业采购平台、隧道病害图像识别，以及全栈训练与编程教学。了解每段经历中的具体贡献、技术选择与思考。">
+  <div class="portfolio-wrap work-page">
+    <header class="work-intro">
+      <p class="work-eyebrow">SELECTED WORK / 2020—2026</p>
+      <h1>经历不止一面，<br /><span>作品可以细看。</span></h1>
+      <div class="work-intro-bottom"><p>从企业平台到家庭小程序，从工程图像到编程课堂。<br class="work-desktop-break" />这里记录我做过什么、如何参与，以及从中学到了什么。</p><a class="work-text-link" href={withBase('/resume')}>查看完整经历 <span aria-hidden="true">↗</span></a></div>
+    </header>
+    <section class="work-collection" aria-label="筛选项目" data-work-browser>
+      <div class="work-toolbar">
+        <div class="work-filters" role="group" aria-label="按项目类型筛选">
+          <button type="button" data-work-filter="all" aria-pressed="true" disabled>全部 <span>{caseStudies.length}</span></button>
+          {caseCategories.map(({ key, label }) => <button type="button" data-work-filter={key} aria-pressed="false" disabled>{label} <span>{caseStudies.filter((item) => item.category === key).length}</span></button>)}
+        </div>
+        <label class="work-search"><span class="work-sr-only">搜索项目名称、技术或经历</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4.5 4.5" /></svg><input type="search" placeholder="搜索项目 / 技术" data-work-search autocomplete="off" disabled /></label>
+      </div>
+      <div class="work-results-line"><p data-work-count role="status" aria-live="polite">共 {caseStudies.length} 段项目与实践</p><a href="#work-list">跳到项目列表 ↓</a></div>
+      <div class="work-grid" id="work-list">
+        {caseStudies.map((project, index) => (
+          <article id={project.slug} class:list={['work-card', { 'work-card-featured': index === 0 }]} data-work-card data-category={project.category} data-search={`${project.title} ${project.title.replaceAll('馬', '马')} ${project.subtitle} ${project.description} ${project.organization} ${project.tags.join(' ')}`}>
+            <a class:list={['work-visual-link', `work-visual-${project.slug}`]} href={withBase(`/projects/${project.slug}`)} aria-label={`查看${project.title}项目详情`}>
+              {index === 0 ? <Image src={projectScene} alt="" widths={[480, 760, 1100]} sizes="(max-width: 700px) 100vw, 55vw" format="webp" loading="eager" /> : <div class="work-type-visual"><span class="work-visual-index">0{index + 1}</span><span class="work-visual-label">{project.category === 'work' ? 'BUILDING\nFOR BUSINESS' : project.category === 'research' ? 'CODE MEETS\nENGINEERING' : project.slug === 'coding-class' ? 'TEACH.\nBUILD. REPEAT.' : 'FROM LEARNING\nTO BUILDING'}</span><span class="work-visual-detail">{project.tags.slice(0, 3).join(' / ')}</span><span class="work-visual-arrow">↗</span></div>}
+              {index === 0 && <><span class="work-feature-flag">FEATURED · 代表作品</span><span class="work-scene-label">项目场景示意</span></>}
+            </a>
+            <div class="work-card-body"><div class="work-card-meta"><span>{project.categoryLabel}</span><span>{project.year}</span></div><h2><a href={withBase(`/projects/${project.slug}`)}>{project.title}<span aria-hidden="true">↗</span></a></h2><p class="work-card-role">{project.role} · {project.organization}</p><p class="work-card-description">{project.description}</p><ul class="work-tags" aria-label="技术与技能">{project.tags.slice(0, 4).map((tag) => <li>{tag}</li>)}</ul><div class="work-card-footer"><span>{project.contribution[0]}</span><a href={withBase(`/projects/${project.slug}`)} aria-label={`阅读${project.title}的实践详解`}>阅读实践详解 <span aria-hidden="true">→</span></a></div></div>
+          </article>
+        ))}
+      </div>
+      <div class="work-empty" data-work-empty hidden><span aria-hidden="true">⌕</span><h2>暂时没有匹配的项目</h2><p>可以试试「Vue」「Python」或「小程序」，也可以查看全部经历。</p><button type="button" data-work-reset>清除筛选，查看全部</button></div>
+      <noscript><p class="work-noscript">全部项目均已展示。开启 JavaScript 后可使用搜索与分类筛选。</p></noscript>
+    </section>
+  </div>
 </BaseLayout>
+
+<script>
+  import { matchesSearch } from '../scripts/search-query';
+  const browser = document.querySelector<HTMLElement>('[data-work-browser]');
+  if (browser) {
+    const buttons = Array.from(browser.querySelectorAll<HTMLButtonElement>('[data-work-filter]'));
+    const cards = Array.from(browser.querySelectorAll<HTMLElement>('[data-work-card]'));
+    const input = browser.querySelector<HTMLInputElement>('[data-work-search]');
+    const count = browser.querySelector<HTMLElement>('[data-work-count]');
+    const empty = browser.querySelector<HTMLElement>('[data-work-empty]');
+    let category = 'all';
+    const update = () => {
+      const query = (input?.value ?? '').trim().toLocaleLowerCase();
+      let visible = 0;
+      cards.forEach((card) => {
+        const matches = (category === 'all' || card.dataset.category === category) && matchesSearch(card.dataset.search ?? '', query);
+        card.hidden = !matches;
+        if (matches) visible += 1;
+      });
+      buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.workFilter === category)));
+      if (count) count.textContent = query || category !== 'all' ? `找到 ${visible} 段项目与实践` : `共 ${visible} 段项目与实践`;
+      if (empty) empty.hidden = visible > 0;
+    };
+    buttons.forEach((button) => { button.disabled = false; button.addEventListener('click', () => { category = button.dataset.workFilter ?? 'all'; update(); }); });
+    if (input) input.disabled = false;
+    input?.addEventListener('input', update);
+    browser.querySelector('[data-work-reset]')?.addEventListener('click', () => { category = 'all'; if (input) input.value = ''; update(); input?.focus(); });
+  }
+</script>

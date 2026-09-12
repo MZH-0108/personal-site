@@ -37,12 +37,12 @@ export const navItems: NavItem[] = [
 ];
 
 export const site = {
-  initials: 'MZ',
+  initials: 'MZH',
   name: '马志昊',
   role: '硕士研究生 / AI 与全栈开发者',
   tagline: '计算机科学与岩土工程交叉背景，关注 AI、图像识别、微信小程序与工程软件开发。',
-  location: '沈阳 / 山东',
-  email: '2865574175@qq.com',
+  location: '山东',
+  email: 'mazhihao0108@gmail.com',
   avatar: 'images/avatar-20260625.png',
   badges: ['硕士在读', 'Java / Vue / 小程序', 'AI & 图像识别'],
   sourceUrl: 'https://github.com/MZH-0108/personal-site',
@@ -197,7 +197,7 @@ export const education = [
     organization: '沈阳建筑大学',
     period: '2025.09 – 至今',
     summary:
-      '研究方向关注工程场景中的 AI、图像识别与数据处理；担任班级团支书、研究生会学术部成员。',
+      '研究方向关注工程场景中的 AI、图像识别与数据处理；担任班级团支书、研究生会学术部成员；获得校级奖学金二等奖。',
   },
   {
     title: '计算机科学与技术 本科',

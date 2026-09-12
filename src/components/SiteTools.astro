@@ -1,0 +1,33 @@
+---
+import { site } from '../data/site';
+import { withBase } from '../paths';
+import { searchEntries } from '../data/search';
+---
+
+<dialog class="tools-search" data-search-dialog aria-labelledby="site-search-title">
+  <div class="tools-search-heading"><h2 id="site-search-title">想了解哪一面？</h2><button type="button" class="shell-icon-button" data-search-close aria-label="关闭搜索">×</button></div>
+  <div class="tools-search-field">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.75" cy="10.75" r="6.75"/><path d="m16 16 4.5 4.5"/></svg>
+    <input type="search" id="site-search-input" data-search-input placeholder="搜索项目、经历、技能、笔记…" autocomplete="off" role="combobox" aria-label="搜索网站内容" aria-controls="site-search-results" aria-expanded="true" aria-autocomplete="list" />
+  </div>
+  <p class="tools-search-status" data-search-status role="status" aria-live="polite">输入关键词，或直接探索下面的内容。</p>
+  <ul class="tools-search-results" id="site-search-results" role="listbox" aria-label="搜索结果">
+    {searchEntries.map((entry, index) => (
+      <li role="presentation" data-search-entry data-search-text={`${entry.title} ${entry.description} ${entry.keywords} ${entry.group}`}>
+        <a id={`site-search-result-${index}`} href={withBase(entry.href)} role="option" aria-selected="false" tabindex="-1">
+          <span class="tools-result-mark" aria-hidden="true">{entry.group === '项目' ? '↗' : entry.group === '笔记' ? '≡' : '⌑'}</span>
+          <span class="tools-result-copy"><strong>{entry.title}</strong><span>{entry.description}</span></span>
+          <span class="tools-result-group">{entry.group}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <div class="tools-search-empty" data-search-empty hidden><strong>暂时没有找到相关内容</strong><p>试试“微信”“简历”或“图像识别”，也可以<a href={withBase('/contact')}>直接联系我</a>。</p></div>
+  <p class="tools-search-help"><span><kbd>↑</kbd> <kbd>↓</kbd> 选择 <kbd>Enter</kbd> 打开</span><span><kbd>Esc</kbd> 关闭</span></p>
+</dialog>
+<button class="tools-back-top" data-back-top type="button" aria-label="回到页面顶部" title="回到顶部" hidden><span aria-hidden="true">↑</span></button>
+<div class="tools-toast" data-site-toast data-site-email={site.email} role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+<script>
+  import '../scripts/site-tools';
+</script>

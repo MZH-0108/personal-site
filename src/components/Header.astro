@@ -1,36 +1,52 @@
 ---
-import { navItems, site } from '../data/site';
+import { site } from '../data/site';
 import { withBase } from '../paths';
-import { activeNavKey } from '../utils';
 
 type Props = {
   pathname: string;
 };
 
-const active = activeNavKey(Astro.props.pathname);
+const currentPath = Astro.props.pathname.replace(/\/$/, '') || '/';
+const navigation = [
+  { label: '首页', href: '/' },
+  { label: '项目', href: '/projects' },
+  { label: '经历', href: '/resume' },
+  { label: '关于', href: '/about' },
+  { label: '笔记', href: '/writing' },
+  { label: '联系', href: '/contact' },
+];
+const isActive = (href: string) => {
+  const target = withBase(href).replace(/\/$/, '') || '/';
+  return currentPath === target || (href !== '/' && currentPath.startsWith(`${target}/`));
+};
 ---
 
-<header class="site-header">
-  <nav class="nav-shell" aria-label="Primary navigation">
-    <a class="brand" href={withBase('/')} aria-label={`${site.name} home`}>{site.initials}</a>
-    <div class="nav-links" id="primary-menu">
-      {navItems.map((item) => (
-        <a class="nav-link" href={withBase(item.href)} aria-current={active === item.key ? 'page' : undefined}>
+<header class="shell-header" data-site-header>
+  <nav class="shell-nav" aria-label="主导航">
+    <a class="shell-brand" href={withBase('/')} aria-label={`${site.name} · 返回首页`}>
+      <span class="shell-monogram" aria-hidden="true">{site.initials[0]}<span>{site.initials.slice(1)}</span><i></i></span>
+      <span class="shell-brand-label">马志昊<span>BUILDER & EXPLORER</span></span>
+    </a>
+    <div class="shell-links" id="primary-menu">
+      {navigation.map((item) => (
+        <a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
           {item.label}
         </a>
       ))}
     </div>
-    <div class="nav-actions">
-      <button
-        class="icon-button mobile-menu-button"
-        type="button"
-        data-menu-button
-        aria-controls="primary-menu"
-        aria-expanded="false"
-        aria-label="Open navigation"
-      >
-        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    <div class="shell-actions">
+      <button class="shell-search-button" type="button" data-search-open aria-label="搜索网站，快捷键 Control 或 Command 加 K" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.75" cy="10.75" r="6.75"/><path d="m16 16 4.5 4.5"/></svg>
+        <span>搜索</span><kbd data-shortcut-label>⌘ K</kbd>
+      </button>
+      <button class="shell-icon-button" type="button" data-theme-toggle aria-label="切换显示主题" title="切换显示主题">
+        <svg class="shell-theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg>
+        <svg class="shell-theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.7 13.3A9 9 0 0 1 10.7 3.3 9 9 0 1 0 20.7 13.3Z"/></svg>
+      </button>
+      <button class="shell-icon-button shell-menu-button" type="button" data-menu-button aria-controls="primary-menu" aria-expanded="false" aria-label="打开导航菜单">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </nav>
+  <div class="tools-reading-progress" aria-hidden="true"><span data-reading-progress></span></div>
 </header>

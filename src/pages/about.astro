@@ -1,70 +1,85 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionNav from '../components/SectionNav.astro';
-import { skills, site } from '../data/site';
+import { site } from '../data/site';
 import { withBase } from '../paths';
+import '../styles/experience.css';
 
 const aboutSections = [
-  { id: 'history', label: 'Some History' },
-  { id: 'likes', label: 'I Like' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'fun-facts', label: 'Fun Facts' },
-  { id: 'dreams', label: 'I Dream Of' },
+  { id: 'history', label: '我的来路' },
+  { id: 'likes', label: '我关注什么' },
+  { id: 'skills', label: '带来的能力' },
+  { id: 'fun-facts', label: '一起工作' },
+  { id: 'dreams', label: '接下来' },
+];
+const approach = [
+  { number: '01', title: '先理解问题', text: '从使用者和场景出发，先明确目标、角色与边界，再拆分任务。', detail: '在“馬哥小馆儿”中，从家庭菜谱与点餐准备出发，把微信登录、菜单、点餐记录和管理员权限串成完整流程。', link: '/projects/mage-xiaoguan', label: '看看家庭点餐项目' },
+  { number: '02', title: '把复杂内容讲清楚', text: '不只写代码，也用教学和文档帮助别人理解代码背后的想法。', detail: '在机器人编程俱乐部，围绕 C、Python、Scratch 与 XRmaker 备课和讲授，并根据学生基础调整教学节奏。企业工作中也持续沉淀项目文档与技术文章。', link: '/projects/coding-class', label: '看看教学实践' },
+  { number: '03', title: '让交付有后续', text: '把测试、文档和日常使用纳入开发过程，持续改进已经做出来的东西。', detail: '个人项目把后端接口、云部署与 JUnit 自动化测试纳入实践；企业项目中参与接口联调、数据迁移和知识库整理。', link: '/projects/procurement', label: '看看企业协作经历' },
 ];
 ---
 
-<BaseLayout title="About" description={`About ${site.name}`}>
-  <section class="page-section container">
-    <h1 class="page-title">About</h1>
-    <div class="prose">
-      <p>
-        我是马志昊，本科是计算机科学与技术，现在在沈阳建筑大学读岩土工程硕士。我的兴趣点在工程问题和软件能力的交叉处：
-        用全栈开发把工具做出来，用 AI 和图像识别把工程场景里的数据用起来。
-      </p>
-      <p>
-        过去我做过企业采购平台、招标小程序、外卖平台训练项目，也参与过隧道病害图像识别相关工作。最近的个人项目是
-        <a href={withBase('/projects')}>馬哥小馆儿微信小程序</a>，从需求边界、微信登录、后台接口到云部署和测试都由我推进。
-      </p>
-      <p>
-        我喜欢把复杂任务拆小、把经验写下来，再把“能用”的东西一点点做成“好用”。这个网站会作为我的项目、简历、
-        学习笔记和联系方式的公开主页。
-      </p>
-    </div>
+<BaseLayout title="关于我" description={'认识' + site.name + '：从计算机科学到岩土工程，从软件开发到编程教学，用真实经历连接技术与使用场景。'}>
+  <div class="portfolio-wrap profile-page">
+    <header class="profile-hero">
+      <div class="profile-hero-copy">
+        <p class="journey-eyebrow">ABOUT / A LITTLE MORE HUMAN</p>
+        <h1>做软件的人，<br />也走进真实的现场。</h1>
+        <p>你好，我是{site.name}。本科读计算机科学与技术，目前在沈阳建筑大学读岩土工程硕士。我关心的，是软件能力如何进入真实生活和工程问题。</p>
+        <a class="journey-evidence-link" href={withBase('/resume')}>用时间线认识我 <span aria-hidden="true">↗</span></a>
+      </div>
+      <aside class="profile-coordinate" aria-label="我的关注方向">
+        <span class="journey-eyebrow">MY COORDINATES</span>
+        <p class="profile-coordinate-title">技术连接场景。</p>
+        <div><span>基础</span><strong>Computer Science</strong><p>代码、产品与工程实践</p></div>
+        <div><span>视角</span><strong>Geotechnical Engineering</strong><p>工程现场、图像与数据</p></div>
+        <div><span>连接</span><strong>People &amp; Communication</strong><p>教学、文档与团队协作</p></div>
+        <span class="profile-coordinate-location">{site.location} · 持续学习中</span>
+      </aside>
+    </header>
+    <div class="profile-nav"><SectionNav label="关于我目录" items={aboutSections} /></div>
 
-    <SectionNav label="About sections" items={aboutSections} />
-  </section>
-
-  <div class="container about-detail-list">
-    <section class="card about-detail anchor-section" id="history">
-      <p class="about-detail-kicker">Some History</p>
-      <h2>从计算机到岩土工程</h2>
-      <p>本科阶段学习计算机科学与技术，积累了前端、Java、数据库和团队项目经验；研究生阶段进入岩土工程方向，开始关注软件、AI 与工程检测的交叉应用。</p>
+    <section class="profile-section anchor-section" id="history" aria-labelledby="history-title">
+      <div class="profile-section-label"><span class="journey-eyebrow">01 / THE PATH</span><h2 id="history-title">我的来路</h2></div>
+      <div class="profile-section-content">
+        <p class="profile-large-copy">经历看似跨界，始终围绕同一件事：<em>把问题理解透，再把它做出来。</em></p>
+        <p>本科阶段，我建立了计算机科学与技术的基础。在企业采购平台和招标小程序项目中，开发不再只是页面实现，还包括业务理解、接口联调、数据迁移和团队沟通。</p>
+        <p>后来，编程教学让我练习把知识拆成别人能理解、能动手的步骤；隧道病害图像识别实践则让我接触到工程场景中的图像、标注和技术资料。现在读岩土工程硕士，我希望把这两种视角继续连接起来。</p>
+        <div class="profile-path"><span>计算机基础</span><span aria-hidden="true">→</span><span>企业开发与教学</span><span aria-hidden="true">→</span><span>AI × 工程场景</span></div>
+        <a class="journey-evidence-link" href={withBase('/resume#experience')}>完整工作与教育经历 <span aria-hidden="true">↗</span></a>
+      </div>
     </section>
 
-    <section class="card about-detail anchor-section" id="likes">
-      <p class="about-detail-kicker">I Like</p>
-      <h2>把复杂问题做成可用工具</h2>
-      <p>喜欢 Web 前端、微信小程序、Java 后端接口、工程数据处理，以及 AI / 图像识别方向的学习和实践。</p>
+    <section class="profile-section anchor-section" id="likes" aria-labelledby="likes-title">
+      <div class="profile-section-label"><span class="journey-eyebrow">02 / CURIOSITY</span><h2 id="likes-title">我关注什么</h2></div>
+      <div class="profile-section-content profile-interest-grid">
+        <a class="profile-interest" href={withBase('/projects/mage-xiaoguan')}><span class="profile-interest-index">01 / 日常里的产品</span><h3>一顿饭，也值得一个好用的工具。</h3><p>“馬哥小馆儿”从家庭菜谱与点餐准备出发，让一个生活需求落到可操作的界面与流程。</p><span class="journey-evidence-link">从生活到小程序 <span aria-hidden="true">↗</span></span></a>
+        <a class="profile-interest" href={withBase('/projects/tunnel-ai')}><span class="profile-interest-index">02 / 工程里的 AI</span><h3>让图像里的信息，进入真实的问题。</h3><p>关注图像识别、数据标注与工程检测的连接，也关注技术使用的场景和边界。</p><span class="journey-evidence-link">从图像到工程实践 <span aria-hidden="true">↗</span></span></a>
+      </div>
     </section>
 
-    <section class="card about-detail anchor-section" id="skills">
-      <p class="about-detail-kicker">Skills</p>
-      <h2>技术与工具</h2>
-        <div class="tag-row">
-          {skills.map((skill) => <span class="tag">{skill}</span>)}
+    <section class="profile-section anchor-section" id="skills" aria-labelledby="about-skills-title">
+      <div class="profile-section-label"><span class="journey-eyebrow">03 / WHAT I BRING</span><h2 id="about-skills-title">带来的能力</h2></div>
+      <div class="profile-section-content">
+        <p class="profile-large-copy">理解技术，也理解技术需要被谁使用。</p>
+        <div class="profile-skill-list">
+          <a href={withBase('/projects/procurement')}><span>开发</span><div><h3>把业务流程变成页面与接口</h3><p>Vue、JavaScript、微信小程序、Java、Spring Boot</p></div><span aria-hidden="true">↗</span></a>
+          <a href={withBase('/projects/tunnel-ai')}><span>探索</span><div><h3>把工程问题与视觉方法连接起来</h3><p>Python、图像识别、数据标注、深度学习</p></div><span aria-hidden="true">↗</span></a>
+          <a href={withBase('/projects/coding-class')}><span>表达</span><div><h3>把知识组织成清晰的学习路径</h3><p>课堂讲授、课程规划、学生项目辅导、技术文档</p></div><span aria-hidden="true">↗</span></a>
         </div>
+      </div>
     </section>
 
-    <section class="card about-detail anchor-section" id="fun-facts">
-      <p class="about-detail-kicker">Fun Facts</p>
-      <h2>我如何工作</h2>
-      <p>先明确目标和边界，再小步实现、持续测试、沉淀文档；遇到复杂问题时，我通常会先画清流程再开始写代码。</p>
+    <section class="profile-section anchor-section" id="fun-facts" aria-labelledby="working-title">
+      <div class="profile-section-label"><span class="journey-eyebrow">04 / WORKING TOGETHER</span><h2 id="working-title">一起工作</h2><p>点击展开，看看这些习惯从哪里来。</p></div>
+      <div class="profile-section-content profile-approach">
+        {approach.map((item) => <details class="profile-detail"><summary><span class="profile-detail-number">{item.number}</span><span><strong>{item.title}</strong><span>{item.text}</span></span><span class="profile-detail-toggle" aria-hidden="true">+</span></summary><div class="profile-detail-content"><p>{item.detail}</p><a class="journey-evidence-link" href={withBase(item.link)}>{item.label} <span aria-hidden="true">↗</span></a></div></details>)}
+      </div>
     </section>
 
-    <section class="card about-detail anchor-section" id="dreams">
-      <p class="about-detail-kicker">I Dream Of</p>
-      <h2>连接工程场景与软件能力</h2>
-      <p>希望持续做出真正进入使用流程的软件，让工程问题中的数据、知识和协作变得更清晰、更高效。</p>
+    <section class="profile-section anchor-section" id="dreams" aria-labelledby="next-title">
+      <div class="profile-section-label"><span class="journey-eyebrow">05 / WHAT'S NEXT</span><h2 id="next-title">接下来</h2></div>
+      <div class="profile-section-content"><p class="profile-large-copy">继续做能进入使用流程的软件。</p><p>深入学习 AI 与图像识别，打磨小程序和全栈开发能力，也继续整理项目实践中的经验。我期待在具体的问题、真实的反馈和团队协作中，把“能用”慢慢做成“好用”。</p><p>如果你也在探索工程与软件的交叉应用，或想了解某段经历背后的过程，欢迎来聊聊。</p><a class="journey-evidence-link" href={withBase('/contact')}>从一次交流开始 <span aria-hidden="true">↗</span></a></div>
     </section>
   </div>
 </BaseLayout>

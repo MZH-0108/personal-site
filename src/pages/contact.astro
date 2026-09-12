@@ -1,47 +1,77 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site, socials } from '../data/site';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+import { caseStudies } from '../data/case-studies';
+import { withBase } from '../paths';
+import '../styles/notes-contact.css';
 ---
-
-<BaseLayout title="Contact" description={`Contact ${site.name}`}>
-  <section class="page-section container centered">
-    <h1 class="page-title">Contact</h1>
-    <p class="lead">
-      如果你想交流项目、实习/合作机会、工程软件、AI 图像识别或微信小程序，可以通过邮箱联系我。
-    </p>
-  </section>
-
-  <section class="page-section container">
-    <div class="card-grid">
-      <article class="contact-card">
-        <h2>Connect</h2>
-        <p>{site.location}</p>
-        <div class="socials" style="margin-top:22px">
-          {socials.map((social) => (
-            <a href={social.href} aria-label={social.label} target="_blank" rel="noreferrer">
-              <i class={social.icon} aria-hidden="true"></i>
-            </a>
-          ))}
-        </div>
-      </article>
-      <article class="contact-card" style="grid-column: 1 / -1">
-        <h2>Send a message</h2>
-        <form class="contact-form" action={`mailto:${site.email}`} method="post" enctype="text/plain">
-          <label class="field">
-            Name
-            <input name="name" autocomplete="name" required />
-          </label>
-          <label class="field">
-            Email
-            <input name="email" type="email" autocomplete="email" required />
-          </label>
-          <label class="field">
-            Message
-            <textarea name="message" rows="5" required></textarea>
-          </label>
-          <button class="button primary" type="submit">Send Message</button>
-        </form>
-      </article>
-    </div>
-  </section>
+<BaseLayout title="聊聊你的想法" description="联系马志昊，交流开发岗位、实习合作、工程软件与微信小程序项目。">
+<section class="portfolio-wrap editorial-head"><p class="eyebrow">CONTACT / START A CONVERSATION</p><h1>好的合作，<br />从一次对话开始。</h1><p>聊聊岗位机会、产品想法，或一个值得解决的工程问题。</p></section>
+<section class="portfolio-wrap contact-layout">
+  <div class="contact-direct"><span class="eyebrow">SAY HELLO</span><a class="contact-address" href={`mailto:${site.email}`}>{site.email}</a><div class="action-row"><button class="p-button" type="button" data-copy-email>复制邮箱 <Icon name="copy" /></button><a class="p-text-link" href="https://github.com/MZH-0108" target="_blank" rel="noreferrer">GitHub ↗</a></div><div class="contact-topics"><h2>这些话题，我很愿意聊</h2><p>前端与全栈开发 · 微信小程序<br />工程软件 · 图像识别 · 技术分享</p><p><Icon name="location-dot" /> {site.location}</p></div><a class="p-text-link" href={withBase('/resume')}>先看看我的完整经历 <span aria-hidden="true">→</span></a></div>
+  <div class="contact-compose"><h2>整理一封邮件</h2><p>填写后生成草稿，再通过你的邮件应用发送。</p>
+    <form id="draft-form" data-email={site.email} data-projects={JSON.stringify(caseStudies.map(({slug,title}) => ({slug,title})))}>
+      <fieldset id="draft-fields" disabled>
+      <label>聊什么<select name="topic"><option value="岗位 / 实习机会">岗位 / 实习机会</option><option value="项目合作">项目合作</option><option value="技术交流">技术交流</option></select></label>
+      <label>你的称呼<input name="name" autocomplete="name" maxlength="80" placeholder="怎么称呼你？" required /></label>
+      <label>想聊的内容<textarea name="message" rows="5" maxlength="2000" placeholder="可以简单介绍公司 / 项目，以及希望一起解决的问题。" required></textarea></label>
+      <button class="p-button p-button-primary" type="submit">生成邮件草稿 <Icon name="arrow-right" /></button>
+      </fieldset>
+    </form>
+    <div id="draft-result" class="draft-result" hidden tabindex="-1"><p class="eyebrow">草稿已生成 · 尚未发送</p><label for="draft-text">邮件内容（可选择复制）</label><textarea id="draft-text" rows="7" readonly></textarea><div class="action-row"><a id="draft-mailto" class="p-button p-button-primary">在邮件应用中打开</a><button type="button" class="p-button" id="draft-copy">复制草稿</button></div><p id="draft-status" role="status"></p></div>
+    <p class="contact-privacy">表单内容仅用于本页生成邮件草稿，不上传、不保存。</p>
+    <noscript><p>请直接点击左侧邮箱，或将邮箱地址复制到你的邮件应用。</p></noscript>
+  </div>
+</section>
 </BaseLayout>
+<script>
+const form = document.querySelector<HTMLFormElement>('#draft-form');
+const result = document.querySelector<HTMLElement>('#draft-result');
+const draftText = document.querySelector<HTMLTextAreaElement>('#draft-text');
+const mailto = document.querySelector<HTMLAnchorElement>('#draft-mailto');
+const nameField = form?.querySelector<HTMLInputElement>('[name="name"]');
+const messageField = form?.querySelector<HTMLTextAreaElement>('[name="message"]');
+const validateText = () => {
+  nameField?.setCustomValidity(nameField.value.trim() ? '' : '请填写你的称呼。');
+  messageField?.setCustomValidity(messageField.value.trim() ? '' : '请写下想聊的内容。');
+};
+form?.addEventListener('input', () => {
+  validateText();
+  if (result) result.hidden = true;
+});
+form?.addEventListener('submit', event => {
+  event.preventDefault();
+  validateText();
+  if (!form.reportValidity() || !result || !draftText || !mailto) return;
+  const data = new FormData(form);
+  const name = String(data.get('name') ?? '').trim();
+  const message = String(data.get('message') ?? '').trim();
+  if (!name || !message) return;
+  const subject = String(data.get('topic')) + ' · ' + name;
+  const body = '你好，马志昊：\n\n' + message + '\n\n' + name;
+  draftText.value = '主题：' + subject + '\n\n' + body;
+  mailto.href = 'mailto:' + form.dataset.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  result.hidden = false;
+  result.focus();
+  document.querySelector('#draft-status')!.textContent = '请检查内容，点击打开邮件应用后由你确认发送。';
+});
+document.querySelector('#draft-copy')?.addEventListener('click', async () => {
+  if (!draftText) return;
+  const status = document.querySelector('#draft-status')!;
+  try { await navigator.clipboard.writeText(draftText.value); status.textContent='草稿已复制。'; }
+  catch { draftText.focus(); draftText.select(); status.textContent='请按 Ctrl+C / ⌘C，或长按选择复制。'; }
+});
+const draftFields = document.querySelector<HTMLFieldSetElement>('#draft-fields');
+if (form && messageField) {
+  const selectedProject = new URLSearchParams(window.location.search).get('project');
+  const projects: Array<{slug:string;title:string}> = JSON.parse(form.dataset.projects || '[]');
+  const project = projects.find(item => item.slug === selectedProject);
+  if (project) {
+    const topic = form.querySelector<HTMLSelectElement>('[name="topic"]');
+    if (topic) topic.value = '技术交流';
+    messageField.value = '想进一步了解「' + project.title + '」这个项目：\n';
+  }
+}
+if (draftFields) draftFields.disabled = false;
+</script>

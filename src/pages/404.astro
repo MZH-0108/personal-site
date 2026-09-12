@@ -3,10 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../paths';
 ---
 
-<BaseLayout title="Not Found" description="Page not found">
-  <section class="page-section container centered">
-    <h1 class="page-title">404</h1>
-    <p class="lead">This page wandered off. The archive may know where it went.</p>
-    <a class="button primary" href={withBase('/')}>Back Home</a>
+<BaseLayout title="这一页暂时走丢了" description="页面不存在，你可以返回首页或探索马志昊的项目与经历。" noindex>
+  <section class="portfolio-wrap missing-page">
+    <p class="eyebrow">404 / A SMALL DETOUR</p>
+    <h1>这一页走丢了，<br />探索还可以继续。</h1>
+    <p>链接可能已经更新，也可能多输入了一个字符。<br />不妨从作品或经历重新认识我。</p>
+    <div class="action-row"><a class="p-button p-button-primary" href={withBase('/')}>返回首页 <span aria-hidden="true">↗</span></a><a class="p-button" href={withBase('/projects')}>浏览项目</a></div>
   </section>
 </BaseLayout>
+<style>
+  .missing-page{padding-block:110px 130px;min-height:60vh}.missing-page h1{margin:22px 0;font-size:clamp(30px,5vw,60px);font-weight:650;line-height:1.35;letter-spacing:-.04em}.missing-page>p:not(.eyebrow){color:var(--muted);line-height:1.85}.missing-page .action-row{margin-top:30px}@media(max-width:600px){.missing-page{padding-block:70px 90px}}
+</style>

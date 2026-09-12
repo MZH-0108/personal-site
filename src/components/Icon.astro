@@ -1,0 +1,21 @@
+---
+import arrowRight from '@fortawesome/fontawesome-free/svgs/solid/arrow-right.svg?raw';
+import arrowUpRight from '@fortawesome/fontawesome-free/svgs/solid/arrow-up-right-from-square.svg?raw';
+import locationDot from '@fortawesome/fontawesome-free/svgs/solid/location-dot.svg?raw';
+import codeBranch from '@fortawesome/fontawesome-free/svgs/solid/code-branch.svg?raw';
+import microscope from '@fortawesome/fontawesome-free/svgs/solid/microscope.svg?raw';
+import layerGroup from '@fortawesome/fontawesome-free/svgs/solid/layer-group.svg?raw';
+import print from '@fortawesome/fontawesome-free/svgs/solid/print.svg?raw';
+import copy from '@fortawesome/fontawesome-free/svgs/regular/copy.svg?raw';
+
+// Render only the selected local SVG at build time; no icon font or browser JS.
+// The original Font Awesome license notice is retained inside each SVG.
+const icons = { 'arrow-right': arrowRight, 'arrow-up-right-from-square': arrowUpRight, 'location-dot': locationDot, 'code-branch': codeBranch, microscope, 'layer-group': layerGroup, print, copy };
+type Props = { name: keyof typeof icons };
+const { name } = Astro.props;
+---
+<i class="site-glyph" aria-hidden="true" set:html={icons[name]} />
+<style>
+.site-glyph{display:inline-flex;width:1em;height:1em;flex-shrink:0;vertical-align:-.125em;font-style:normal;line-height:1}
+.site-glyph :global(svg){display:block;width:100%;height:100%;fill:currentColor}
+</style>

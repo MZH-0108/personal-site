@@ -1,16 +1,33 @@
 ---
 import '../styles/global.css';
+import '../styles/portfolio.css';
+import '../styles/site-tools.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SiteTools from '../components/SiteTools.astro';
 import { site } from '../data/site';
+import { withBase } from '../paths';
 
 type Props = {
   title?: string;
   description?: string;
+  noindex?: boolean;
 };
 
-const { title = site.name, description = site.tagline } = Astro.props;
-const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
+const { title = site.name, description = site.tagline, noindex = false } = Astro.props;
+const browserTitle = `${site.name}的个人网站`;
+const pageTitle = title === site.name ? `${site.name} · 开发、工程与 AI` : `${title} · ${site.name}`;
+const productionSite = Astro.site && !['example.com', 'localhost', '127.0.0.1'].includes(Astro.site.hostname) ? Astro.site : undefined;
+const canonical = productionSite ? new URL(Astro.url.pathname, productionSite).href : undefined;
+const socialImage = productionSite ? new URL(withBase('images/avatar-home-ivory.png'), productionSite).href : undefined;
+const person = {
+  '@context': 'https://schema.org', '@type': 'Person', name: site.name,
+  description: site.tagline, jobTitle: site.role, email: `mailto:${site.email}`,
+  ...(productionSite ? { url: new URL(withBase('/'), productionSite).href, image: socialImage } : {}),
+  sameAs: ['https://github.com/MZH-0108'],
+  alumniOf: { '@type': 'CollegeOrUniversity', name: '齐鲁理工学院' },
+  knowsAbout: ['Java', 'Vue', '微信小程序', '图像识别', '岩土工程'],
+};
 ---
 
 <!doctype html>
@@ -19,24 +36,42 @@ const pageTitle = title === site.name ? title : `${title} · ${site.name}`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f6f3ed" />
-    <title>{pageTitle}</title>
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#f7f7f2" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:site_name" content={`${site.name}的个人网站`} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    {socialImage && <meta property="og:image:alt" content={`${site.name}的彩色肖像`} />}
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon-mzh.svg')} />
+    <title>{browserTitle}</title>
+    <script is:inline>
+      (() => {
+        let savedTheme;
+        try { savedTheme = localStorage.getItem('mz-theme'); } catch {}
+        const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#121a1e' : '#f7f7f2');
+      })();
+    </script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">跳至主要内容</a>
     <Header pathname={Astro.url.pathname} />
-    <main class="page-main" id="main">
+    <main class="page-main" id="main" tabindex="-1">
       <slot />
     </main>
     <Footer />
-    <script is:inline>
-      const header = document.querySelector('.site-header');
-      const menuButton = document.querySelector('[data-menu-button]');
-
-      menuButton?.addEventListener('click', () => {
-        const open = header?.classList.toggle('menu-open');
-        menuButton.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-    </script>
+    <SiteTools />
   </body>
 </html>

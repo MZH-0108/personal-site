@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { notes } from '../../data/notes';
+import { withBase } from '../../paths';
+import '../../styles/notes-contact.css';
+export function getStaticPaths() { return notes.map(note=>({params:{slug:note.slug},props:{note}})); }
+const { note } = Astro.props;
+const otherNotes = notes.filter(item=>item.slug!==note.slug);
+---
+<BaseLayout title={note.title} description={note.summary}>
+<article class="portfolio-wrap note-article">
+  <header class="editorial-head"><a class="p-text-link" href={withBase('/writing')}>← 所有笔记</a><p class="eyebrow">{note.category} / {note.minutes} 分钟阅读</p><h1>{note.title}</h1><p>{note.summary}</p><div class="note-meta"><span>马志昊 · 2026 年 9 月整理</span><button type="button" class="note-font-button" aria-pressed="false" id="note-font">加大字号 Aa</button></div></header>
+  <div class="note-body-layout"><nav class="note-toc" aria-label="文章目录"><span class="eyebrow">本文内容</span>{note.sections.map(section=><a href={`#${section.id}`}>{section.heading}</a>)}</nav>
+  <div class="note-content" id="note-content">{note.sections.map(section=><section id={section.id}><h2>{section.heading}</h2>{section.paragraphs.map(paragraph=><p>{paragraph}</p>)}{section.points&&<ul>{section.points.map(point=><li>{point}</li>)}</ul>}</section>)}
+    {note.relatedProject&&<a class="note-related p-text-link" href={withBase(`/projects/${note.relatedProject}`)}>看看对应的项目案例 <span aria-hidden="true">→</span></a>}
+    <aside class="note-end"><p class="eyebrow">CONTINUE READING</p>{otherNotes.map(other=><a href={withBase(`/writing/${other.slug}`)}>{other.title}<span aria-hidden="true">↗</span></a>)}</aside>
+  </div></div>
+</article>
+</BaseLayout>
+<script>
+  const fontButton=document.querySelector<HTMLButtonElement>('#note-font');
+  fontButton?.addEventListener('click',()=>{const large=fontButton.getAttribute('aria-pressed')!=='true';fontButton.setAttribute('aria-pressed',String(large));document.querySelector('#note-content')?.classList.toggle('large-reading',large);fontButton.textContent=large?'恢复字号 Aa':'加大字号 Aa';});
+</script>

@@ -1,65 +1,88 @@
 ---
-interface SectionItem {
-  id: string;
-  label: string;
-}
-
-interface Props {
-  label: string;
-  items: SectionItem[];
-}
-
+interface SectionItem { id: string; label: string; }
+interface Props { label: string; items: SectionItem[]; }
 const { label, items } = Astro.props;
 ---
-
-<nav class="tabs section-tabs" aria-label={label} data-section-nav>
-  {items.map((item, index) => (
-    <a
-      class:list={['tab', { active: index === 0 }]}
-      href={`#${item.id}`}
-      data-section-link
-      aria-current={index === 0 ? 'location' : undefined}
-    >
-      {item.label}
-    </a>
-  ))}
+<nav class="section-nav" aria-label={label} data-section-nav>
+  {items.map((item, index) => <a class:list={['section-nav-link', { active: index === 0 }]} href={'#' + item.id} data-section-link aria-current={index === 0 ? 'location' : undefined}>{item.label}</a>)}
 </nav>
 
 <script>
-  const sectionNavs = document.querySelectorAll<HTMLElement>('[data-section-nav]');
-
-  const syncSectionNav = (nav: HTMLElement) => {
-    const links = [...nav.querySelectorAll<HTMLAnchorElement>('[data-section-link]')];
-    const activeHash = window.location.hash || links[0]?.hash;
-
-    links.forEach((link) => {
-      const isActive = link.hash === activeHash;
-      link.classList.toggle('active', isActive);
-
-      if (isActive) {
-        link.setAttribute('aria-current', 'location');
-      } else {
-        link.removeAttribute('aria-current');
-      }
+  const initializeSectionNavs = () => {
+    document.querySelectorAll<HTMLElement>('[data-section-nav]').forEach((nav) => {
+      if (nav.dataset.initialized) return;
+      nav.dataset.initialized = 'true';
+      const links = [...nav.querySelectorAll<HTMLAnchorElement>('[data-section-link]')];
+      const sections = links.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1)))).filter((section): section is HTMLElement => Boolean(section));
+      if (!sections.length) return;
+      const setActive = (id: string) => {
+        links.forEach((link) => {
+          const active = decodeURIComponent(link.hash.slice(1)) === id;
+          link.classList.toggle('active', active);
+          if (active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      };
+      let anchorTarget: string | null = null;
+      let anchorTimer: ReturnType<typeof setTimeout> | undefined;
+      const syncHash = () => {
+        let id: string;
+        try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
+        if (!sections.some((section) => section.id === id)) return;
+        anchorTarget = id;
+        setActive(id);
+        clearTimeout(anchorTimer);
+        anchorTimer = setTimeout(() => { anchorTarget = null; syncScroll(); }, 1100);
+      };
+      const syncScroll = () => {
+        if (anchorTarget) return;
+        const marker = Math.min(180, window.innerHeight * 0.28);
+        let current = sections[0];
+        for (const section of sections) {
+          if (section.getBoundingClientRect().top <= marker) current = section;
+        }
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) current = sections[sections.length - 1];
+        setActive(current.id);
+      };
+      const observer = new IntersectionObserver(syncScroll, { rootMargin: '-90px 0px -55% 0px', threshold: [0, 0.1, 0.5, 1] });
+      sections.forEach((section) => observer.observe(section));
+      let scheduled = false;
+      const onScroll = () => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(() => { scheduled = false; syncScroll(); });
+      };
+      nav.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('[data-section-link]') : null;
+        if (!target || event instanceof MouseEvent && (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)) return;
+        anchorTarget = decodeURIComponent(target.hash.slice(1));
+        setActive(anchorTarget);
+        clearTimeout(anchorTimer);
+        anchorTimer = setTimeout(() => { anchorTarget = null; syncScroll(); }, 1100);
+      });
+      window.addEventListener('hashchange', syncHash);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      document.addEventListener('astro:before-swap', () => {
+        observer.disconnect();
+        clearTimeout(anchorTimer);
+        window.removeEventListener('hashchange', syncHash);
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+      }, { once: true });
+      syncHash();
+      syncScroll();
     });
   };
-
-  const syncAllSectionNavs = () => sectionNavs.forEach(syncSectionNav);
-
-  sectionNavs.forEach((nav) => {
-    nav.addEventListener('click', (event) => {
-      const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('[data-section-link]');
-      if (!link) return;
-
-      nav.querySelectorAll<HTMLAnchorElement>('[data-section-link]').forEach((item) => {
-        const isActive = item === link;
-        item.classList.toggle('active', isActive);
-        if (isActive) item.setAttribute('aria-current', 'location');
-        else item.removeAttribute('aria-current');
-      });
-    });
-  });
-
-  window.addEventListener('hashchange', syncAllSectionNavs);
-  syncAllSectionNavs();
+  initializeSectionNavs();
+  document.addEventListener('astro:page-load', initializeSectionNavs);
 </script>
+
+<style>
+  .section-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .section-nav-link { display: block; padding: 11px 16px; border-radius: 6px; color: var(--muted, #696c71); text-decoration: none; font-size: 13px; font-weight: 600; line-height: 1.5; transition: color 160ms ease, background 160ms ease; }
+  .section-nav-link:hover { color: var(--text, #1c2432); background: var(--panel, #fff); }
+  .section-nav-link.active { color: var(--blue, #315dce); background: color-mix(in srgb, var(--blue, #315dce) 8%, transparent); }
+  .section-nav-link:focus-visible { outline: 2px solid var(--blue, #315dce); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .section-nav-link { transition: none; } }
+</style>
