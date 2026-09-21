@@ -7,6 +7,13 @@ import { notes } from '../data/notes';
 import { withBase } from '../paths';
 import portrait from '../../public/images/avatar-home-ivory.png';
 import restaurant from '../../public/images/projects/mage-xiaoguan-feature.png';
+import '../styles/scroll-experience.css';
+
+const practiceProjects = [
+  { id: 'enterprise', label: '企业前端', eyebrow: 'ENTERPRISE / 2022 — 2024', title: '采购平台与招标小程序', summary: '业务页面开发、接口联调与数据迁移。', detail: '在企业业务中，把需求落实为可使用的页面与流程。', tags: ['Vue', 'ElementUI', '前端开发'], icon: 'code-branch', href: '/projects/procurement', tone: 'ink' },
+  { id: 'research', label: '工程 AI', eyebrow: 'RESEARCH / 2025', title: '隧道病害图像识别', summary: '识别代码开发、人工标注与技术资料整理。', detail: '连接计算机与岩土工程，在真实场景中理解数据与模型。', tags: ['Python', '图像识别', '工程检测'], icon: 'microscope', href: '/projects/tunnel-ai', tone: 'sage' },
+  { id: 'teaching', label: '编程教学', eyebrow: 'TEACHING / 2024', title: '机器人与少儿编程课程', summary: '课程规划、课堂讲授与学生项目辅导。', detail: '把编程知识拆成可以动手实践的步骤。', tags: ['Python', 'Scratch', 'C'], icon: 'layer-group', href: '/projects/coding-class', tone: 'paper' },
+] as const;
 
 const lenses = [
   { id: 'product', icon: 'layer-group', label: '小程序 / 全栈', headline: '小程序、接口、部署与测试', body: '在馬哥小馆儿中实现家庭点餐、微信登录、管理员权限与后端服务。', tags: ['微信小程序', 'Spring Boot', 'MySQL'], proof: '查看馬哥小馆儿', href: '/projects/mage-xiaoguan' },
@@ -15,55 +22,78 @@ const lenses = [
 ] as const;
 ---
 <BaseLayout title={site.name} description="马志昊的个人网站：计算机与岩土工程交叉背景，展示微信小程序馬哥小馆儿、企业前端开发、图像识别、教学实践与工程思考。">
-  <section class="intro-hero portfolio-wrap" aria-labelledby="intro-title">
-    <div class="intro-copy">
+  <div class="scroll-experience" data-scroll-experience>
+  <section class="motion-hero motion-wrap" aria-labelledby="intro-title">
+    <div class="motion-hero-copy" data-hero-copy>
       <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> HELLO, I'M ZHIHAO MA</p>
-      <p class="intro-name">你好，我是马志昊。</p>
-      <h1 id="intro-title">从小程序，<br />到工程<span> AI。</span></h1>
-      <p class="intro-description">计算机科学本科，岩土工程硕士在读。<br class="desktop-break" />做过企业前端、图像识别与编程教学。</p>
-      <div class="intro-roles"><span>全栈开发</span><span>AI / 图像识别</span><span>硕士在读</span></div>
+      <p class="motion-intro-name">你好，我是马志昊。</p>
+      <h1 id="intro-title">从小程序，<br />到工程 <span>AI。</span></h1>
+      <p class="motion-bio">计算机科学本科，岩土工程硕士在读。<br class="desktop-break" />做过企业前端、图像识别与编程教学。</p>
       <div class="action-row">
-        <a class="p-button p-button-primary" href={withBase('/projects')}>查看作品 <Icon name="arrow-up-right-from-square" /></a>
+        <a class="p-button p-button-primary" href={withBase('/projects')}>查看作品 <Icon name="arrow-right" /></a>
         <a class="p-button" href={withBase('/resume#overview')}>简历速览 <Icon name="arrow-right" /></a>
       </div>
-      <a class="intro-down" href="#selected-work"><span aria-hidden="true">↓</span> 代表作品</a>
+      <div class="motion-hero-bottom">
+        <a class="motion-scroll-cue" href="#selected-work"><Icon name="arrow-right" /><span>向下探索</span></a>
+        <button class="motion-preference" type="button" data-motion-toggle aria-pressed="false" hidden>减少动态效果</button>
+      </div>
     </div>
-    <a class="intro-portrait-frame" href={withBase('/about')} aria-label="认识马志昊">
-      <div class="portrait-topline"><span>THE PERSON BEHIND THE CODE</span><span aria-hidden="true">↗</span></div>
-      <Image src={portrait} alt="马志昊的彩色肖像" width={620} widths={[340,480,620]} sizes="(max-width: 700px) 85vw, 40vw" format="webp" quality={83} loading="eager" fetchpriority="high" class="intro-portrait-image" />
-      <div class="portrait-caption"><span><strong>马志昊</strong><small>开发者 · 岩土工程硕士在读</small></span><span class="portrait-seal" aria-hidden="true">{site.initials}<span>BUILD & LEARN</span></span></div>
-      <div class="portrait-note"><Icon name="location-dot" /> {site.location}</div>
-    </a>
+    <div class="motion-portrait-wrap" data-hero-portrait>
+      <a class="motion-portrait" href={withBase('/about')} aria-label="认识马志昊">
+        <div class="motion-portrait-photo"><Image src={portrait} alt="马志昊的彩色肖像" width={720} widths={[360,540,720,960]} sizes="(max-width: 760px) 88vw, 43vw" format="webp" quality={85} loading="eager" fetchpriority="high" /></div>
+        <span class="motion-portrait-name"><strong>马志昊</strong><span>ZHIHAO MA</span></span>
+        <span class="motion-portrait-footer"><strong>MZH</strong><span>BUILD & LEARN</span><Icon name="arrow-up-right-from-square" /></span>
+      </a>
+      <span class="motion-location" data-hero-note><Icon name="location-dot" /> {site.location}</span>
+    </div>
   </section>
-  <section class="proof-strip portfolio-wrap" aria-label="经历速览">
+  <section class="cinema-section" id="selected-work" aria-labelledby="work-title">
+    <div class="section-heading motion-wrap" data-motion-reveal><div><p class="eyebrow">01 / SELECTED WORK</p><h2 id="work-title">代表作品</h2></div><a class="p-text-link" href={withBase('/projects')}>全部作品 <Icon name="arrow-right" /></a></div>
+    <div class="cinema-track" data-cinema-track>
+      <article class="cinema-stage" data-cinema-stage aria-labelledby="cinema-title">
+        <div class="cinema-image-wrap"><Image src={restaurant} alt="馬哥小馆儿项目场景示意：点餐界面与家庭餐桌" width={1600} widths={[480,800,1200,1600]} sizes="(max-width: 760px) 100vw, 94vw" format="webp" quality={84} loading="lazy" data-cinema-image /><span class="cinema-image-caption">项目场景示意</span></div>
+        <div class="cinema-copy" data-cinema-copy>
+          <div class="cinema-chapter" aria-hidden="true"><span>FEATURED / 2026</span><span class="cinema-meter"><span data-cinema-progress></span></span></div>
+          <h3 id="cinema-title">馬哥小馆儿</h3><p class="cinema-subtitle">家庭点餐微信小程序</p>
+          <p class="cinema-description">菜谱与点餐记录、微信登录、家庭管理。<br />从前端到后端的个人项目。</p>
+          <p class="cinema-tech">微信小程序 <span>·</span> Spring Boot <span>·</span> MySQL</p>
+          <div class="cinema-actions"><a class="p-button p-button-primary" href={withBase('/projects/mage-xiaoguan')}>查看项目 <Icon name="arrow-up-right-from-square" /></a><a class="p-text-link" href={withBase('/projects/mage-xiaoguan#demo')}>点餐演示 <Icon name="arrow-up-right-from-square" /></a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="practice-section motion-wrap" aria-labelledby="practice-title">
+    <div class="practice-rail"><p class="eyebrow">02 / MORE PRACTICE</p><h2 id="practice-title">在不同场景，<br />持续<span>实践。</span></h2><p class="practice-description">企业前端、工程图像<br />与编程教学。</p>
+      <nav class="practice-chapters" aria-label="实践项目章节">{practiceProjects.map((project,index) => <a href={`#practice-${project.id}`} data-practice-link={project.id} aria-current={index===0?'location':undefined}><span class="chapter-dot" aria-hidden="true"></span>{project.label}</a>)}</nav>
+      <p class="practice-signoff">BUILD TO SOLVE<br />EXPLORE TO GROW</p>
+    </div>
+    <div class="project-stack" data-project-stack>
+      {practiceProjects.map((project,index) => <>
+        <div id={`practice-${project.id}`} class="stack-marker" data-stack-marker={project.id} tabindex="-1"></div>
+        <article class={`stack-card stack-card-${project.tone}`} data-stack-card style={`--stack-index:${index}`} aria-labelledby={`practice-heading-${project.id}`}>
+          <div class="stack-card-top"><span class="stack-icon"><Icon name={project.icon} /></span><p class="eyebrow">{project.eyebrow}</p><span class="stack-number" aria-hidden="true">0{index+1}</span></div>
+          <h3 id={`practice-heading-${project.id}`}>{project.title}</h3><p class="stack-summary">{project.summary}</p><p class="stack-detail">{project.detail}</p>
+          <div class="stack-card-bottom"><p>{project.tags.join(' · ')}</p><a href={withBase(project.href)} aria-label={`查看${project.title}项目`}><span>查看项目</span><span class="stack-arrow"><Icon name="arrow-right" /></span></a></div>
+        </article>
+      </>)}
+      <a class="practice-all p-text-link" href={withBase('/projects')}>探索全部 {projects.length} 项实践 <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+  <section class="proof-strip portfolio-wrap motion-proof" aria-label="经历速览" data-motion-reveal>
     <a href={withBase('/projects')}><strong>{projects.length}<span> 项实践</span></strong><p>产品 · 企业 · 研究 · 教学</p><span class="proof-arrow" aria-hidden="true">↗</span></a>
     <a href={withBase('/resume#education')}><strong>2<span> 个学科</span></strong><p>计算机科学 × 岩土工程</p><span class="proof-arrow" aria-hidden="true">↗</span></a>
     <a href={withBase('/resume#awards')}><strong>3.66</strong><p>本科 GPA · 专业前 10%</p><span class="proof-arrow" aria-hidden="true">↗</span></a>
     <a href={withBase('/projects/procurement#implementation-3')}><strong>30<span> 篇</span></strong><p>过往 CSDN 原创技术文章</p><span class="proof-arrow" aria-hidden="true">↗</span></a>
   </section>
-  <section class="portfolio-wrap showcase-section" id="selected-work" aria-labelledby="work-title">
-    <div class="section-heading"><div><p class="eyebrow">01 / SELECTED WORK</p><h2 id="work-title">代表作品</h2></div><a class="p-text-link" href={withBase('/projects')}>全部作品 <span aria-hidden="true">↗</span></a></div>
-    <article class="spotlight-project">
-      <a class="spotlight-visual" href={withBase('/projects/mage-xiaoguan')} aria-label="查看馬哥小馆儿项目案例">
-        <Image src={restaurant} alt="馬哥小馆儿项目场景示意：点餐界面与家庭餐桌" width={820} widths={[400,650,820]} sizes="(max-width: 700px) 92vw, 54vw" format="webp" quality={80} loading="lazy" />
-        <span class="image-caption">项目场景示意</span><span class="spotlight-open" aria-hidden="true">↗</span>
-      </a>
-      <div class="spotlight-copy"><p class="eyebrow">FEATURED PROJECT / 2026</p><h3>馬哥小馆儿<span>家庭点餐微信小程序</span></h3><p>菜谱与点餐记录、微信登录、家庭管理。前端到后端的个人项目。</p><div class="p-tags"><span>微信小程序</span><span>Spring Boot</span><span>MySQL</span></div><div class="spotlight-actions"><a class="p-text-link" href={withBase('/projects/mage-xiaoguan')}>项目详情 <span aria-hidden="true">→</span></a><a class="p-text-link" href={withBase('/projects/mage-xiaoguan#demo')}>点餐演示 <span aria-hidden="true">↗</span></a></div></div>
-    </article>
-    <div class="support-work-grid">
-      <a class="support-work" href={withBase('/projects/procurement')}><div class="support-icon"><Icon name="code-branch" /></div><div><p class="eyebrow">ENTERPRISE / 2022 — 2024</p><h3>采购平台与招标小程序</h3><p>业务页面开发、接口联调与数据迁移。</p><span>Vue · ElementUI · 前端开发</span></div><Icon name="arrow-up-right-from-square" /></a>
-      <a class="support-work" href={withBase('/projects/tunnel-ai')}><div class="support-icon green"><Icon name="microscope" /></div><div><p class="eyebrow">RESEARCH / 2025</p><h3>隧道病害图像识别</h3><p>识别代码开发、人工标注与技术资料整理。</p><span>Python · 图像识别 · 工程检测</span></div><Icon name="arrow-up-right-from-square" /></a>
-    </div>
-  </section>
-  <section class="capability-band" aria-labelledby="cap-title"><div class="portfolio-wrap capability-layout">
-    <div><p class="eyebrow">02 / SKILLS IN PRACTICE</p><h2 id="cap-title">技术与实践</h2><p class="section-description">按方向查看对应项目。</p>
+  <section class="capability-band" data-motion-reveal aria-labelledby="cap-title"><div class="portfolio-wrap capability-layout">
+    <div><p class="eyebrow">03 / SKILLS IN PRACTICE</p><h2 id="cap-title">技术与实践</h2><p class="section-description">按方向查看对应项目。</p>
       <div class="capability-switch" role="tablist" aria-label="能力方向">{lenses.map((lens,index)=><button id={`lens-tab-${lens.id}`} class:list={['lens-button',{active:index===0}]} role="tab" aria-selected={index===0?'true':'false'} aria-controls={`lens-${lens.id}`} tabindex={index===0?0:-1} data-lens={lens.id} disabled><Icon name={lens.icon} />{lens.label}<span aria-hidden="true">↗</span></button>)}</div>
       <noscript><p>下方已展开全部能力介绍，开启 JavaScript 后可切换查看。</p></noscript>
     </div>
     <div class="capability-panels">{lenses.map((lens,index)=><section class="lens-panel" id={`lens-${lens.id}`} role="tabpanel" aria-labelledby={`lens-tab-${lens.id}`} tabindex="0"><span class="lens-number" aria-hidden="true">0{index+1}</span><h3>{lens.headline}</h3><p>{lens.body}</p><div class="p-tags">{lens.tags.map(tag=><span>{tag}</span>)}</div><a href={withBase(lens.href)} class="lens-proof">{lens.proof}<Icon name="arrow-right" /></a></section>)}</div>
   </div></section>
-  <section class="portfolio-wrap path-section" aria-labelledby="path-title">
-    <div class="section-heading"><div><p class="eyebrow">03 / THE JOURNEY</p><h2 id="path-title">经历时间线</h2></div><a class="p-text-link" href={withBase('/resume')}>完整经历 <span aria-hidden="true">↗</span></a></div>
+  <section class="portfolio-wrap path-section" data-motion-reveal aria-labelledby="path-title">
+    <div class="section-heading"><div><p class="eyebrow">04 / THE JOURNEY</p><h2 id="path-title">经历时间线</h2></div><a class="p-text-link" href={withBase('/resume')}>完整经历 <span aria-hidden="true">↗</span></a></div>
     <div class="mini-timeline">
       <a href={withBase('/resume#education')}><time>2018 — 2022</time><span class="timeline-dot"></span><h3>计算机科学本科</h3><p>齐鲁理工学院</p><span>国家励志奖学金 · 省赛三等奖</span></a>
       <a href={withBase('/projects/procurement')}><time>2022 — 2024</time><span class="timeline-dot"></span><h3>前端开发工程师</h3><p>禹王投资控股有限公司</p><span>采购平台 · 招标小程序</span></a>
@@ -71,9 +101,11 @@ const lenses = [
       <a href={withBase('/resume#education')}><time>2025 — 至今</time><span class="timeline-dot"></span><h3>岩土工程硕士在读</h3><p>沈阳建筑大学</p><span>校级奖学金二等奖</span></a>
     </div>
   </section>
-  <section class="portfolio-wrap notes-preview" aria-labelledby="notes-title"><div class="section-heading"><div><p class="eyebrow">04 / NOTES</p><h2 id="notes-title">项目笔记</h2></div><a class="p-text-link" href={withBase('/writing')}>所有笔记 <span aria-hidden="true">↗</span></a></div><div class="note-preview-grid">{notes.map((note,index)=><a class="note-preview" href={withBase(`/writing/${note.slug}`)}><span class="note-index">0{index+1} / {note.category}</span><h3>{note.title}</h3><p>{note.summary}</p><span class="note-read">{note.minutes} 分钟阅读 <Icon name="arrow-right" /></span></a>)}</div></section>
+  <section class="portfolio-wrap notes-preview" data-motion-reveal aria-labelledby="notes-title"><div class="section-heading"><div><p class="eyebrow">05 / NOTES</p><h2 id="notes-title">项目笔记</h2></div><a class="p-text-link" href={withBase('/writing')}>所有笔记 <span aria-hidden="true">↗</span></a></div><div class="note-preview-grid">{notes.map((note,index)=><a class="note-preview" href={withBase(`/writing/${note.slug}`)}><span class="note-index">0{index+1} / {note.category}</span><h3>{note.title}</h3><p>{note.summary}</p><span class="note-read">{note.minutes} 分钟阅读 <Icon name="arrow-right" /></span></a>)}</div></section>
+  </div>
 </BaseLayout>
 <script>
+  import '../scripts/scroll-experience';
   const lensTabs = [...document.querySelectorAll<HTMLButtonElement>('[data-lens]')];
   function activateLens(button: HTMLButtonElement) {
     lensTabs.forEach(tab => {
