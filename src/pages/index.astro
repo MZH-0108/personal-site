@@ -5,7 +5,7 @@ import Icon from '../components/Icon.astro';
 import { site, projects } from '../data/site';
 import { notes } from '../data/notes';
 import { withBase } from '../paths';
-import portrait from '../../public/images/avatar-home-ivory.png';
+import portrait from '../../public/images/portrait-editorial-approved.png';
 import restaurant from '../../public/images/projects/mage-xiaoguan-feature.png';
 import '../styles/scroll-experience.css';
 
@@ -40,11 +40,8 @@ const lenses = [
     </div>
     <div class="motion-portrait-wrap" data-hero-portrait>
       <a class="motion-portrait" href={withBase('/about')} aria-label="认识马志昊">
-        <div class="motion-portrait-photo"><Image src={portrait} alt="马志昊的彩色肖像" width={720} widths={[360,540,720,960]} sizes="(max-width: 760px) 88vw, 43vw" format="webp" quality={85} loading="eager" fetchpriority="high" /></div>
-        <span class="motion-portrait-name"><strong>马志昊</strong><span>ZHIHAO MA</span></span>
-        <span class="motion-portrait-footer"><strong>MZH</strong><span>BUILD & LEARN</span><Icon name="arrow-up-right-from-square" /></span>
+        <Image class="motion-portrait-art" src={portrait} alt="马志昊的个人肖像拼贴：错层纸卡、竖排姓名、山东位置标签与蓝色 MZH 签名" width={406} height={392} widths={[320,406]} sizes="(max-width: 760px) 88vw, 480px" format="webp" quality={95} loading="eager" fetchpriority="high" />
       </a>
-      <span class="motion-location" data-hero-note><Icon name="location-dot" /> {site.location}</span>
     </div>
   </section>
   <section class="cinema-section" id="selected-work" aria-labelledby="work-title">

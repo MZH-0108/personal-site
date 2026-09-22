@@ -1,6 +1,34 @@
-# Scroll experience design QA
+# Current revision: approved portrait composition
 
 final result: passed
+
+This result applies only to the supplied portrait integration. The user rejected the earlier motion as insufficiently smooth and polished. The previous full-page motion gate below is historical evidence, not user acceptance. Motion redesign remains pending and is specified in `docs/next-session-prompt.md`.
+
+## Changes and fidelity
+
+- Exact supplied 406 × 392 PNG is saved as `public/images/portrait-editorial-approved.png`; its face, paper layers, vertical name, location badge and signature remain intact.
+- The homepage uses the complete artwork with its original aspect ratio and responsive WebP. Removed duplicate HTML name/location/footer and the obsolete note animation target.
+- Whole-artwork hero motion is retained; this is not independently animated portrait layers.
+- Evidence: `docs/scroll-preview/portrait-approved-preview.jpg`; source/render comparison: `docs/scroll-preview/portrait-comparison.jpg`.
+- Source and browser crop reviewed side by side at 406 × 392. Desktop rendering is 480 × 463.44 within a 1363 × 936 CSS viewport. Composition and crop match; screenshot/WebP resampling is visibly softer than the original. No claim of higher resolution is made.
+- Responsive checks use Chromium iframes at 390, 834 and 320 CSS px, not physical devices. Portrait loads, keeps its ratio, stays within the page, and produces no horizontal document overflow.
+- Portrait link opens About. No site-origin console errors; browser-extension metadata errors are unrelated.
+
+## Validation for this revision
+
+- `npm run check`: 0 errors/warnings/hints, 35 files.
+- GitHub Pages build: 16 pages.
+- `node scripts/verify-build.mjs /personal-site`: passed, 639 links, 110 anchors, 113 asset references, 0 failures.
+- Preview restarted after production build and checked in browser.
+- Formal motion acceptance and physical-device performance are not covered by this portrait change.
+
+---
+
+# Historical QA from the earlier motion implementation
+
+# Scroll experience design QA
+
+Historical automated/visual gate: passed
 
 ## Scope and visual evidence
 

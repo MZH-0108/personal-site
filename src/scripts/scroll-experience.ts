@@ -47,7 +47,6 @@ if (root && toggle) {
       if (desktop) {
         gsap.to('[data-hero-copy]', { y: -30, ease: 'none', scrollTrigger: { trigger: '.motion-hero', start: 'top top', end: 'bottom top', scrub: .6 } });
         gsap.to('[data-hero-portrait]', { y: 42, ease: 'none', scrollTrigger: { trigger: '.motion-hero', start: 'top top', end: 'bottom top', scrub: .6 } });
-        gsap.to('[data-hero-note]', { y: -42, ease: 'none', scrollTrigger: { trigger: '.motion-hero', start: 'top top', end: 'bottom top', scrub: .6 } });
       }
       gsap.fromTo('[data-cinema-image]', { scale: desktop ? 1.09 : 1.035 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '[data-cinema-track]', start: 'top bottom', end: 'bottom top', scrub: .7 } });
       gsap.fromTo('[data-cinema-progress]', { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: '[data-cinema-track]', start: 'top center', end: 'bottom center', scrub: .3 } });
