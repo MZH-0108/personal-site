@@ -14,7 +14,7 @@
 .motion-preference { min-height: 32px; border: 0; border-bottom: 1px solid var(--line-strong); border-radius: 0; padding: 3px 0; background: none; color: var(--faint); font: inherit; font-size: 11px; cursor: pointer; }
 .motion-preference[hidden] { display: none; }
 .motion-preference:disabled { cursor: default; }
-.motion-portrait-wrap { position: relative; width: min(100%, 480px); justify-self: center; }
+.motion-portrait-wrap { position: relative; width: min(100%, 406px); justify-self: center; }
 .motion-portrait { display: block; text-decoration: none; }
 .motion-portrait-art { display: block; width: 100%; height: auto; }
 .cinema-section { scroll-margin-top: 100px; }
@@ -67,11 +67,13 @@
 .practice-all { position: relative; z-index: 4; padding-block: 20px; }
 .motion-proof { margin-bottom: 100px; }
 [data-motion='reduced'] .cinema-meter > span { transform: none; }
-@media (min-width: 1000px) and (min-height: 720px) {
-  [data-motion='full'] .cinema-track { height: calc(min(660px, 78svh) + 240px); }
+@media (min-width: 1000px) and (min-height: 720px) and (hover: hover) and (pointer: fine) {
+  [data-motion='full'] .cinema-track { height: calc(min(660px, 78svh) + 320px); }
   [data-motion='full'] .cinema-stage { position: sticky; top: 100px; height: min(660px, 78svh); min-height: 0; }
   [data-motion='full'] .practice-rail { position: sticky; top: 132px; }
   [data-motion='full'] .stack-card { position: sticky; top: calc(112px + var(--stack-index) * 18px); margin-bottom: 100px; }
+  /* Restore document flow while any project receives keyboard focus. */
+  [data-motion='full'] .project-stack:focus-within .stack-card { position: relative; top: auto; transform: none !important; }
 }
 @media (max-width: 1100px) {
   .motion-wrap { width: calc(100% - 64px); }

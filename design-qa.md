@@ -1,94 +1,57 @@
-# Current revision: approved portrait composition
+# Editorial scroll v2 QA
 
 final result: passed
 
-This result applies only to the supplied portrait integration. The user rejected the earlier motion as insufficiently smooth and polished. The previous full-page motion gate below is historical evidence, not user acceptance. Motion redesign remains pending and is specified in `docs/next-session-prompt.md`.
+This is the implementation and visual regression gate, not user acceptance of smoothness. Formal visual approval remains pending. No production deployment or merge performed.
 
-## Changes and fidelity
+## Evidence and comparison
 
-- Exact supplied 406 × 392 PNG is saved as `public/images/portrait-editorial-approved.png`; its face, paper layers, vertical name, location badge and signature remain intact.
-- The homepage uses the complete artwork with its original aspect ratio and responsive WebP. Removed duplicate HTML name/location/footer and the obsolete note animation target.
-- Whole-artwork hero motion is retained; this is not independently animated portrait layers.
-- Evidence: `docs/scroll-preview/portrait-approved-preview.jpg`; source/render comparison: `docs/scroll-preview/portrait-comparison.jpg`.
-- Source and browser crop reviewed side by side at 406 × 392. Desktop rendering is 480 × 463.44 within a 1363 × 936 CSS viewport. Composition and crop match; screenshot/WebP resampling is visibly softer than the original. No claim of higher resolution is made.
-- Responsive checks use Chromium iframes at 390, 834 and 320 CSS px, not physical devices. Portrait loads, keeps its ratio, stays within the page, and produces no horizontal document overflow.
-- Portrait link opens About. No site-origin console errors; browser-extension metadata errors are unrelated.
-
-## Validation for this revision
-
-- `npm run check`: 0 errors/warnings/hints, 35 files.
-- GitHub Pages build: 16 pages.
-- `node scripts/verify-build.mjs /personal-site`: passed, 639 links, 110 anchors, 113 asset references, 0 failures.
-- Preview restarted after production build and checked in browser.
-- Formal motion acceptance and physical-device performance are not covered by this portrait change.
-
----
-
-# Historical QA from the earlier motion implementation
-
-# Scroll experience design QA
-
-Historical automated/visual gate: passed
-
-## Scope and visual evidence
-
-User selected all three concepts: layered portrait hero, cinematic featured project, and a sticky chapter rail with stacking cards. These are combined into the existing Astro homepage; existing project details, resume, notes, navigation and contact remain available.
-
-- Source visual truth: `docs/scroll-preview/combined-reference.jpg` (793 × 1983 px concept image).
-- Browser evidence: `docs/scroll-preview/hero.jpg`, `cinema.jpg`, `stack.jpg` (each 1348 × 926 px), `responsive.jpg` (1363 × 936 px), `dark.jpg`.
-- Full comparison: `docs/scroll-preview/design-comparison.jpg`. The source and three browser states are shown together at a normalized 620 px content width, preserving aspect ratios. The source is an illustrative long-page concept, not a browser screenshot with a known CSS viewport; this is a composition and behavior comparison, not a pixel-identical claim.
-- Desktop CSS viewport: 1363 × 936, document client width 1348. Browser screenshots omit the scrollbar. No density upscaling.
-- Responsive CSS frames: 390 × 820 and 834 × 820 (375 and 819 px client widths with scrollbars). A 320 px frame was also checked before the session recovery.
-- States reviewed: initial hero, featured project after its anchor, featured project while sticky, research chapter while cards overlap, mobile/tablet project cards, light/dark, motion disabled and restored.
-- Focused inspection: original-size hero/feature/card screenshots were reviewed for portrait crop, phone visibility, Chinese wrapping, icon alignment, controls and card edges. The montage alone was not used to judge text legibility.
+- Source: `public/images/portrait-editorial-approved.png` (406×392), existing approved homepage screenshot `docs/scroll-preview/portrait-approved-preview.jpg`, and `docs/scroll-v2/storyboard.md`.
+- Browser captures: `docs/scroll-v2/hero.jpg`, `transition.jpg`, `feature.jpg`, `stack.jpg`, `responsive.jpg`, `dark.jpg`; sequential overview `sequence.jpg`.
+- Desktop screenshot 1348×926 pixels; CSS viewport1363×936 with devicePixelRatio1. Source artwork is capped at406px. No high-resolution claim.
+- Combined comparison: `comparison.jpg`; focused 1:1 artwork comparison: `portrait-comparison.jpg`. The overview reduces the whole page for hierarchy review, while focused comparison retains original dimensions.
+- Same homepage/light state compared; portrait identity, full paper composition, location, vertical type and signature remain intact. Full-page composition is intentionally unchanged except smaller native-size portrait. Motion states are tested separately from static fidelity.
 
 ## Findings and fixes
 
-No actionable P0/P1/P2 findings remain.
+- Existing low-amplitude parallax and long .6/.7 second animation follow were replaced by larger relative travel and a shared .25 second follow. Image expansion, image movement, and copy reveal now have separate narrative roles.
+- Existing480px portrait display exceeded the406px source. Capped display at406px; no artificial upscaling or layer fabrication.
+- Keyboard focus could leave project content behind foreground cards. Whole stack switches to normal flow while focused. Browser verified all three cards become relative-positioned after tabbing to a project link.
+- No actionable P0/P1/P2 visual regressions identified in captured states. Overall polish and motion intensity are awaiting the user's review.
 
-1. **P2 — tablet project column too narrow.** The first 834 px render retained the desktop two-column practice layout without a sticky rail, leaving unused space. Changed 761–999 px layouts to full-width cards with a horizontal chapter navigation. Final evidence: `responsive.jpg`.
-2. **P2 — chapter tracking during overlap.** Sticky cards are unsuitable as intersection anchors. Chapter tracking now measures natural-flow marker positions, scheduled once per animation frame by passive scroll events. Selecting the research anchor produces `aria-current="location"` on Engineering AI; upward navigation is based on the same marker positions.
-3. **P2 — motion accessibility.** Motion is progressive: content is visible without JS. OS reduced-motion preference takes precedence; a visible toggle remembers the user's reduced-motion choice. Disabling motion reverts GSAP styles and sticky track height. Reload persistence and re-enabling were tested. OS preference handling was reviewed in code; no OS-level media emulation was available.
-4. **P2 — portrait footer alignment.** Accounted for the existing Icon component's wrapper, removed incidental link underlining, and aligned the icon at the end of the footer. Final evidence: `hero.jpg`.
-5. **Preview recovery.** A session reset removed the first local checkout. Restored the reviewed source, persisted it on `codex/immersive-portfolio-scroll`, reran check/tests/build/link verification and re-rendered the final screenshots. A previous Vite cache conflict was resolved by starting preview after the production build.
+## Required surfaces
 
-## Required fidelity surfaces
+- Typography: existing Chinese font stack, weights and two-line hero retained; narrow headings and buttons remain readable.
+- Layout: same two-column desktop and single-column mobile hierarchy. Native portrait sizing is intentional. Short320px sticky travel; no full-screen pin trap. Tablet/short windows retain flow.
+- Color: warm light background and blue accent retained; dark theme checked. Artwork retains its light paper background in dark mode deliberately.
+- Image fidelity: supplied artwork unchanged, no crop of face/signature, no synthetic replacements. Restaurant image uses existing responsive assets, deliberate image-scale crop confined to its frame.
+- Content: all facts, links and sections retained. No invented achievements or additional marketing copy.
 
-- **Typography:** retains existing Chinese system font stack, heading hierarchy, blue AI accent and letter spacing. Main heading stays on two lines. Card titles wrap naturally on very narrow screens. Compact chapter/metadata text is intentional secondary content.
-- **Layout:** ivory editorial hero, portrait layers, full-width featured scene and desktop left rail are retained. The working scroll sequence gives each card reading time rather than showing all cards simultaneously as in the static concept. Native scrolling and short sticky travel avoid a long scroll trap. Tablet/mobile cards use natural flow; short desktop windows also disable sticking.
-- **Color:** existing light/dark tokens are reused. Dark ink, pale sage and paper card surfaces distinguish the three practices. Featured white text sits on a dark translucent panel. No gradient artwork was substituted.
-- **Images/icons:** existing real portrait and restaurant project image are used, with Astro-generated WebP/srcset variants. The phone remains visible as relevant project context; it was absent from the combined generated concept. Existing Font Awesome icons and the site's MZH wordmark are retained instead of an invented handwritten logo. No replacement face, new illustration or mock asset is required.
-- **Copy/content:** real existing biography, projects and factual proof metrics are preserved. No new accomplishments or performance statistics were invented. Existing skills, timeline and notes continue below the three featured design sections.
+## Verified
 
-## Functional and accessibility verification
+- Desktop wheel scrolling through hero, handoff, featured image and practice; fast2300px down/up scroll returns to top.
+- At y460 hero and portrait have opposite relative transforms. At y930 feature stage top≈101px, image scale≈1.021; after260px more travel stage starts leaving and image is≈1.001. These are DOM samples, not FPS measurements.
+- Research chapter anchor settles to aria-current=location; research detail opens and browser Back restores homepage anchor.
+- Keyboard focus restores cards to normal flow.
+- Manual reduced-motion button activated by keyboard; root becomes reduced and feature position relative; reload retains aria-pressed=true. Re-enabled successfully.
+- Light/dark toggled and captured.
+- Chromium iframe320×820,390×820,834×820: client widths305/375/819, scroll widths equal, no document overflow; sticky disabled. Tablet resized to1024×600: sticky disabled. These are frames, not physical devices or touch emulation.
+-390px mobile menu opens/closes.
+- Console inspected: no observed site-origin errors; extension metadata errors excluded.
+- `npm run check`:0 errors/warnings/hints; `npm test`:15 passing tests; GitHub Pages build16 pages; verifier639 links,110 anchors,113 resources, no failures.
 
-- Native wheel scroll: feature top holds at 100 px while its image scale advances from approximately 1.055 to 1.041.
-- Hero and location note move at different restrained rates; portrait link remains actionable.
-- Chapter anchors, active state, research project detail navigation and browser Back restoration work.
-- Sticky cards retain visible keyboard focus using `:focus-within`; all content remains in DOM order.
-- Existing capability tabs work by click and ArrowRight; the selected tab updates its ARIA state.
-- Mobile navigation opens and closes. Homepage layout and cards have no horizontal overflow at 390/834 px; 320 px was checked before recovery.
-- Light/dark theme checked visually. Reduced motion toggle tested through reload.
-- No-JavaScript frame inspected before recovery: content and project anchors remain available; static navigation remains visible. Added extra anchor margin for the expanded non-JS header.
-- Console checked after restoration: no site-origin errors or warnings. Unrelated browser-extension metadata messages are excluded.
+## Remaining coverage and visual review
 
-## Automated validation
+- Physical iOS/Android, Safari, coarse-input emulation, OS-level reduced-motion switching and actual JavaScript-disabled browser mode were not exercised this round. Source review confirms content is visible by default and sticky rules require JS-set full-motion state.
+- No measured FPS, memory, layout-shift score or performance guarantee. Only transform properties animate; no added video/network dependency. Homepage script gzip46.91kB.
+- The preview runs from this branch; temporary viewport harness was removed before commit. Earlier QA is archived in `docs/scroll-v2/previous-qa.md`.
 
-- `npm run check`: 0 errors, 0 warnings, 0 hints (35 files).
-- `npm test`: 15 tests passed across 4 files.
-- `DEPLOY_TARGET=github-pages npm run build`: 16 pages built.
-- `node scripts/verify-build.mjs /personal-site`: passed; 639 local page links, 110 anchors, 115 asset references, 0 empty links, 0 failures.
-- Existing deployment workflow and GitHub Pages base path are retained.
+## Checklist
 
-## Follow-up limitations
-
-Responsive checks used Chromium frames, not physical iOS/Android/tablet hardware. Safari/touch inertia and device-specific performance still merit a real-device check before release. No measured FPS claim is made. The implementation adds about 47 KB gzip to the homepage script bundle. Native scrolling, responsive images, reduced motion and transform-only scroll animation limit the cost.
-
-## Implementation checklist
-
-- [x] Combine all three selected directions.
-- [x] Preserve existing content and real assets.
-- [x] Fix responsive and motion-state issues.
-- [x] Re-render and compare final screenshots.
-- [x] Pass existing test, type, build and link gates.
-- [x] Keep an interactive preview open; propose changes on a separate branch.
+- [x] Storyboard before implementation
+- [x] Original artwork and content retained
+- [x] Browser desktop and responsive review
+- [x] Build/check/test/link gates
+- [x] Key-state evidence
+- [ ] User visual acceptance
+- [ ] Physical-device performance review
