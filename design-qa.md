@@ -1,94 +1,44 @@
-# Current revision: approved portrait composition
+# Design QA — Homepage option 2
 
-final result: passed
+## Scope and evidence
 
-This result applies only to the supplied portrait integration. The user rejected the earlier motion as insufficiently smooth and polished. The previous full-page motion gate below is historical evidence, not user acceptance. Motion redesign remains pending and is specified in `docs/next-session-prompt.md`.
+- Visual source: `docs/design-references/local/homepage-option-2-mage-xiaoguan.png` (1536×1024).
+- Final desktop capture: `.design-evidence/implementation/home-option-2-desktop-final.png` (1425×1013 visible viewport capture; browser viewport configured at 1440×1024, DPR 1).
+- Final mobile capture: `.design-evidence/implementation/home-option-2-mobile-final.png` (375×811 visible viewport capture; browser viewport configured at 390×844, DPR 1).
+- Full-view comparison: `.design-evidence/implementation/compare-home-desktop-final.png`.
+- Focused hero comparison: `.design-evidence/implementation/compare-home-hero-final.png`.
+- State: light theme, homepage at the top of the document.
 
-## Changes and fidelity
-
-- Exact supplied 406 × 392 PNG is saved as `public/images/portrait-editorial-approved.png`; its face, paper layers, vertical name, location badge and signature remain intact.
-- The homepage uses the complete artwork with its original aspect ratio and responsive WebP. Removed duplicate HTML name/location/footer and the obsolete note animation target.
-- Whole-artwork hero motion is retained; this is not independently animated portrait layers.
-- Evidence: `docs/scroll-preview/portrait-approved-preview.jpg`; source/render comparison: `docs/scroll-preview/portrait-comparison.jpg`.
-- Source and browser crop reviewed side by side at 406 × 392. Desktop rendering is 480 × 463.44 within a 1363 × 936 CSS viewport. Composition and crop match; screenshot/WebP resampling is visibly softer than the original. No claim of higher resolution is made.
-- Responsive checks use Chromium iframes at 390, 834 and 320 CSS px, not physical devices. Portrait loads, keeps its ratio, stays within the page, and produces no horizontal document overflow.
-- Portrait link opens About. No site-origin console errors; browser-extension metadata errors are unrelated.
-
-## Validation for this revision
-
-- `npm run check`: 0 errors/warnings/hints, 35 files.
-- GitHub Pages build: 16 pages.
-- `node scripts/verify-build.mjs /personal-site`: passed, 639 links, 110 anchors, 113 asset references, 0 failures.
-- Preview restarted after production build and checked in browser.
-- Formal motion acceptance and physical-device performance are not covered by this portrait change.
-
----
-
-# Historical QA from the earlier motion implementation
-
-# Scroll experience design QA
-
-Historical automated/visual gate: passed
-
-## Scope and visual evidence
-
-User selected all three concepts: layered portrait hero, cinematic featured project, and a sticky chapter rail with stacking cards. These are combined into the existing Astro homepage; existing project details, resume, notes, navigation and contact remain available.
-
-- Source visual truth: `docs/scroll-preview/combined-reference.jpg` (793 × 1983 px concept image).
-- Browser evidence: `docs/scroll-preview/hero.jpg`, `cinema.jpg`, `stack.jpg` (each 1348 × 926 px), `responsive.jpg` (1363 × 936 px), `dark.jpg`.
-- Full comparison: `docs/scroll-preview/design-comparison.jpg`. The source and three browser states are shown together at a normalized 620 px content width, preserving aspect ratios. The source is an illustrative long-page concept, not a browser screenshot with a known CSS viewport; this is a composition and behavior comparison, not a pixel-identical claim.
-- Desktop CSS viewport: 1363 × 936, document client width 1348. Browser screenshots omit the scrollbar. No density upscaling.
-- Responsive CSS frames: 390 × 820 and 834 × 820 (375 and 819 px client widths with scrollbars). A 320 px frame was also checked before the session recovery.
-- States reviewed: initial hero, featured project after its anchor, featured project while sticky, research chapter while cards overlap, mobile/tablet project cards, light/dark, motion disabled and restored.
-- Focused inspection: original-size hero/feature/card screenshots were reviewed for portrait crop, phone visibility, Chinese wrapping, icon alignment, controls and card edges. The montage alone was not used to judge text legibility.
-
-## Findings and fixes
-
-No actionable P0/P1/P2 findings remain.
-
-1. **P2 — tablet project column too narrow.** The first 834 px render retained the desktop two-column practice layout without a sticky rail, leaving unused space. Changed 761–999 px layouts to full-width cards with a horizontal chapter navigation. Final evidence: `responsive.jpg`.
-2. **P2 — chapter tracking during overlap.** Sticky cards are unsuitable as intersection anchors. Chapter tracking now measures natural-flow marker positions, scheduled once per animation frame by passive scroll events. Selecting the research anchor produces `aria-current="location"` on Engineering AI; upward navigation is based on the same marker positions.
-3. **P2 — motion accessibility.** Motion is progressive: content is visible without JS. OS reduced-motion preference takes precedence; a visible toggle remembers the user's reduced-motion choice. Disabling motion reverts GSAP styles and sticky track height. Reload persistence and re-enabling were tested. OS preference handling was reviewed in code; no OS-level media emulation was available.
-4. **P2 — portrait footer alignment.** Accounted for the existing Icon component's wrapper, removed incidental link underlining, and aligned the icon at the end of the footer. Final evidence: `hero.jpg`.
-5. **Preview recovery.** A session reset removed the first local checkout. Restored the reviewed source, persisted it on `codex/immersive-portfolio-scroll`, reran check/tests/build/link verification and re-rendered the final screenshots. A previous Vite cache conflict was resolved by starting preview after the production build.
+The reference and final desktop capture were placed side by side in one comparison image before the final judgment. The focused comparison isolates the navigation and hero, where typography, portrait crop, CTA placement, and spacing carry most of the visual identity.
 
 ## Required fidelity surfaces
 
-- **Typography:** retains existing Chinese system font stack, heading hierarchy, blue AI accent and letter spacing. Main heading stays on two lines. Card titles wrap naturally on very narrow screens. Compact chapter/metadata text is intentional secondary content.
-- **Layout:** ivory editorial hero, portrait layers, full-width featured scene and desktop left rail are retained. The working scroll sequence gives each card reading time rather than showing all cards simultaneously as in the static concept. Native scrolling and short sticky travel avoid a long scroll trap. Tablet/mobile cards use natural flow; short desktop windows also disable sticking.
-- **Color:** existing light/dark tokens are reused. Dark ink, pale sage and paper card surfaces distinguish the three practices. Featured white text sits on a dark translucent panel. No gradient artwork was substituted.
-- **Images/icons:** existing real portrait and restaurant project image are used, with Astro-generated WebP/srcset variants. The phone remains visible as relevant project context; it was absent from the combined generated concept. Existing Font Awesome icons and the site's MZH wordmark are retained instead of an invented handwritten logo. No replacement face, new illustration or mock asset is required.
-- **Copy/content:** real existing biography, projects and factual proof metrics are preserved. No new accomplishments or performance statistics were invented. Existing skills, timeline and notes continue below the three featured design sections.
+- Typography: passed. The oversized Chinese name, strong role line, blue statement, restrained body copy, and compact navigation preserve the selected editorial hierarchy.
+- Spacing and layout rhythm: passed. The split hero, portrait baseline, CTA row, divider, project panel, and recent-writing panel align with the reference's proportions at desktop and collapse cleanly on mobile.
+- Colors and tokens: passed. Warm ivory background, near-black type, cobalt accents, pale dividers, and outlined secondary actions are consistent across the page.
+- Image quality: passed. The homepage portrait is a real color raster asset on an ivory background, and the featured project uses a purpose-built raster image based on the actual mini-program ordering interface.
+- Copy and content: passed. The page uses the user's real identity and positioning; the representative work is exactly `馬哥小馆儿`, identified as a WeChat mini program.
 
-## Functional and accessibility verification
+## Interaction and implementation checks
 
-- Native wheel scroll: feature top holds at 100 px while its image scale advances from approximately 1.055 to 1.041.
-- Hero and location note move at different restrained rates; portrait link remains actionable.
-- Chapter anchors, active state, research project detail navigation and browser Back restoration work.
-- Sticky cards retain visible keyboard focus using `:focus-within`; all content remains in DOM order.
-- Existing capability tabs work by click and ArrowRight; the selected tab updates its ARIA state.
-- Mobile navigation opens and closes. Homepage layout and cards have no horizontal overflow at 390/834 px; 320 px was checked before recovery.
-- Light/dark theme checked visually. Reduced motion toggle tested through reload.
-- No-JavaScript frame inspected before recovery: content and project anchors remain available; static navigation remains visible. Added extra anchor margin for the expanded non-JS header.
-- Console checked after restoration: no site-origin errors or warnings. Unrelated browser-extension metadata messages are excluded.
+- Primary CTA destinations are present in the production output: `关于我` → `/about`, `查看简历` → `/resume`.
+- Featured-project and writing links resolve to their corresponding routes in the generated HTML.
+- The mobile navigation button is wired with `aria-controls`, `aria-expanded`, and a script that synchronizes the open state. A final automated click attempt was blocked by the in-app browser security policy; no policy bypass was attempted.
+- Mobile visual check passed at 390×844 with no horizontal overflow in the captured state.
+- `astro check`: passed with 0 errors, 0 warnings, 0 hints.
+- `vitest run`: passed, 2 files and 6 tests.
+- `astro build`: passed, 8 static pages generated.
 
-## Automated validation
+## Comparison history
 
-- `npm run check`: 0 errors, 0 warnings, 0 hints (35 files).
-- `npm test`: 15 tests passed across 4 files.
-- `DEPLOY_TARGET=github-pages npm run build`: 16 pages built.
-- `node scripts/verify-build.mjs /personal-site`: passed; 639 local page links, 110 anchors, 115 asset references, 0 empty links, 0 failures.
-- Existing deployment workflow and GitHub Pages base path are retained.
+- Pass 1: P2 — the portrait had a dark circular background and the title scale was too small relative to the selected source.
+- Fix: generated an ivory-background color portrait, enlarged the title, and adjusted portrait width/crop and vertical alignment.
+- Pass 2: no actionable P0, P1, or P2 findings remained.
 
-## Follow-up limitations
+## Follow-up polish
 
-Responsive checks used Chromium frames, not physical iOS/Android/tablet hardware. Safari/touch inertia and device-specific performance still merit a real-device check before release. No measured FPS claim is made. The implementation adds about 47 KB gzip to the homepage script bundle. Native scrolling, responsive images, reduced motion and transform-only scroll animation limit the cost.
+- P3: the generated reference includes a small dotted decoration that was omitted because it does not affect hierarchy or usability.
+- P3: the portrait's ivory field is slightly more visible than the page background at some display settings.
+- P3: article dates and descriptions use real project content instead of the exploratory mock's placeholder content.
 
-## Implementation checklist
-
-- [x] Combine all three selected directions.
-- [x] Preserve existing content and real assets.
-- [x] Fix responsive and motion-state issues.
-- [x] Re-render and compare final screenshots.
-- [x] Pass existing test, type, build and link gates.
-- [x] Keep an interactive preview open; propose changes on a separate branch.
+final result: passed

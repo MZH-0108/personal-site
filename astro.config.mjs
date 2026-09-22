@@ -13,6 +13,5 @@ export default defineConfig({
   },
   vite: {
     cacheDir: '.vite-cache',
-    server: { allowedHosts: ['terminal.local'] },
   },
 });
