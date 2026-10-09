@@ -1,0 +1,26 @@
+{
+  "family": "Noto Serif SC",
+  "style": "normal",
+  "weight": 300,
+  "file": "noto-serif-sc-light-titles.woff2",
+  "bytes": 3996,
+  "sha256": "62e611b396ef241d9f6a8ebf85473931c2f6b66a6150d785d09c8ff28b35fa57",
+  "format": "woff2",
+  "subsetText": "向宇宙，再近一点。掠过月面。驶入轨道。",
+  "unicodeRange": "U+3002, U+4E00, U+5165, U+518D, U+5411, U+5B87, U+5B99, U+63A0, U+6708, U+70B9, U+8F68, U+8FC7, U+8FD1, U+9053, U+9762, U+9A76, U+FF0C",
+  "provider": "Google Fonts / Noto",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "OFL.txt",
+  "copyright": [
+    "Copyright 2012 Google Inc. All Rights Reserved.",
+    "(c) 2017-2024 Adobe (http://www.adobe.com/)."
+  ],
+  "sourceRepository": "https://github.com/google/fonts/tree/main/ofl/notoserifsc",
+  "sourceMetadata": "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifsc/METADATA.pb",
+  "sourceLicense": "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifsc/OFL.txt",
+  "sourceCss": "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300&text=%E5%90%91%E5%AE%87%E5%AE%99%EF%BC%8C%E5%86%8D%E8%BF%91%E4%B8%80%E7%82%B9%E3%80%82%E6%8E%A0%E8%BF%87%E6%9C%88%E9%9D%A2%E3%80%82%E9%A9%B6%E5%85%A5%E8%BD%A8%E9%81%93%E3%80%82",
+  "downloadUrl": "https://fonts.gstatic.com/l/font?kit=H4cyBXePl9DZ0Xe7gG9cyOj7uK2-n-D2rd4FY7TcqyWq67kK9a9n-cYvBf4uU2ph8ySMDNWs4_f0Z3_s54mU_HjXDbs4vS9gZHOLa2CMwfK5Jo8KCfI&skey=37fe335b8fd815cc&v=v36",
+  "subsetMethod": "Google Fonts official text= API; downloaded and self-hosted with no external runtime font request.",
+  "optimizationDocumentation": "https://developers.google.com/fonts/docs/getting_started#optimizing_your_font_requests",
+  "retrievedOn": "2026-10-09"
+}

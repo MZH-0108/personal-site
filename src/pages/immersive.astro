@@ -1,84 +1,56 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site } from '../data/site';
+import CosmicHeading from '../components/CosmicHeading.astro';
+import { cosmicChapters } from '../data/cosmic-journey';
 import { withBase } from '../paths';
-import portrait from '../../public/images/avatar-home-ivory.png';
-import restaurant from '../../public/images/projects/mage-xiaoguan-feature.png';
 import '../styles/immersive.css';
-
-const practices = [
-  { number: '02', title: '企业前端', text: '采购平台与招标小程序。业务页面、接口联调与数据迁移。', tech: 'Vue / ElementUI / JavaScript', href: '/projects/procurement', category: 'BUSINESS' },
-  { number: '03', title: '工程与 AI', text: '隧道病害图像识别。代码开发、人工标注与技术资料整理。', tech: 'Python / 图像识别 / 数据标注', href: '/projects/tunnel-ai', category: 'RESEARCH' },
-  { number: '04', title: '把技术讲清楚', text: '机器人与少儿编程。课程规划、课堂教学与项目辅导。', tech: 'C / Python / Scratch / XRmaker', href: '/projects/coding-class', category: 'TEACHING' },
-];
-const journey = [
-  { period: '2018 — 2022', title: '计算机科学与技术', text: '齐鲁理工学院 · 本科', href: '/resume#education' },
-  { period: '2022 — 2024', title: '走进企业开发', text: '禹王投资控股有限公司 · 前端开发', href: '/resume#experience-procurement' },
-  { period: '2024', title: '编程与机器人教学', text: '莱凯创客机器人编程俱乐部 · 金牌讲师', href: '/resume#experience-coding-class' },
-  { period: '2025 — 至今', title: '岩土工程 × AI', text: '沈阳建筑大学 · 硕士在读', href: '/resume#education' },
-];
+const assets = {
+  earth: withBase('/images/cosmos/earth-day.webp'),
+  night: withBase('/images/cosmos/earth-night.webp'),
+  clouds: withBase('/images/cosmos/earth-clouds.webp'),
+  moon: withBase('/images/cosmos/moon.webp'),
+  saturn: withBase('/images/cosmos/saturn.webp'),
+};
 ---
-
-<BaseLayout title="视差漫游" description="沿着滚动认识马志昊：彩色人像、家庭点餐小程序、企业开发、工程图像识别与成长经历。">
-  <div class="immersive-page" data-immersive data-motion="system">
-    <section class="im-intro im-wrap" data-motion-scene aria-labelledby="immersive-title">
-      <div class="im-intro-content">
-        <p class="im-kicker">MZH / IN MOTION</p>
-        <h1 class="im-title" id="immersive-title">向下探索，<br /><span>我的另一面。</span></h1>
-        <p class="im-intro-copy">马志昊 · 计算机科学 × 岩土工程<br />小程序、企业开发与工程 AI。</p>
-        <div class="im-actions">
-          <a class="im-link im-link-solid" href="#product">开始探索 <span aria-hidden="true">↓</span></a>
-          <button class="im-control" type="button" data-motion-toggle aria-pressed="false" disabled>减少动效</button>
-        </div>
-        <nav class="im-chapter-nav" aria-label="漫游章节"><a href="#product">代表作品</a><a href="#practice">更多实践</a><a href="#journey">经历路线</a></nav>
-        <a class="im-scroll-cue" href="#product"><span aria-hidden="true">↓</span> 向下滚动</a>
+<BaseLayout title="宇宙漫游" description="滚动开启八站宇宙旅程：掠过月面与土星，穿越星云、恒星群和旋臂，回望银河全景。" showFooter={false}>
+  <div class="cosmic-experience" data-cosmic data-assets={JSON.stringify(assets)} data-renderer="fallback" data-motion="system" data-chapter="earth" style={`--earth-map:url("${assets.earth}");--moon-map:url("${assets.moon}");--saturn-map:url("${assets.saturn}")`}>
+    <div class="cosmic-stage" aria-hidden="true">
+      <div class="cosmic-fallback-stars"></div>
+      <div class="cosmic-fallback-world">
+        <div class="cosmic-fallback-globe cosmic-fallback-earth"></div>
+        <div class="cosmic-fallback-globe cosmic-fallback-moon"></div>
+        <div class="cosmic-fallback-globe cosmic-fallback-saturn"></div>
+        <div class="cosmic-fallback-galaxy"><div class="cosmic-fallback-core"></div><div class="cosmic-fallback-arms"></div></div>
       </div>
-      <div class="im-hero-visual">
-        <div class="im-orbit im-orbit-one" data-parallax data-parallax-distance="-110" data-parallax-mobile="-30" aria-hidden="true"></div>
-        <div class="im-orbit im-orbit-two" data-parallax data-parallax-distance="160" data-parallax-mobile="36" aria-hidden="true"></div>
-        <div class="im-portrait-frame">
-          <Image class="im-portrait" src={portrait} alt="马志昊的彩色肖像" widths={[360, 600, 900]} sizes="(max-width: 700px) 88vw, 44vw" format="webp" quality={83} loading="eager" fetchpriority="high" data-parallax data-parallax-distance="-90" data-parallax-mobile="-22" data-parallax-scale="1.04" />
-          <div class="im-portrait-caption"><span>{site.name}</span><span>开发者 / 硕士在读</span></div>
-        </div>
-        <span class="im-coordinate" data-parallax data-parallax-distance="100" data-parallax-mobile="22">{site.location}</span>
-      </div>
-      <span class="im-wordmark" data-parallax data-parallax-distance="65" data-parallax-mobile="18" aria-hidden="true">MZH</span>
-    </section>
-
-    <section class="im-chapter" aria-labelledby="product-heading">
-      <div class="im-feature-track" id="product" data-motion-scene data-motion-feature>
-        <div class="im-feature-sticky">
-          <div class="im-feature-media"><Image class="im-feature-image" src={restaurant} alt="家庭餐桌与手机点餐界面的项目场景示意" widths={[640, 1000, 1440]} sizes="100vw" format="webp" quality={80} loading="lazy" data-parallax data-parallax-distance="-90" data-parallax-mobile="-26" data-parallax-scale="1.12" /></div>
-          <div class="im-feature-shade" aria-hidden="true"></div>
-          <span class="im-feature-index" aria-hidden="true">01</span>
-          <div class="im-feature-copy im-wrap">
-            <p class="im-kicker">01 / 微信小程序 / 2026</p><h2 id="product-heading">馬哥小馆儿</h2>
-            <p>菜谱、点餐记录、微信登录与家庭管理。<br />从小程序页面，到后端和测试。</p>
-            <ul class="im-tags" aria-label="项目技术"><li>微信小程序</li><li>Spring Boot</li><li>MySQL</li></ul>
-            <div class="im-actions"><a class="im-link im-link-solid" href={withBase('/projects/mage-xiaoguan')}>项目详情 <span aria-hidden="true">↗</span></a><a class="im-link" href={withBase('/projects/mage-xiaoguan#demo')}>体验点餐演示 <span aria-hidden="true">→</span></a></div>
-            <small class="im-feature-note">场景示意图，非真实小程序截图</small>
+      <canvas class="cosmic-canvas" data-cosmic-canvas></canvas>
+    </div>
+    <div class="cosmic-rotation-surface" data-cosmic-rotation-surface role="group" tabindex="-1" aria-label="三维模型旋转" aria-describedby="cosmic-rotation-instructions" aria-keyshortcuts="ArrowLeft ArrowRight Home" hidden></div>
+    <div class="cosmic-rotation-controls" data-cosmic-rotation-controls hidden><p id="cosmic-rotation-instructions">左右拖动旋转 · 上下滑动漫游<span class="cosmic-rotation-keyboard-hint">；键盘左右方向键旋转，Home 重置</span></p><button type="button" data-cosmic-reset-rotation>重置视角</button></div>
+    <p class="cosmic-loading" data-cosmic-loading role="status">正在准备星空…</p>
+    <nav class="cosmic-chapter-nav" aria-label="宇宙旅程章节">{cosmicChapters.map((chapter, index) => <a href={`#${chapter.id}`} data-chapter-link data-active={index === 0 ? 'true' : 'false'} aria-current={index === 0 ? 'location' : undefined}><span class="cosmic-nav-dot" aria-hidden="true"></span><span class="cosmic-nav-label">{chapter.name}</span></a>)}</nav>
+    <div class="cosmic-story" data-cosmic-story>
+      {cosmicChapters.map((chapter, index) => <section class={`cosmic-step cosmic-step-${chapter.id}`} id={chapter.id} data-flight-step data-type-style={chapter.typeStyle} tabindex="-1" aria-labelledby={`${chapter.id}-title`}>
+        <div class="cosmic-wrap"><div class="cosmic-copy">
+          <p class="cosmic-kicker">{chapter.kicker}</p>
+          <CosmicHeading id={`${chapter.id}-title`} lines={chapter.titleLines} first={index === 0} />
+          <p class="cosmic-description">{chapter.description}</p>
+          <div class="cosmic-actions">
+            {index === 0 && <a class="cosmic-button" href={chapter.next.href}>{chapter.next.label}</a>}
+            <button class={index === 0 ? 'cosmic-text-link' : 'cosmic-button'} type="button" data-cosmic-action={chapter.action.type} aria-pressed={chapter.action.type === 'warp' ? undefined : 'false'} disabled>{chapter.action.label}{chapter.action.icon && <span aria-hidden="true">{chapter.action.icon}</span>}</button>
+            {index > 0 && <a class="cosmic-text-link" href={chapter.next.href}>{chapter.next.label}</a>}
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="im-wrap im-practice-section" id="practice" data-motion-scene aria-labelledby="practice-heading">
-      <div class="im-chapter-heading"><p class="im-kicker">02 / DIFFERENT PERSPECTIVES</p><h2 id="practice-heading">每一段实践，<br />都有新的视角。</h2></div>
-      <div class="im-practice-grid">{practices.map((practice, index) => <a class="im-practice" href={withBase(practice.href)} data-parallax data-parallax-distance={String(index * 45)} data-parallax-mobile="0">
-        <span class="im-practice-number">{practice.number} / {practice.category}</span><h3>{practice.title}</h3><p>{practice.text}</p><span class="im-practice-tech">{practice.tech}</span><span class="im-practice-arrow" aria-hidden="true">↗</span>
-      </a>)}</div>
-    </section>
-
-    <section class="im-wrap im-path-section" id="journey" data-motion-scene aria-labelledby="journey-heading">
-      <div class="im-path-intro"><p class="im-kicker">03 / THE JOURNEY</p><h2 id="journey-heading">积累，<br />一直在继续。</h2><p>从计算机科学，到岩土工程。<br />学习与实践，始终相连。</p><a class="im-link" href={withBase('/resume')}>完整简历 <span aria-hidden="true">→</span></a></div>
-      <div class="im-path-list">{journey.map((item) => <a href={withBase(item.href)}><time>{item.period}</time><h3>{item.title}</h3><p>{item.text}</p></a>)}</div>
-    </section>
-
-    <section class="im-wrap im-closing" aria-labelledby="closing-heading"><p class="im-kicker">KEEP BUILDING / KEEP LEARNING</p><h2 class="im-closing-title" id="closing-heading">下一步，<br /><span>聊聊你的想法。</span></h2><div class="im-actions"><a class="im-link im-link-solid" href={withBase('/contact')}>联系我 <span aria-hidden="true">↗</span></a><a class="im-link" href={withBase('/')}>返回首页 <span aria-hidden="true">→</span></a></div></section>
+          {chapter.hint && <p class="cosmic-interaction-hint">{chapter.hint}</p>}
+          {chapter.finish && <div class="cosmic-finish-links"><a href={withBase('/')}>返回个人网站 ↗</a></div>}
+        </div></div>
+      </section>)}
+    </div>
+    <div class="cosmic-hud">
+      <div class="cosmic-hud-progress"><span class="cosmic-progress-label" data-cosmic-progress-label>地球启航 / 0%</span><div class="cosmic-progress" aria-hidden="true"><span data-cosmic-progress></span></div></div>
+      <p class="cosmic-status" data-cosmic-status role="status" aria-live="polite">滚动探索 · 点击按钮互动</p>
+      <div class="cosmic-hud-actions"><button type="button" data-cosmic-sound aria-label="开启环境音" aria-pressed="false" disabled><span aria-hidden="true">♫</span> 声音关</button><button type="button" data-cosmic-motion aria-pressed="false" disabled>静态模式</button><button type="button" data-cosmic-credits-open aria-haspopup="dialog" disabled>素材</button></div>
+    </div>
+    <dialog class="cosmic-credits" data-cosmic-credits aria-labelledby="credits-title"><div class="cosmic-credits-heading"><h2 id="credits-title">旅程与素材</h2><button type="button" data-cosmic-credits-close aria-label="关闭素材说明">×</button></div><p>星球贴图：<a href="https://ssi.solarsystemscope.com/textures/" target="_blank" rel="noreferrer">Solar System Scope / INOVE ↗</a>，基于 NASA 图像与地形资料。</p><p>使用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> 许可；贴图已缩放并压缩为 WebP。</p><p>电影标题使用 <a href="https://github.com/notofonts/noto-cjk" target="_blank" rel="noreferrer">Noto Serif SC ↗</a>，按 SIL OFL 1.1 许可自托管，仅载入所需字形。</p><p>星云、恒星群与银河为程序化视觉演绎，距离和尺度并非天文测量值。</p><p class="cosmic-credits-reference">创意参考：<a href="https://tympanus.net/codrops/2026/07/22/building-ridgeline-engineering-a-real-time-3d-experience-in-webflow/" target="_blank" rel="noreferrer">Codrops ↗</a></p></dialog>
+    <noscript><p class="cosmic-noscript">当前为静态阅读；启用 JavaScript 后可以体验镜头推进与互动。</p></noscript>
   </div>
 </BaseLayout>
-
-<script>
-  import '../scripts/immersive';
-</script>
+<script>import '../scripts/immersive';</script>

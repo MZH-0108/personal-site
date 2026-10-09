@@ -1,0 +1,69 @@
+{
+  "provider": "Solar System Scope / INOVE",
+  "sourcePage": "https://ssi.solarsystemscope.com/textures/",
+  "license": {
+    "name": "Creative Commons Attribution 4.0 International",
+    "identifier": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "attribution": "Planet textures by Solar System Scope / INOVE, based on NASA imagery and elevation data. Licensed under CC BY 4.0. Resized and converted to WebP for this website.",
+  "modifications": "Original 2048 × 1024 JPEG maps were resized and compressed to WebP with Sharp. No terrain or color edits were applied.",
+  "textures": [
+    {
+      "file": "earth-day.webp",
+      "title": "Earth Day Map",
+      "sourceUrl": "https://ssi.solarsystemscope.com/textures/download/2k_earth_daymap.jpg",
+      "originalWidth": 2048,
+      "originalHeight": 1024,
+      "width": 1536,
+      "height": 768,
+      "quality": 83,
+      "bytes": 86210
+    },
+    {
+      "file": "earth-night.webp",
+      "title": "Earth Night Map",
+      "sourceUrl": "https://ssi.solarsystemscope.com/textures/download/2k_earth_nightmap.jpg",
+      "originalWidth": 2048,
+      "originalHeight": 1024,
+      "width": 1024,
+      "height": 512,
+      "quality": 78,
+      "bytes": 14048
+    },
+    {
+      "file": "earth-clouds.webp",
+      "title": "Earth Clouds",
+      "sourceUrl": "https://ssi.solarsystemscope.com/textures/download/2k_earth_clouds.jpg",
+      "originalWidth": 2048,
+      "originalHeight": 1024,
+      "width": 1024,
+      "height": 512,
+      "quality": 78,
+      "bytes": 114714
+    },
+    {
+      "file": "moon.webp",
+      "title": "Moon",
+      "sourceUrl": "https://ssi.solarsystemscope.com/textures/download/2k_moon.jpg",
+      "originalWidth": 2048,
+      "originalHeight": 1024,
+      "width": 1536,
+      "height": 768,
+      "quality": 83,
+      "bytes": 296666
+    },
+    {
+      "file": "saturn.webp",
+      "title": "Saturn",
+      "sourceUrl": "https://ssi.solarsystemscope.com/textures/download/2k_saturn.jpg",
+      "originalWidth": 2048,
+      "originalHeight": 1024,
+      "width": 1024,
+      "height": 512,
+      "quality": 83,
+      "bytes": 10290
+    }
+  ],
+  "totalBytes": 521928
+}

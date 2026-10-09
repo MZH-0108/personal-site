@@ -13,7 +13,7 @@ const projectAliases: Record<string, string> = {
 
 export const searchEntries: SearchEntry[] = [
   { title: '首页', description: '认识马志昊 · 开发、工程与 AI', href: '/', group: '页面', keywords: 'home 个人简介' },
-  { title: '视差漫游', description: '随滚动探索作品与经历', href: '/immersive', group: '页面', keywords: 'parallax immersive 视差 滚动 动效 漫游 展示' },
+  { title: '宇宙漫游', description: '八站旅程：从地球出发，穿越星云与恒星群，回望银河', href: '/immersive', group: '页面', keywords: 'parallax immersive 视差 滚动 动效 漫游 宇宙 星空 地球 月球 土星 星云 恒星 银河 旋臂' },
   { title: '项目作品', description: '从小程序到企业平台，查看项目与技术实践', href: '/projects', group: '页面', keywords: 'projects portfolio 作品集' },
   { title: '经历与简历', description: '工作、教育、技能与获奖经历', href: '/resume', group: '页面', keywords: `resume experience education 简历 下载 ${education.map(item => `${item.organization} ${item.summary}`).join(' ')}` },
   { title: '关于我', description: '我的路径、思考与工作方式', href: '/about', group: '页面', keywords: 'about 介绍 故事' },

@@ -12,9 +12,10 @@ type Props = {
   title?: string;
   description?: string;
   noindex?: boolean;
+  showFooter?: boolean;
 };
 
-const { title = site.name, description = site.tagline, noindex = false } = Astro.props;
+const { title = site.name, description = site.tagline, noindex = false, showFooter = true } = Astro.props;
 const browserTitle = `${site.name}的个人网站`;
 const pageTitle = title === site.name ? `${site.name} · 开发、工程与 AI` : `${title} · ${site.name}`;
 const productionSite = Astro.site && !['example.com', 'localhost', '127.0.0.1'].includes(Astro.site.hostname) ? Astro.site : undefined;
@@ -71,7 +72,7 @@ const person = {
     <main class="page-main" id="main" tabindex="-1">
       <slot />
     </main>
-    <Footer />
+    {showFooter && <Footer />}
     <SiteTools />
   </body>
 </html>

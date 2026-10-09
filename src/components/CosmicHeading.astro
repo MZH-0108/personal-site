@@ -1,0 +1,9 @@
+---
+type Props = { id: string; lines: string[]; first?: boolean };
+const { id, lines, first = false } = Astro.props;
+const Tag = first ? 'h1' : 'h2';
+let order = 0;
+---
+<Tag id={id} class={first ? 'cosmic-title' : 'cosmic-heading'} data-cosmic-heading aria-label={lines.join('')}>
+  {lines.map((line, index) => <span class:list={['cosmic-title-line', { 'cosmic-title-emphasis': index > 0 }]} style={`--line-glyph-count:${[...line].length}`} aria-hidden="true">{[...line].map((character, localOrder) => <span class="cosmic-glyph" style={`--glyph-order:${order++};--glyph-local-order:${localOrder}`}>{character}</span>)}</span>)}
+</Tag>
