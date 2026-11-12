@@ -4,7 +4,7 @@ import Icon from '../components/Icon.astro';
 import { withBase } from '../paths';
 import '../styles/creative.css';
 ---
-<BaseLayout title="创意空间" description="马志昊的创意空间：拨动 MZH 粒子字场，点击震荡，释放粒子，再让它们重新聚合。" showFooter={false}>
+<BaseLayout title="创意空间" description="马志昊的创意空间：拨动 MZH 粒子字场，点击震荡，释放粒子，再让它们重新聚合。" showFooter={false} themeColor="#0b1018">
   <section class="creative-space" data-creative data-renderer="fallback" data-motion="on" aria-labelledby="creative-title">
     <div class="creative-stage">
       <img class="creative-fallback" src={withBase('/images/creative/particle-fallback.webp')} width="1440" height="720" alt="由银白与钴蓝粒子构成的 MZH 三维字形" loading="eager" decoding="async" />

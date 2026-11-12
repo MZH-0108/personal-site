@@ -7,10 +7,11 @@ import microscope from '@fortawesome/fontawesome-free/svgs/solid/microscope.svg?
 import layerGroup from '@fortawesome/fontawesome-free/svgs/solid/layer-group.svg?raw';
 import print from '@fortawesome/fontawesome-free/svgs/solid/print.svg?raw';
 import copy from '@fortawesome/fontawesome-free/svgs/regular/copy.svg?raw';
+import download from '@fortawesome/fontawesome-free/svgs/solid/download.svg?raw';
 
 // Render only the selected local SVG at build time; no icon font or browser JS.
 // The original Font Awesome license notice is retained inside each SVG.
-const icons = { 'arrow-right': arrowRight, 'arrow-up-right-from-square': arrowUpRight, 'location-dot': locationDot, 'code-branch': codeBranch, microscope, 'layer-group': layerGroup, print, copy };
+const icons = { 'arrow-right': arrowRight, 'arrow-up-right-from-square': arrowUpRight, 'location-dot': locationDot, 'code-branch': codeBranch, microscope, 'layer-group': layerGroup, print, copy, download };
 type Props = { name: keyof typeof icons };
 const { name } = Astro.props;
 ---

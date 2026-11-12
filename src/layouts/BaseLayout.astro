@@ -13,10 +13,11 @@ type Props = {
   description?: string;
   noindex?: boolean;
   showFooter?: boolean;
+  /** Pages with their own fixed dark canvas pin the browser chrome colour instead of following the site theme. */
+  themeColor?: string;
 };
 
-const { title = site.name, description = site.tagline, noindex = false, showFooter = true } = Astro.props;
-const browserTitle = `${site.name}的个人网站`;
+const { title = site.name, description = site.tagline, noindex = false, showFooter = true, themeColor } = Astro.props;
 const pageTitle = title === site.name ? `${site.name} · 开发、工程与 AI` : `${title} · ${site.name}`;
 const productionSite = Astro.site && !['example.com', 'localhost', '127.0.0.1'].includes(Astro.site.hostname) ? Astro.site : undefined;
 const canonical = productionSite ? new URL(Astro.url.pathname, productionSite).href : undefined;
@@ -38,7 +39,7 @@ const person = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
-    <meta name="theme-color" content="#f7f7f2" />
+    <meta name="theme-color" content={themeColor ?? '#f7f7f2'} data-fixed={themeColor ? '' : undefined} />
     <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_CN" />
@@ -54,14 +55,14 @@ const person = {
     {socialImage && <meta property="og:image:alt" content={`${site.name}的彩色肖像`} />}
     {socialImage && <meta name="twitter:image" content={socialImage} />}
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon-mzh.svg')} />
-    <title>{browserTitle}</title>
+    <title>{pageTitle}</title>
     <script is:inline>
       (() => {
         let savedTheme;
         try { savedTheme = localStorage.getItem('mz-theme'); } catch {}
         const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#121a1e' : '#f7f7f2');
+        document.querySelector('meta[name="theme-color"]:not([data-fixed])')?.setAttribute('content', theme === 'dark' ? '#121a1e' : '#f7f7f2');
       })();
     </script>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />

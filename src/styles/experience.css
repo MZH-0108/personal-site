@@ -12,6 +12,14 @@
 .cv-print-button:hover { transform: translateY(-2px); border-color: var(--blue); }
 .cv-actions > a { font-size: 12px; text-decoration: none; color: var(--blue); }
 .cv-actions > a span { margin-left: 8px; }
+.cv-download { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--text); }
+.cv-download:hover { color: var(--blue); }
+.cv-side-experience { margin-top: 10px; padding-top: 22px; border-top: 1px solid var(--line); }
+.cv-side-experience h3 { margin: 0 0 14px; }
+.cv-side-experience article { display: grid; grid-template-columns: 150px minmax(0, 1fr); column-gap: 20px; padding: 6px 0; }
+.cv-side-experience article p { margin: 0; font-size: 14px; line-height: 1.8; color: var(--text); }
+.cv-side-experience .cv-side-summary { grid-column: 2; color: var(--muted); font-size: 13px; }
+@media (max-width: 700px) { .cv-side-experience article { grid-template-columns: 1fr; } .cv-side-experience .cv-side-summary { grid-column: 1; } }
 .cv-overview { display: grid; grid-template-columns: .65fr repeat(3, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 0; margin-bottom: 58px; }
 .cv-overview-heading { padding: 14px 22px 14px 0; }
 .cv-overview-heading h2 { margin: 9px 0 0; font-size: 18px; letter-spacing: -.02em; }
@@ -241,6 +249,10 @@
   .journey-section-heading h2 { font-size: 14pt; margin: 0; }
   .journey-timeline { margin-left: 11.5pt; }
   .journey-entry { padding: 0 0 16pt 19pt; break-inside: avoid; }
+  .cv-side-experience { margin-top: 0; padding-top: 8pt; break-inside: avoid; }
+  .cv-side-experience article { grid-template-columns: 90pt 1fr; column-gap: 10pt; padding: 2pt 0; }
+  .cv-side-experience article p { font-size: 8pt; }
+  .cv-side-experience .cv-side-summary { font-size: 7.5pt; }
   .journey-entry::before { width: 5pt; height: 5pt; left: -3pt; top: 3pt; box-shadow: none !important; }
   .journey-period { font-size: 7pt; margin-bottom: 4pt; }
   .journey-entry h3 { font-size: 11pt; margin-bottom: 3pt; }
