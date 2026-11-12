@@ -10,7 +10,7 @@
 - Evidence directory: `E:/猪崽崽/.site-qa/creative-2026-11-12/`.
 - Full-view comparison: `comparison-full.png`, source left, actual resting state right. Interaction-state comparison: `comparison-hover.png`, source left, actual hover near the H right. The source is a generated visual concept, not a deterministic simulation frame; particle positions and cursor rendering are not compared pixel-for-pixel.
 - Focused typography comparison: `comparison-type.png`, source and actual crop x35/y115/w500/h355.
-- Previous homepage QA is preserved in `docs/design-qa-homepage-option-2.md`.
+- Previous homepage QA is preserved in `design-qa-homepage-option-2.md`.
 
 ## Findings and comparison history
 

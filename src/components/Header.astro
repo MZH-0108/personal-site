@@ -9,12 +9,12 @@ type Props = {
 const currentPath = Astro.props.pathname.replace(/\/$/, '') || '/';
 const navigation = [
   { label: '首页', href: '/' },
-  { label: '漫游', href: '/immersive' },
-  { label: '创意', href: '/creative' },
   { label: '项目', href: '/projects' },
   { label: '经历', href: '/resume' },
   { label: '关于', href: '/about' },
   { label: '笔记', href: '/writing' },
+  { label: '漫游', href: '/immersive' },
+  { label: '创意', href: '/creative' },
   { label: '联系', href: '/contact' },
 ];
 const isActive = (href: string) => {
