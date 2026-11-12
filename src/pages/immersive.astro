@@ -12,7 +12,7 @@ const assets = {
   saturn: withBase('/images/cosmos/saturn.webp'),
 };
 ---
-<BaseLayout title="宇宙漫游" description="滚动开启八站宇宙旅程：掠过月面与土星，穿越星云、恒星群和旋臂，回望银河全景。" showFooter={false} themeColor="#03050a">
+<BaseLayout title="宇宙漫游" description="滚动开启八站宇宙旅程：掠过月面与土星，穿越星云、恒星群和旋臂，回望银河全景。" showFooter={false}>
   <div class="cosmic-experience" data-cosmic data-assets={JSON.stringify(assets)} data-renderer="fallback" data-motion="system" data-chapter="earth" style={`--earth-map:url("${assets.earth}");--moon-map:url("${assets.moon}");--saturn-map:url("${assets.saturn}")`}>
     <div class="cosmic-stage" aria-hidden="true">
       <div class="cosmic-fallback-stars"></div>

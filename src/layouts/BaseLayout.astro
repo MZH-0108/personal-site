@@ -13,11 +13,13 @@ type Props = {
   description?: string;
   noindex?: boolean;
   showFooter?: boolean;
-  /** Pages with their own fixed dark canvas pin the browser chrome colour instead of following the site theme. */
-  themeColor?: string;
 };
 
-const { title = site.name, description = site.tagline, noindex = false, showFooter = true, themeColor } = Astro.props;
+// Pages that draw their own fixed dark canvas pin the browser chrome colour instead of following the site theme.
+const fixedThemeColors: Record<string, string> = { creative: '#0b1018', immersive: '#03050a' };
+
+const { title = site.name, description = site.tagline, noindex = false, showFooter = true } = Astro.props;
+const themeColor = fixedThemeColors[Astro.url.pathname.split('/').filter(Boolean).pop() ?? ''];
 const pageTitle = title === site.name ? `${site.name} · 开发、工程与 AI` : `${title} · ${site.name}`;
 const productionSite = Astro.site && !['example.com', 'localhost', '127.0.0.1'].includes(Astro.site.hostname) ? Astro.site : undefined;
 const canonical = productionSite ? new URL(Astro.url.pathname, productionSite).href : undefined;
