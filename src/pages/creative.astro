@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { withBase } from '../paths';
+import '../styles/creative.css';
+---
+<BaseLayout title="创意空间" description="马志昊的创意空间：拨动 MZH 粒子字场，点击震荡，释放粒子，再让它们重新聚合。" showFooter={false}>
+  <section class="creative-space" data-creative data-renderer="fallback" data-motion="on" aria-labelledby="creative-title">
+    <div class="creative-stage">
+      <img class="creative-fallback" src={withBase('/images/creative/particle-fallback.webp')} width="1440" height="720" alt="由银白与钴蓝粒子构成的 MZH 三维字形" loading="eager" decoding="async" />
+      <canvas class="creative-canvas" data-creative-canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="creative-interaction" data-creative-surface role="group" aria-label="MZH 粒子字场" aria-describedby="creative-instructions creative-keyboard" tabindex="-1" hidden></div>
+    <div class="creative-layout">
+      <div class="creative-copy">
+        <p class="creative-eyebrow">创意空间 <span aria-hidden="true">/</span> TYPE FIELD</p>
+        <h1 id="creative-title">把想法，<br />推成形。</h1>
+        <p class="creative-description">移动指针，让字形重新生长。</p>
+      </div>
+      <p class="creative-loading" data-creative-loading role="status">正在唤醒粒子…</p>
+      <div class="creative-controls">
+        <p class="creative-hint" id="creative-instructions">移动扰动 · 点击震荡</p>
+        <div class="creative-actions">
+          <button class="creative-primary" type="button" data-creative-release aria-pressed="false" disabled>释放粒子</button>
+          <button class="creative-secondary" type="button" data-creative-gather disabled>重新聚合</button>
+        </div>
+        <button class="creative-motion" type="button" data-creative-motion aria-pressed="false" disabled>静态模式</button>
+      </div>
+      <p class="creative-status" data-creative-status role="status" aria-live="polite"></p>
+      <div class="creative-footer"><p>为好奇而写的代码。</p><a href={withBase('/')}>返回个人网站 <Icon name="arrow-up-right-from-square" /></a></div>
+      <p class="creative-sr-only" id="creative-keyboard">触屏左右拖动扰动粒子，上下滑动浏览。键盘左右方向键移动扰动位置，Enter 震荡，空格释放或聚合，Escape 重新聚合。</p>
+      <noscript><p class="creative-noscript">当前为静态展示。启用 JavaScript 后，可拨动、释放与重新聚合粒子。</p></noscript>
+    </div>
+  </section>
+</BaseLayout>
+<script>import '../scripts/creative';</script>
