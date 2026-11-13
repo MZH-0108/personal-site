@@ -1,4 +1,5 @@
-import { comboCall } from './badminton-combo';
+import { comboCall, comboFlourish } from './badminton-combo';
+import { themeName } from './badminton-themes';
 import { createShuttle, followPointer, stepShuttle, type Racket } from './badminton-physics';
 import type { BadmintonLayout, createBadmintonScene } from './badminton-scene';
 
@@ -20,6 +21,16 @@ function initializeBadminton() {
   const status = root.querySelector<HTMLElement>('[data-badminton-status]');
   const hint = root.querySelector<HTMLElement>('[data-badminton-hint]');
   const combo = root.querySelector<HTMLElement>('[data-badminton-combo]');
+  const fx = root.querySelector<HTMLElement>('[data-badminton-fx]');
+  const fxLabel = root.querySelector<HTMLElement>('[data-badminton-fx-label]');
+  const multiOutput = root.querySelector<HTMLElement>('[data-badminton-multi]');
+  const fever = root.querySelector<HTMLElement>('[data-badminton-fever]');
+  const clock = root.querySelector<HTMLElement>('[data-badminton-clock]');
+  const params = new URLSearchParams(location.search);
+  const theme = themeName(params.get('style'));
+  root.dataset.style = theme;
+  const previewStreak = Number.parseInt(params.get('preview') ?? '', 10);
+
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = matchMedia('(pointer: coarse)');
 
@@ -27,6 +38,8 @@ function initializeBadminton() {
   let layout: BadmintonLayout | undefined;
   let disposed = false, active = false, playing = false, stopped = false;
   try { stopped = sessionStorage.getItem(MOTION_KEY) === 'off'; } catch {}
+  // A preview holds the scene still (static mode) while the call-out animations still play.
+  if (Number.isFinite(previewStreak) && previewStreak > 0) stopped = true;
   let frame = 0, previous = 0, elapsed = 0, swing = 0, streak = 0, best = 0;
   try { best = Math.max(0, Number.parseInt(localStorage.getItem(BEST_KEY) ?? '0', 10) || 0); } catch {}
   let ratio = Math.min(devicePixelRatio || 1, innerWidth < 800 ? 1.25 : 1.5), slowFrames = 0;
@@ -42,9 +55,12 @@ function initializeBadminton() {
     clearTimeout(announcement);
     announcement = setTimeout(() => { if (status) status.textContent = ''; }, 4000);
   };
+  const pad = (value: number) => theme === 'arcade' ? String(value).padStart(4, '0') : String(value);
   const renderScore = () => {
-    if (countOutput) countOutput.textContent = String(streak);
-    if (bestOutput) bestOutput.textContent = String(best);
+    if (countOutput) countOutput.textContent = pad(streak);
+    if (bestOutput) bestOutput.textContent = pad(best);
+    if (multiOutput) multiOutput.textContent = String(Math.min(5, 1 + Math.floor(streak / 5)));
+    if (fever) fever.style.transform = `scaleX(${((streak % 10) / 10).toFixed(2)})`;
   };
   const bump = () => {
     if (!countOutput) return;
@@ -64,6 +80,14 @@ function initializeBadminton() {
     combo.classList.remove('is-live');
     void combo.offsetWidth;
     combo.classList.add('is-live');
+    if (fx && fxLabel) {
+      fxLabel.textContent = comboFlourish(theme, count, call.tier);
+      fx.dataset.tier = call.tier;
+      fx.style.left = combo.style.left; fx.style.top = combo.style.top;
+      fx.classList.remove('is-live'); void fx.offsetWidth; fx.classList.add('is-live');
+    }
+    root.classList.remove('is-shaking'); void root.offsetWidth;
+    if (call.tier !== 'end') root.classList.add('is-shaking');
   };
   const clampTarget = () => {
     if (!layout) return;
@@ -104,6 +128,7 @@ function initializeBadminton() {
         streak = 0; renderScore();
       }
       swing = Math.max(0, swing - delta * 4.5);
+      if (clock && streak > 0) clock.textContent = `${String(Math.floor(elapsed / 60)).padStart(2, '0')}:${String(Math.floor(elapsed % 60)).padStart(2, '0')}`;
     }
     scene.update({ delta, time: elapsed, shuttle, racket, swing, reduced: !active });
     slowFrames = interval > 29 ? slowFrames + 1 : Math.max(0, slowFrames - 1);
@@ -199,7 +224,7 @@ function initializeBadminton() {
     try {
       const { createBadmintonScene } = await import('./badminton-scene');
       if (disposed) return;
-      scene = await createBadmintonScene(canvas);
+      scene = await createBadmintonScene(canvas, theme);
       if (disposed) { scene.dispose(); return; }
       root.dataset.renderer = 'webgl'; surface.hidden = false; surface.tabIndex = 0;
       if (loading) loading.hidden = true;
@@ -210,6 +235,19 @@ function initializeBadminton() {
       racket.x = target.x = centre; racket.y = target.y = layout.racketArea.bottom + .8;
       shuttle.x = centre; shuttle.y = layout.bounds.top;
       setMotion();
+      // Style preview: freeze a mid-rally moment (?style=…&preview=12) for side-by-side comparison.
+      const preview = previewStreak;
+      if (Number.isFinite(preview) && preview > 0) {
+        if (hint) hint.textContent = coarse.matches ? '点「开始颠球」，拖动球拍向上挥' : '移动鼠标控制球拍 · 向上挥拍击球';
+        if (motion) motion.textContent = '静态模式';
+        streak = preview; best = Math.max(best, preview + 18); renderScore();
+        if (clock) clock.textContent = '01:42';
+        Object.assign(shuttle, { x: racket.x + .25, y: racket.y + 2.6, angle: Math.PI / 2 + .25 });
+        scene.update({ delta: 0, time: 0, shuttle, racket, swing: .6, reduced: true });
+        callOut(preview, false, racket.x + .2, racket.y + 1.25);
+        requestAnimationFrame(() => root.querySelectorAll('.is-live, .is-shaking').forEach(element => element.getAnimations({ subtree: true }).forEach(animation => { animation.pause(); animation.currentTime = Number(animation.effect?.getTiming().duration ?? 0) * .32; })));
+        root.dataset.preview = 'ready';
+      }
     } catch {
       if (disposed) return;
       root.dataset.renderer = 'fallback'; surface.hidden = true;
