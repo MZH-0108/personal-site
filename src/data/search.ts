@@ -4,7 +4,7 @@ import { notes } from './notes';
 
 export type SearchEntry = { title: string; description: string; href: string; group: '页面' | '项目' | '笔记'; keywords: string };
 const projectAliases: Record<string, string> = {
-  'mage-xiaoguan': '马哥小馆儿 馬哥小馆儿 家庭 点餐 mysql java',
+  'mage-xiaoguan': '马哥小馆儿 馬哥小馆儿 御膳房点菜本 家庭 点餐 已上线 微信搜索 mysql java',
   procurement: '采购 招标 工作 企业 element ui 前端',
   'tunnel-ai': 'ai 人工智能 计算机视觉 深度学习 标注 岩土 辽宁 裂缝 衬砌 公路隧道 研究方向',
   'takeout-training': '外卖 项目组长 阿里 东软 数据库',
