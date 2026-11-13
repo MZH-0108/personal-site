@@ -27,7 +27,7 @@ export const caseStudies: CaseStudy[] = [
     decisions: [],
     lessons: [],
     evidence: '演示说明',
-    evidenceNote: '封面为场景示意，非生产界面截图。演示使用本站示例数据，不连接真实小程序。源码与小程序码暂未公开。',
+    evidenceNote: '页首截图来自真实小程序的厨房页。下方点餐演示使用本站示例数据，不连接真实小程序。源码与小程序码暂未公开。',
   },
   {
     ...source(1), slug: 'procurement', category: 'work', categoryLabel: '企业实践',
@@ -50,7 +50,7 @@ export const caseStudies: CaseStudy[] = [
     ...source(2), slug: 'tunnel-ai', category: 'research', categoryLabel: '研究实践',
     role: '图像识别工程师', organization: '辽宁省交通科学研究院',
     contribution: ['图像识别开发', '人工图像标注', '技术资料整理'],
-    problem: '参与隧道病害检测项目，工作涵盖图像识别代码、数据标注与技术资料。',
+    problem: '参与隧道病害检测项目，工作涵盖图像识别代码、数据标注与技术资料。硕士阶段延续这一方向，研究公路隧道衬砌裂缝的图像识别。',
     implementation: [
       { title: '图像识别开发', text: '使用 Python 参与隧道病害图像识别代码开发。' },
       { title: '人工图像标注', text: '参与工程图像的人工标注与数据准备。' },

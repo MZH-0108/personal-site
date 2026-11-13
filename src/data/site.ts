@@ -46,10 +46,12 @@ export const site = {
   avatar: 'images/avatar-20260625.png',
   badges: ['硕士在读', 'Java / Vue / 小程序', 'AI & 图像识别'],
   sourceUrl: 'https://github.com/MZH-0108/personal-site',
+  csdnUrl: 'https://blog.csdn.net/mamingshifan?type=blog',
 };
 
 export const socials = [
   { label: 'GitHub', href: 'https://github.com/MZH-0108', icon: 'fa-brands fa-github' },
+  { label: 'CSDN', href: site.csdnUrl, icon: 'fa-solid fa-pen-nib' },
   { label: 'Email', href: `mailto:${site.email}`, icon: 'fa-regular fa-envelope' },
 ];
 
@@ -126,7 +128,7 @@ export const posts = [
   {
     title: '隧道病害图像识别学习笔记（整理中）',
     date: '2026-05-18',
-    summary: '记录研究生阶段在图像识别、数据标注与深度学习方向的学习和实践。',
+    summary: '记录研究生阶段公路隧道衬砌裂缝图像识别方向的学习和实践。',
     href: '/writing',
   },
   {
@@ -197,7 +199,7 @@ export const education = [
     organization: '沈阳建筑大学',
     period: '2025.09 – 至今',
     summary:
-      '研究方向关注工程场景中的 AI、图像识别与数据处理；担任班级团支书、研究生会学术部成员；获得校级奖学金二等奖。',
+      '研究方向为公路隧道衬砌裂缝的图像识别；担任班级团支书、研究生会学术部成员；获得校级奖学金二等奖。',
   },
   {
     title: '计算机科学与技术 本科',

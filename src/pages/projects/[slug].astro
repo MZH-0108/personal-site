@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionNav from '../../components/SectionNav.astro';
-import { Image } from 'astro:assets';
-import projectScene from '../../../public/images/projects/mage-xiaoguan-feature.png';
+import PhoneShots from '../../components/PhoneShots.astro';
 import { caseStudies, type CaseStudy } from '../../data/case-studies';
 import { withBase } from '../../paths';
 import '../../styles/projects.css';
@@ -52,7 +51,7 @@ const sampleDishes = [
       <ul class="work-tags" aria-label="技术与技能">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
       <div class="case-header-actions"><a class="work-action" href={isMage ? '#demo' : '#contribution'}>{isMage ? '体验点餐演示' : '查看我的工作'} <span aria-hidden="true">↓</span></a><a class="work-text-link" href={withBase(related.href)}>{related.title} <span aria-hidden="true">→</span></a></div>
     </header>
-    {isMage && <figure class="case-cover"><Image src={projectScene} alt="馬哥小馆儿项目场景示意，家庭餐桌旁展示点餐手机界面" widths={[640, 960, 1200]} sizes="(max-width: 1200px) 100vw, 1200px" format="webp" loading="eager" /><figcaption>场景示意图，非真实小程序截图</figcaption></figure>}
+    {isMage && <figure class="case-cover"><PhoneShots variant="gallery" eager /><figcaption>真实小程序界面：厨房页按分类浏览菜品，底部汇总已选菜品，可邀请家人点菜或提交菜单。</figcaption></figure>}
     <div class="case-body-grid">
       <div class="case-toc"><p>本页目录</p><SectionNav label="本页目录" items={sectionItems} /></div>
       <div class="case-content">
