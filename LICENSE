@@ -1,0 +1,52 @@
+本仓库采用双重许可 / This repository is dual-licensed.
+
+一、源代码 / Source code
+------------------------------------------------------------
+src/ 中的组件、脚本与样式，以及 scripts/、配置文件等源代码，
+按 MIT 许可证发布（全文见下）。
+The components, scripts and styles in src/, plus scripts/ and the
+configuration files, are released under the MIT License below.
+
+二、个人内容 / Personal content
+------------------------------------------------------------
+以下内容不属于 MIT 许可范围，© 2026 马志昊，保留所有权利：
+The following are NOT covered by the MIT License.
+© 2026 Zhihao Ma (马志昊). All rights reserved.
+
+- 肖像、头像与照片 / portraits, avatars and photos (public/images/avatar-*)
+- 项目图片与简历 PDF / project images and the resume PDF
+- src/data/ 中的个人经历、项目介绍与笔记文字
+  / the biography, project write-ups and notes in src/data/
+
+如需复用上述内容，请先联系 mazhihao0108@gmail.com。
+To reuse any of the above, please ask first.
+
+三、第三方素材 / Third-party assets
+------------------------------------------------------------
+星球贴图（CC BY 4.0，见 public/images/cosmos/sources.json）与自托管字体
+（SIL OFL 1.1，见 public/fonts/cosmos/）按各自原许可使用。
+Planet textures (CC BY 4.0) and self-hosted fonts (SIL OFL 1.1) keep
+their original licenses as recorded alongside them.
+
+------------------------------------------------------------
+MIT License
+
+Copyright (c) 2026 Zhihao Ma (马志昊)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

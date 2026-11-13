@@ -1,5 +1,6 @@
 import type { CreativeFrame } from './creative-scene';
 import { dragAxis, type DragAxis } from './cosmic-rotation';
+import { chapterProgress } from './creative-particles';
 
 type CreativeScene = { update(frame: CreativeFrame): void; resize(width: number, height: number, dpr: number): void; dispose(): void };
 
@@ -15,12 +16,16 @@ function initializeCreativeSpace() {
   const loading = root.querySelector<HTMLElement>('[data-creative-loading]');
   const status = root.querySelector<HTMLElement>('[data-creative-status]');
   const hint = root.querySelector<HTMLElement>('#creative-instructions');
+  const chapters = [...root.querySelectorAll<HTMLElement>('[data-creative-chapter]')];
+  const counter = root.querySelector<HTMLElement>('[data-creative-counter]');
+  const meter = root.querySelector<HTMLElement>('[data-creative-meter]');
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   let scene: CreativeScene | undefined;
   let disposed = false, active = false, released = false;
   let stopped = false;
   try { stopped = sessionStorage.getItem('mzh-creative-motion') === 'off'; } catch {}
-  let frame = 0, previous = 0, elapsed = 0, pulse = 0;
+  let frame = 0, previous = 0, elapsed = 0, pulse = 0, progress = 0;
+  let revealer: IntersectionObserver | undefined;
   let ratio = Math.min(devicePixelRatio || 1, innerWidth < 800 ? 1.25 : 1.5), slowFrames = 0;
   let announcement: ReturnType<typeof setTimeout> | undefined;
   let observer: ResizeObserver | undefined;
@@ -39,7 +44,7 @@ function initializeCreativeSpace() {
     const delta = Math.min(interval / 1000, .05);
     previous = now;
     if (active) elapsed += delta;
-    scene?.update({ time: elapsed, delta, pointer, released, pulse, reduced: !active });
+    scene?.update({ time: elapsed, delta, pointer, released, pulse, reduced: !active, progress });
     slowFrames = interval > 29 ? slowFrames + 1 : Math.max(0, slowFrames - 1);
     if (slowFrames > 55 && ratio > .85) { ratio = Math.max(.85, ratio - .2); resize(); slowFrames = 0; }
     // Adaptive resizing can already queue a frame; keep a single animation chain.
@@ -54,10 +59,26 @@ function initializeCreativeSpace() {
     if (previousDrag) { try { if (surface.hasPointerCapture(previousDrag.id)) surface.releasePointerCapture(previousDrag.id); } catch {} }
     schedule();
   };
+  // Chapters are measured against the sticky stage: a chapter is "current" when its top reaches the stage's top.
+  const measure = () => {
+    const top = root.getBoundingClientRect().top;
+    const stageTop = canvas.getBoundingClientRect().top;
+    const tops = chapters.map(chapter => chapter.getBoundingClientRect().top - top);
+    progress = chapterProgress(tops, stageTop - top);
+    const current = Math.min(chapters.length - 1, Math.max(0, Math.round(progress)));
+    if (root.dataset.chapter !== String(current)) {
+      root.dataset.chapter = String(current);
+      root.dataset.dim = String(chapters[current]?.hasAttribute('data-creative-dim') ?? false);
+      if (counter) counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(chapters.length).padStart(2, '0')}`;
+    }
+    if (meter && chapters.length > 1) meter.style.transform = `scaleX(${(progress / (chapters.length - 1)).toFixed(4)})`;
+  };
+  const onScroll = () => { measure(); schedule(); };
   const resize = () => {
     cancelGesture();
     const bounds = canvas.getBoundingClientRect();
     scene?.resize(bounds.width, bounds.height, ratio);
+    measure();
     schedule();
   };
   const positionPointer = (event: Pick<PointerEvent, 'clientX' | 'clientY'>) => {
@@ -140,27 +161,39 @@ function initializeCreativeSpace() {
     if (disposed) return;
     disposed = true; cancelGesture(); touches.clear(); clearTimeout(announcement);
     if (frame) cancelAnimationFrame(frame);
-    observer?.disconnect(); scene?.dispose();
+    observer?.disconnect(); revealer?.disconnect(); scene?.dispose();
+    window.removeEventListener('scroll', onScroll);
     release?.removeEventListener('click', toggleRelease); gather?.removeEventListener('click', regroup); motion?.removeEventListener('click', toggleMotion);
-    surface.removeEventListener('pointerdown', onDown); surface.removeEventListener('pointermove', onHover); surface.removeEventListener('pointerleave', onLeave); surface.removeEventListener('lostpointercapture', onEnd); surface.removeEventListener('keydown', onKey); surface.removeEventListener('blur', onLeave);
+    surface.removeEventListener('pointerdown', onDown); root.removeEventListener('pointermove', onHover); root.removeEventListener('pointerleave', onLeave); surface.removeEventListener('lostpointercapture', onEnd); surface.removeEventListener('keydown', onKey); surface.removeEventListener('blur', onLeave);
     window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onEnd); window.removeEventListener('pointercancel', onEnd);
     window.removeEventListener('pointerdown', recordTouch, true); window.removeEventListener('pointerup', forgetTouch, true); window.removeEventListener('pointercancel', forgetTouch, true);
     window.removeEventListener('resize', resize); window.removeEventListener('blur', blur); document.removeEventListener('visibilitychange', visibility); preference.removeEventListener('change', setMotion);
   };
   release?.addEventListener('click', toggleRelease); gather?.addEventListener('click', regroup); motion?.addEventListener('click', toggleMotion);
-  surface.addEventListener('pointerdown', onDown); surface.addEventListener('pointermove', onHover); surface.addEventListener('pointerleave', onLeave); surface.addEventListener('lostpointercapture', onEnd); surface.addEventListener('keydown', onKey); surface.addEventListener('blur', onLeave);
+  surface.addEventListener('pointerdown', onDown); root.addEventListener('pointermove', onHover); root.addEventListener('pointerleave', onLeave); surface.addEventListener('lostpointercapture', onEnd); surface.addEventListener('keydown', onKey); surface.addEventListener('blur', onLeave);
   window.addEventListener('pointermove', onMove, { passive: false }); window.addEventListener('pointerup', onEnd); window.addEventListener('pointercancel', onEnd);
   window.addEventListener('pointerdown', recordTouch, true); window.addEventListener('pointerup', forgetTouch, true); window.addEventListener('pointercancel', forgetTouch, true);
+  window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', resize, { passive: true }); window.addEventListener('blur', blur); document.addEventListener('visibilitychange', visibility); preference.addEventListener('change', setMotion);
   document.addEventListener('astro:before-swap', cleanup, { once: true }); window.addEventListener('pagehide', event => { if (!event.persisted) cleanup(); });
   observer = new ResizeObserver(resize); observer.observe(root);
+  // Chapter copy rises into place the first time each chapter comes into view.
+  if ('IntersectionObserver' in window) {
+    revealer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible'); revealer?.unobserve(entry.target);
+    }), { threshold: .12 });
+    chapters.forEach(chapter => revealer?.observe(chapter));
+    root.dataset.reveal = 'ready';
+  }
+  measure();
   setMotion();
   void (async () => {
     try {
       const { createCreativeScene } = await import('./creative-scene');
       const result = await createCreativeScene(canvas);
       if (disposed) { result.dispose(); return; }
-      scene = result; resize(); scene.update({ time: 0, delta: 1 / 60, pointer, released, pulse, reduced: !active });
+      scene = result; resize(); scene.update({ time: 0, delta: 1 / 60, pointer, released, pulse, reduced: !active, progress });
       root.dataset.renderer = 'webgl'; surface.hidden = false; surface.tabIndex = 0;
       [release, gather].forEach(button => { if (button) button.disabled = false; });
       if (loading) loading.hidden = true;
@@ -170,6 +203,8 @@ function initializeCreativeSpace() {
       root.dataset.renderer = 'fallback'; surface.hidden = true;
       if (loading) loading.hidden = true;
       if (hint) hint.textContent = '当前为静态展示';
+      const cue = root.querySelector<HTMLElement>('.creative-scroll-cue');
+      if (cue) cue.firstChild!.textContent = '向下滚动，继续浏览 ';
       setStatus('这台设备暂不支持三维渲染，已保留静态画面。');
     }
   })();

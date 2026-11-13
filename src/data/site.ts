@@ -10,6 +10,8 @@ export type ResumeEntry = {
   period: string;
   summary: string;
   bullets: string[];
+  /** Side entries sit apart from the main technical timeline on the resume. */
+  side?: boolean;
 };
 
 export type Project = {
@@ -141,8 +143,9 @@ export const posts = [
 
 export const experience: ResumeEntry[] = [
   {
-    title: '实习',
+    title: '行政实习',
     organization: '山东省禹城市住房与城乡建设局',
+    side: true,
     period: '2026.01 – 2026.02',
     summary: '参与办公室文档处理、材料整理、问题分析与跨部门沟通协作。',
     bullets: [
