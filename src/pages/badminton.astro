@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { withBase } from '../paths';
+import '../styles/badminton.css';
+---
+<BaseLayout title="羽毛球" description="马志昊爱打羽毛球。在这一页移动球拍颠起一只三维羽毛球：它会像真球一样飞得快、停得急，再球头朝下翻转落下。" showFooter={false}>
+  <section class="bm" data-badminton data-renderer="fallback" data-motion="on" data-playing="false" aria-labelledby="bm-title">
+    <div class="bm-stage">
+      <img class="bm-fallback" src={withBase('/images/badminton/rally-fallback.webp')} width="1440" height="810" alt="深绿色球场上方，一只白色羽毛球悬在蓝色握把的羽毛球拍上方" loading="eager" decoding="async" />
+      <canvas class="bm-canvas" data-badminton-canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="bm-surface" data-badminton-surface role="group" aria-label="颠球游戏" aria-describedby="bm-keyboard" tabindex="-1" hidden></div>
+    <div class="bm-layout">
+      <div class="bm-copy">
+        <p class="bm-eyebrow">羽毛球 <span aria-hidden="true">/</span> BADMINTON</p>
+        <h1 id="bm-title">一拍一拍，<br />接住它。</h1>
+        <p class="bm-description">移动球拍，把羽毛球颠起来。<br />向上挥拍，才算一次。</p>
+      </div>
+      <dl class="bm-score">
+        <div><dt>连续</dt><dd data-badminton-count>0</dd></div>
+        <div><dt>最高</dt><dd data-badminton-best>0</dd></div>
+      </dl>
+      <p class="bm-loading" data-badminton-loading role="status">正在把球拍递给你…</p>
+      <div class="bm-controls">
+        <p class="bm-hint" data-badminton-hint>移动鼠标控制球拍 · 向上挥拍击球</p>
+        <div class="bm-actions">
+          <button class="bm-start" type="button" data-badminton-start aria-pressed="false" disabled>开始颠球</button>
+          <button class="bm-motion" type="button" data-badminton-motion aria-pressed="false" disabled>静态模式</button>
+        </div>
+      </div>
+      <p class="bm-status" data-badminton-status role="status" aria-live="polite"></p>
+      <div class="bm-footer"><p class="bm-scroll-cue">向下滚动 <span aria-hidden="true">↓</span></p><a href={withBase('/about#likes')}>回到关于我 <Icon name="arrow-up-right-from-square" /></a></div>
+      <p class="bm-sr-only" id="bm-keyboard">键盘左右方向键移动球拍，上方向键、空格或回车向上挥拍，下方向键放低球拍。</p>
+      <noscript><p class="bm-noscript">当前为静态展示。启用 JavaScript 后可以移动球拍颠球。</p></noscript>
+    </div>
+
+    <section class="bm-story" aria-labelledby="bm-story-title">
+      <div class="bm-story-copy">
+        <p class="bm-eyebrow">场下 <span aria-hidden="true">/</span> OFF THE COURT</p>
+        <h2 id="bm-story-title">写代码之外，<br />我在球场上。</h2>
+        <p>羽毛球是我最常打的运动。体质健康测试成绩多次破百。</p>
+      </div>
+      <ol class="bm-facts">
+        <li><span>01</span><h3>出手很快</h3><p>羽毛球被击出时速度很高，是球拍运动里最快的一类。</p></li>
+        <li><span>02</span><h3>停得很急</h3><p>16 片羽毛组成的球裙阻力极大，球飞到高处会迅速减速。</p></li>
+        <li><span>03</span><h3>球头朝下</h3><p>阻力把软木球头转到前方，所以球总是翻个身、球头朝下落地。</p></li>
+      </ol>
+      <p class="bm-story-note">这一页里的球，也是按这三点来飞的。</p>
+      <div class="bm-story-links">
+        <a href={withBase('/about')}>认识马志昊 <Icon name="arrow-right" /></a>
+        <a href={withBase('/creative')}>去创意空间 <Icon name="arrow-right" /></a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>
+
+<script>import '../scripts/badminton';</script>

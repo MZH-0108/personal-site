@@ -111,6 +111,7 @@
 .profile-path small { color: var(--muted); font-size: 11px; }
 .profile-path a:hover > span, .profile-path a:focus-visible > span { color: var(--blue); }
 .profile-interest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 23px; }
+.profile-interest-grid .profile-interest-wide { grid-column: 1 / -1; }
 .profile-interest { display: flex; flex-direction: column; align-items: start; padding: 27px 24px; text-decoration: none; background: var(--panel); border: 1px solid var(--line); border-radius: 7px; transition: border-color .2s, transform .2s; }
 .profile-interest:hover { border-color: var(--blue); transform: translateY(-3px); }
 .profile-interest-index { color: var(--blue); font-size: 10px; letter-spacing: .04em; }
