@@ -1,3 +1,4 @@
+import { comboCall } from './badminton-combo';
 import { createShuttle, followPointer, stepShuttle, type Racket } from './badminton-physics';
 import type { BadmintonLayout, createBadmintonScene } from './badminton-scene';
 
@@ -18,6 +19,7 @@ function initializeBadminton() {
   const loading = root.querySelector<HTMLElement>('[data-badminton-loading]');
   const status = root.querySelector<HTMLElement>('[data-badminton-status]');
   const hint = root.querySelector<HTMLElement>('[data-badminton-hint]');
+  const combo = root.querySelector<HTMLElement>('[data-badminton-combo]');
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = matchMedia('(pointer: coarse)');
 
@@ -50,6 +52,19 @@ function initializeBadminton() {
     void countOutput.offsetWidth;
     countOutput.classList.add('is-bumped');
   };
+  /** Pop the live streak just above where the stroke happened; it rises and fades on its own. */
+  const callOut = (count: number, ended: boolean, x: number, y: number) => {
+    const call = comboCall(count, ended);
+    if (!combo || !scene || !call) return;
+    const point = scene.toScreen(x, y);
+    combo.textContent = call.text;
+    combo.dataset.tier = call.tier;
+    combo.style.left = `${(Math.min(.9, Math.max(.1, point.x)) * 100).toFixed(2)}%`;
+    combo.style.top = `${(Math.min(.86, Math.max(.14, point.y)) * 100).toFixed(2)}%`;
+    combo.classList.remove('is-live');
+    void combo.offsetWidth;
+    combo.classList.add('is-live');
+  };
   const clampTarget = () => {
     if (!layout) return;
     const area = layout.racketArea;
@@ -80,9 +95,11 @@ function initializeBadminton() {
       const event = stepShuttle(shuttle, racket, layout.bounds, delta);
       if (event === 'hit') {
         streak += 1; swing = 1; bump();
+        callOut(streak, false, racket.x, racket.y + 1.05);
         if (streak > best) { best = streak; try { localStorage.setItem(BEST_KEY, String(best)); } catch {} }
         renderScore();
       } else if (event === 'drop') {
+        callOut(streak, true, shuttle.x, layout.bounds.floor + 1.1);
         if (streak > 0) setStatus(streak >= best && streak > 1 ? `新纪录：连续 ${streak} 次！` : `这一轮连续 ${streak} 次。`);
         streak = 0; renderScore();
       }

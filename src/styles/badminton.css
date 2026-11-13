@@ -27,6 +27,25 @@
 .bm[data-renderer='webgl'] .bm-canvas { opacity: 1; }
 .bm[data-renderer='webgl'] .bm-fallback { opacity: 0; visibility: hidden; }
 
+/* Live streak call-out: pops above the racket from the fifth stroke on, then rises and fades. */
+.bm-combo { position: absolute; z-index: 3; margin: 0; color: #ffffff; font-size: clamp(40px, 4.4vw, 64px); font-weight: 800; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; white-space: nowrap; text-shadow: 0 6px 26px #0a1f18b3; opacity: 0; transform: translate(-50%, -50%); pointer-events: none; }
+.bm-combo[data-tier='milestone'] { color: #c9f7d9; font-size: clamp(54px, 6vw, 88px); }
+.bm-combo[data-tier='end'] { color: #b5c7bd; font-size: clamp(22px, 2.2vw, 30px); font-weight: 700; letter-spacing: 0; }
+.bm-combo.is-live { animation: bm-combo 900ms cubic-bezier(.2, .8, .2, 1) forwards; }
+.bm-combo[data-tier='milestone'].is-live { animation-duration: 1300ms; }
+.bm-combo[data-tier='end'].is-live { animation: bm-combo-end 1600ms ease forwards; }
+@keyframes bm-combo {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(.6); }
+  18% { opacity: 1; transform: translate(-50%, -60%) scale(1.12); }
+  45% { opacity: 1; transform: translate(-50%, -75%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -150%) scale(.96); }
+}
+@keyframes bm-combo-end {
+  0% { opacity: 0; transform: translate(-50%, -40%); }
+  15%, 70% { opacity: 1; transform: translate(-50%, -60%); }
+  100% { opacity: 0; transform: translate(-50%, -80%); }
+}
+
 /* The surface takes keyboard focus and, while playing on touch screens, every gesture. */
 .bm-surface { position: absolute; z-index: 2; inset: 0 0 auto; height: var(--bm-screen); touch-action: pan-y pinch-zoom; -webkit-user-select: none; user-select: none; cursor: none; }
 .bm[data-motion='off'] .bm-surface, .bm[data-motion='system'] .bm-surface { cursor: default; }
@@ -122,6 +141,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .bm-score dd.is-bumped, .bm-scroll-cue span { animation: none; }
+  .bm-combo { display: none; }
   .bm-fallback, .bm-canvas { transition: none; }
 }
 @media print {

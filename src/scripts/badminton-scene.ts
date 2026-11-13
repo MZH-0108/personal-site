@@ -262,6 +262,13 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement) {
     };
 
     /** Map a pointer in normalised device coordinates onto the play plane. */
+    const screenPoint = new THREE.Vector3();
+    /** Project a point on the play plane to fractions of the canvas (0,0 top-left; 1,1 bottom-right). */
+    const toScreen = (x: number, y: number) => {
+      screenPoint.set(x, y, 0).project(camera);
+      return { x: (screenPoint.x + 1) / 2, y: (1 - screenPoint.y) / 2 };
+    };
+
     const toPlane = (x: number, y: number) => {
       ndc.set(x, y);
       raycaster.setFromCamera(ndc, camera);
@@ -298,6 +305,6 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement) {
     };
 
     canvas.dataset.ready = 'true';
-    return { update, resize, toPlane, dispose, layout: () => layout };
+    return { update, resize, toPlane, toScreen, dispose, layout: () => layout };
   } catch (error) { dispose(); throw error; }
 }
