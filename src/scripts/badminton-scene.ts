@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import type { Bounds, Racket, Shuttle } from './badminton-physics';
-import { themes, type SceneTheme, type ThemeName } from './badminton-themes';
 
 export type BadmintonFrame = {
   delta: number;
@@ -19,8 +18,19 @@ export type BadmintonLayout = {
   compact: boolean;
 };
 
-const BACKGROUND = 0x0f2a21;
-const BLUE = 0x1b4dff;
+/** The broadcast arena: dark stands, stadium lamps, a wooden floor with a green court mat. */
+const ARENA = {
+  background: ['#16243d', '#05080f'] as [string, string],
+  fog: [0x0a1220, 16, 40] as [number, number, number],
+  exposure: 1.1,
+  hemisphere: [0xdfe9ff, 0x2a1a0a, .55] as [number, number, number],
+  key: [0xffffff, 2.8] as [number, number],
+  rim: [0xffd38a, 1.4] as [number, number],
+  court: { line: '#ffffff', mat: '#17734f', width: 1.2 },
+  frame: 0x101317, accent: 0xe11d48, band: 0xe11d48,
+  grip: ['#111827', '#e11d48'] as [string, string],
+  strings: '#f8fafc',
+};
 const FOV = 34;
 
 /** Feather skirt texture: sixteen vanes with scalloped tips and a darker rachis down each. */
@@ -92,18 +102,13 @@ function gripTexture([base, stripe]: [string, string] = ['#1b4dff', '#0f2f9e']) 
 }
 
 /** Procedural floor surfaces for the game themes. */
-function surfaceTexture(kind: 'grid' | 'grass' | 'wood', base: number) {
+function woodTexture() {
   const size = 1024;
   const canvas = document.createElement('canvas'); canvas.width = canvas.height = size;
   const c = canvas.getContext('2d');
   if (!c) throw new Error('Floor texture could not be drawn.');
-  c.fillStyle = `#${base.toString(16).padStart(6, '0')}`; c.fillRect(0, 0, size, size);
-  if (kind === 'grid') {
-    c.strokeStyle = '#ff2bd6'; c.lineWidth = 3; c.shadowColor = '#ff2bd6'; c.shadowBlur = 14;
-    for (let p = 0; p <= size; p += 64) { c.beginPath(); c.moveTo(p, 0); c.lineTo(p, size); c.moveTo(0, p); c.lineTo(size, p); c.stroke(); }
-  } else if (kind === 'grass') {
-    for (let stripe = 0; stripe < 8; stripe++) { c.fillStyle = stripe % 2 ? 'rgba(255,255,255,.07)' : 'rgba(0,80,0,.06)'; c.fillRect(0, stripe * size / 8, size, size / 8); }
-  } else {
+  c.fillStyle = '#9a6a3c'; c.fillRect(0, 0, size, size);
+  {
     for (let plank = 0; plank < 16; plank++) {
       const y = plank * size / 16, tone = 0.9 + ((plank * 37) % 10) / 50;
       c.fillStyle = `rgba(${Math.round(176 * tone)}, ${Math.round(122 * tone)}, ${Math.round(70 * tone)}, 1)`; c.fillRect(0, y, size, size / 16 - 3);
@@ -113,7 +118,7 @@ function surfaceTexture(kind: 'grid' | 'grass' | 'wood', base: number) {
     }
   }
   const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 8;
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping; texture.repeat.set(kind === 'wood' ? 3 : 6, kind === 'wood' ? 6 : 5);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping; texture.repeat.set(3, 6);
   return texture;
 }
 
@@ -131,7 +136,7 @@ function glowTexture(color: string) {
 }
 
 /** Court lines for a doubles court, drawn to scale (13.4 m × 6.1 m) on a transparent sheet. */
-function courtTexture(style: SceneTheme['court'] = themes.court.court) {
+function courtTexture(style: { line: string; mat?: string; glow?: string; width?: number } = ARENA.court) {
   const scale = 80, width = Math.round(6.1 * scale), length = Math.round(13.4 * scale), pad = 8;
   const canvas = document.createElement('canvas'); canvas.width = width + pad * 2; canvas.height = length + pad * 2;
   const c = canvas.getContext('2d');
@@ -152,8 +157,8 @@ function courtTexture(style: SceneTheme['court'] = themes.court.court) {
   return { texture, width: (width + pad * 2) / scale, length: (length + pad * 2) / scale };
 }
 
-export async function createBadmintonScene(canvas: HTMLCanvasElement, name: ThemeName = 'court') {
-  const theme = themes[name];
+export async function createBadmintonScene(canvas: HTMLCanvasElement) {
+  const theme = ARENA;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -162,13 +167,13 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement, name: Them
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const scene = new THREE.Scene();
-  if (Array.isArray(theme.background)) {
+  {
     const sky = document.createElement('canvas'); sky.width = 4; sky.height = 512;
     const c = sky.getContext('2d');
     if (c) { const gradient = c.createLinearGradient(0, 0, 0, 512); gradient.addColorStop(0, theme.background[0]); gradient.addColorStop(1, theme.background[1]); c.fillStyle = gradient; c.fillRect(0, 0, 4, 512); }
     const texture = new THREE.CanvasTexture(sky); texture.colorSpace = THREE.SRGBColorSpace;
     scene.background = texture;
-  } else scene.background = new THREE.Color(theme.background ?? BACKGROUND);
+  }
   scene.fog = new THREE.Fog(...theme.fog);
   const camera = new THREE.PerspectiveCamera(FOV, 1, .1, 80);
   const resources = new Set<{ dispose(): void }>();
@@ -203,24 +208,19 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement, name: Them
     const rim = new THREE.DirectionalLight(...theme.rim);
     rim.position.set(6, 3, -6); scene.add(rim);
 
-    // Cartoon theme: three hard light bands instead of smooth shading.
-    const toonRamp = theme.toon ? keep(new THREE.DataTexture(new Uint8Array([90, 170, 255]), 3, 1, THREE.RedFormat)) : undefined;
-    if (toonRamp) { toonRamp.minFilter = toonRamp.magFilter = THREE.NearestFilter; toonRamp.needsUpdate = true; }
-    const surface = (params: THREE.MeshPhysicalMaterialParameters) => keep(toonRamp
-      ? new THREE.MeshToonMaterial({ color: params.color, emissive: params.emissive, map: params.map ?? null, gradientMap: toonRamp })
-      : new THREE.MeshPhysicalMaterial(params));
+    const surface = (params: THREE.MeshPhysicalMaterialParameters) => keep(new THREE.MeshPhysicalMaterial(params));
 
     // ---- Shuttlecock: cork base with a tape band, a feather skirt, and two thread rings.
     const corkGeometry = keep(new THREE.LatheGeometry([
       new THREE.Vector2(0, -.13), new THREE.Vector2(.045, -.122), new THREE.Vector2(.077, -.098), new THREE.Vector2(.095, -.062),
       new THREE.Vector2(.1, -.025), new THREE.Vector2(.1, .05), new THREE.Vector2(.088, .066), new THREE.Vector2(0, .066),
     ], 40));
-    const corkMaterial = surface({ color: 0xf6f2e9, roughness: .55, sheen: .6, sheenColor: new THREE.Color(0xffffff), emissive: theme.shuttleEmissive ?? 0x000000 });
+    const corkMaterial = surface({ color: 0xf6f2e9, roughness: .55, sheen: .6, sheenColor: new THREE.Color(0xffffff), });
     const bandGeometry = keep(new THREE.CylinderGeometry(.1015, .1015, .032, 40, 1, true));
-    const bandMaterial = surface({ color: theme.band, roughness: .35, clearcoat: .8, emissive: theme.frame.emissive ? theme.band : 0x000000, emissiveIntensity: .6 });
+    const bandMaterial = surface({ color: theme.band, roughness: .35, clearcoat: .8 });
     const { map: featherMap, alphaMap: featherAlpha } = featherTextures(); keep(featherMap); keep(featherAlpha);
     const skirtGeometry = keep(new THREE.CylinderGeometry(.31, .086, .38, 64, 1, true));
-    const skirtMaterial = keep(new THREE.MeshStandardMaterial({ map: featherMap, alphaMap: featherAlpha, alphaTest: .45, side: THREE.DoubleSide, roughness: .78, emissive: theme.shuttleEmissive ?? 0x000000 }));
+    const skirtMaterial = keep(new THREE.MeshStandardMaterial({ map: featherMap, alphaMap: featherAlpha, alphaTest: .45, side: THREE.DoubleSide, roughness: .78 }));
     const threadGeometry = keep(new THREE.TorusGeometry(1, .012, 6, 64));
     const threadMaterial = keep(new THREE.MeshStandardMaterial({ color: 0xcfc6b2, roughness: .9 }));
 
@@ -244,23 +244,12 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement, name: Them
     hero.group.scale.setScalar(1.25);
     scene.add(hero.group);
 
-    // Slow background shuttles drifting through the fog give the stage depth.
-    const drifters = Array.from({ length: theme.drifters ? 7 : 0 }, (_, index) => {
-      const item = buildShuttle();
-      item.group.traverse(object => { object.castShadow = false; });
-      const seed = index * 1.618;
-      // `lane` is a 0–1 position across the drift band; the band itself follows the layout (right side on wide screens).
-      const state = { lane: (Math.sin(seed * 3.1) + 1) / 2, x: 0, y: 6 - ((index * 2.3) % 12), z: -4 - (index % 4) * 2.2, fall: .35 + (index % 3) * .12, turn: .25 + (index % 4) * .08, phase: seed };
-      scene.add(item.group);
-      return { ...item, state };
-    });
-
     // ---- Racket: elliptical frame tube, string bed, throat, shaft and a wrapped grip.
     const racket = new THREE.Group();
     const tilt = new THREE.Group(); racket.add(tilt);
     const headCurve = new THREE.CatmullRomCurve3(new THREE.EllipseCurve(0, 0, .52, .66).getPoints(120).map(point => new THREE.Vector3(point.x, point.y, 0)), true);
-    const frameMaterial = surface({ color: theme.frame.color, metalness: theme.frame.metalness, roughness: .32, clearcoat: 1, clearcoatRoughness: .2, emissive: theme.frame.emissive ?? 0x000000, emissiveIntensity: 1.4 });
-    const accentMaterial = surface({ color: theme.accent.color, metalness: .2, roughness: .3, clearcoat: 1, emissive: theme.accent.emissive ?? 0x000000, emissiveIntensity: 1.2 });
+    const frameMaterial = surface({ color: theme.frame, metalness: .6, roughness: .32, clearcoat: 1, clearcoatRoughness: .2 });
+    const accentMaterial = surface({ color: theme.accent, metalness: .2, roughness: .3, clearcoat: 1 });
     const frame = new THREE.Mesh(keep(new THREE.TubeGeometry(headCurve, 220, .036, 12, true)), frameMaterial); tilt.add(frame);
     const strings = keep(stringTexture(theme.strings));
     const bed = new THREE.Mesh(keep(new THREE.PlaneGeometry(1.04, 1.32)), keep(new THREE.MeshStandardMaterial({ map: strings, transparent: true, alphaTest: .05, side: THREE.DoubleSide, roughness: .4, depthWrite: false })));
@@ -276,50 +265,16 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement, name: Them
     const baseTilt = new THREE.Euler(-1.08, .0, .42, 'YXZ');
 
     // ---- Floor and court.
-    const floorMap = theme.floor.surface ? keep(surfaceTexture(theme.floor.surface, theme.floor.color)) : null;
-    const floor = new THREE.Mesh(keep(new THREE.PlaneGeometry(60, 50)), keep(new THREE.MeshStandardMaterial({ color: floorMap ? 0xffffff : theme.floor.color, map: floorMap, roughness: theme.floor.surface === 'wood' ? .55 : .92 })));
+    const floorMap = keep(woodTexture());
+    const floor = new THREE.Mesh(keep(new THREE.PlaneGeometry(60, 50)), keep(new THREE.MeshStandardMaterial({ color: 0xffffff, map: floorMap, roughness: .55 })));
     floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
     const court = courtTexture(theme.court); keep(court.texture);
-    const courtMesh = new THREE.Mesh(keep(new THREE.PlaneGeometry(court.width, court.length)), keep(new THREE.MeshStandardMaterial({ map: court.texture, transparent: true, roughness: .9, depthWrite: false, emissive: theme.court.glow ? 0xffffff : 0x000000, emissiveMap: theme.court.glow ? court.texture : null, emissiveIntensity: .9 })));
+    const courtMesh = new THREE.Mesh(keep(new THREE.PlaneGeometry(court.width, court.length)), keep(new THREE.MeshStandardMaterial({ map: court.texture, transparent: true, roughness: .9, depthWrite: false })));
     courtMesh.rotation.x = -Math.PI / 2; courtMesh.receiveShadow = true; scene.add(courtMesh);
 
     // ---- Theme scenery behind the play plane.
     const scenery = new THREE.Group(); scene.add(scenery);
-    if (theme.extras === 'stars') {
-      const positions = new Float32Array(420 * 3);
-      for (let index = 0; index < 420; index++) {
-        positions[index * 3] = (Math.sin(index * 12.9898) * 43758.5453 % 1) * 40;
-        positions[index * 3 + 1] = Math.abs(Math.sin(index * 78.233) * 12543.123 % 1) * 16 - 1;
-        positions[index * 3 + 2] = -14 - Math.abs(Math.sin(index * 3.7) * 911.7 % 1) * 12;
-      }
-      const geometry = keep(new THREE.BufferGeometry()); geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      scenery.add(new THREE.Points(geometry, keep(new THREE.PointsMaterial({ size: .22, map: keep(glowTexture('#ffffff')), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, color: 0xc9b6ff }))));
-      // A neon sun on the horizon, banded like a synthwave poster.
-      const sunCanvas = document.createElement('canvas'); sunCanvas.width = sunCanvas.height = 512;
-      const c = sunCanvas.getContext('2d');
-      if (c) {
-        const gradient = c.createLinearGradient(0, 0, 0, 512); gradient.addColorStop(0, '#ffe45e'); gradient.addColorStop(.55, '#ff2bd6'); gradient.addColorStop(1, '#7c3aed');
-        c.fillStyle = gradient; c.beginPath(); c.arc(256, 256, 250, 0, Math.PI * 2); c.fill();
-        c.globalCompositeOperation = 'destination-out';
-        for (let band = 0; band < 7; band++) c.fillRect(0, 300 + band * 30, 512, 6 + band * 2.4);
-      }
-      const sunTexture = keep(new THREE.CanvasTexture(sunCanvas)); sunTexture.colorSpace = THREE.SRGBColorSpace;
-      const sun = new THREE.Mesh(keep(new THREE.PlaneGeometry(14, 14)), keep(new THREE.MeshBasicMaterial({ map: sunTexture, transparent: true, fog: false, depthWrite: false })));
-      sun.position.set(4, 1.2, -30); scenery.add(sun);
-    } else if (theme.extras === 'clouds') {
-      const cloudMaterial = keep(new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonRamp ?? null, emissive: 0x9fd8ff, emissiveIntensity: .25 }));
-      const puff = keep(new THREE.SphereGeometry(1, 24, 16));
-      for (const [cx, cy, cz, size] of [[-7, 5.6, -16, 1.6], [3, 7.2, -20, 2], [11, 4.8, -18, 1.4], [-1, 3.6, -26, 1.2], [16, 7.5, -24, 1.8]] as const) {
-        const cloud = new THREE.Group();
-        for (const [ox, oy, scale] of [[0, 0, 1], [1.1, -.2, .8], [-1.1, -.25, .75], [.45, .5, .7], [-.5, .45, .65]] as const) {
-          const ball = new THREE.Mesh(puff, cloudMaterial); ball.position.set(ox, oy, 0); ball.scale.setScalar(scale); cloud.add(ball);
-        }
-        cloud.position.set(cx, cy, cz); cloud.scale.setScalar(size); scenery.add(cloud);
-      }
-      // A low striped net in the distance reads as "court" at a glance.
-      const net = new THREE.Mesh(keep(new THREE.BoxGeometry(9, .9, .06)), keep(new THREE.MeshToonMaterial({ color: 0xffffff, gradientMap: toonRamp ?? null, transparent: true, opacity: .75 })));
-      net.position.set(2.5, -1.4, -9); scenery.add(net);
-    } else if (theme.extras === 'arena') {
+    {
       const lamp = keep(glowTexture('#fff3d6'));
       for (let index = 0; index < 9; index++) {
         const sprite = new THREE.Sprite(keep(new THREE.SpriteMaterial({ map: lamp, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false })));
@@ -361,7 +316,6 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement, name: Them
     const hit = new THREE.Vector3(), ndc = new THREE.Vector2();
     const quaternion = new THREE.Quaternion(), roll = new THREE.Quaternion(), axisZ = new THREE.Vector3(0, 0, 1), axisX = new THREE.Vector3(1, 0, 0);
 
-    let driftLeft = -7, driftRight = 7;
     const resize = (width: number, height: number, dpr: number) => {
       if (disposed) return layout;
       const w = Math.max(1, Math.floor(width)), h = Math.max(1, Math.floor(height));
@@ -381,13 +335,8 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement, name: Them
         bounds: { left: centre - span, right: centre + span, floor: floorY + .14, top: halfH * 1.08 },
         racketArea: { left: centre - span, right: centre + span, bottom: floorY + .7, top: compact ? halfH * .1 : halfH * .3 },
       };
-      // Keep the drifting shuttles clear of the copy column on wide screens.
-      driftLeft = compact ? -halfW * 1.2 : centre - span * .55; driftRight = compact ? halfW * 1.2 : halfW * 1.25;
-      // Narrow screens keep only a few drifters so they do not crowd the headline.
-      drifters.forEach((drifter, index) => { drifter.group.visible = !compact || index % 2 === 1; });
       floor.position.set(0, floorY, -12);
       if (scenery.userData.board) scenery.userData.board.position.y = floorY + .65;
-      scenery.children.forEach(child => { if (child instanceof THREE.Mesh && child.geometry.type === 'BoxGeometry') child.position.y = floorY + .45; });
       courtMesh.position.set(centre * .4, floorY + .002, -court.length / 2 + 3.2);
       key.target.position.set(centre, floorY, 0); key.target.updateMatrixWorld();
       return layout;
@@ -422,17 +371,6 @@ export async function createBadmintonScene(canvas: HTMLCanvasElement, name: Them
       roll.setFromAxisAngle(axisX, frame.swing * .5); quaternion.premultiply(roll);
       tilt.quaternion.copy(quaternion);
 
-      for (const drifter of drifters) {
-        const s = drifter.state;
-        if (!frame.reduced) {
-          s.y -= s.fall * frame.delta;
-          if (s.y < -7) { s.y = 7.5; s.lane = (Math.sin(s.phase + frame.time) + 1) / 2; }
-        }
-        s.x = driftLeft + s.lane * (driftRight - driftLeft) * (1 - s.z / 14);
-        drifter.group.position.set(s.x + Math.sin(frame.time * .3 + s.phase) * .4, s.y, s.z);
-        drifter.group.rotation.set(Math.sin(frame.time * s.turn + s.phase) * .5, 0, Math.PI * .15 + Math.cos(frame.time * s.turn * .8 + s.phase) * .6);
-        drifter.spinner.rotation.y = frame.time * .6 + s.phase;
-      }
       renderer.render(scene, camera);
     };
 
