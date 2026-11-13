@@ -2,24 +2,29 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import { withBase } from '../paths';
+import '@fontsource/barlow-condensed/800-italic.css';
+import '@fontsource/barlow-condensed/700.css';
 import '../styles/badminton.css';
 ---
 <BaseLayout title="羽毛球" description="马志昊爱打羽毛球。在这一页移动球拍颠起一只三维羽毛球：它会像真球一样飞得快、停得急，再球头朝下翻转落下。" showFooter={false}>
   <section class="bm" data-badminton data-renderer="fallback" data-motion="on" data-playing="false" aria-labelledby="bm-title">
     <div class="bm-stage">
-      <img class="bm-fallback" src={withBase('/images/badminton/rally-fallback.webp')} width="1440" height="810" alt="深绿色球场上方，一只白色羽毛球悬在蓝色握把的羽毛球拍上方" loading="eager" decoding="async" />
+      <img class="bm-fallback" src={withBase('/images/badminton/rally-fallback.webp')} width="1440" height="810" alt="灯光下的体育馆，木地板上的绿色球场，一只白色羽毛球悬在红黑配色的羽毛球拍上方" loading="eager" decoding="async" />
       <canvas class="bm-canvas" data-badminton-canvas aria-hidden="true"></canvas>
+      <div class="bm-effects" data-badminton-effects aria-hidden="true"></div>
     </div>
     <div class="bm-surface" data-badminton-surface role="group" aria-label="颠球游戏" aria-describedby="bm-keyboard" tabindex="-1" hidden></div>
     <div class="bm-layout">
       <div class="bm-copy">
-        <p class="bm-eyebrow">羽毛球 <span aria-hidden="true">/</span> BADMINTON</p>
+        <p class="bm-eyebrow"><span class="bm-live">LIVE</span> 羽毛球 <span aria-hidden="true">/</span> MZH OPEN</p>
         <h1 id="bm-title">一拍一拍，<br />接住它。</h1>
         <p class="bm-description">移动球拍，把羽毛球颠起来。<br />向上挥拍，才算一次。</p>
       </div>
       <dl class="bm-score">
+        <div class="bm-score-tag" aria-hidden="true"><dt>选手</dt><dd>MZH</dd></div>
         <div><dt>连续</dt><dd data-badminton-count>0</dd></div>
         <div><dt>最高</dt><dd data-badminton-best>0</dd></div>
+        <div class="bm-score-clock" aria-hidden="true"><dt>本轮</dt><dd data-badminton-clock>00:00</dd></div>
       </dl>
       <p class="bm-loading" data-badminton-loading role="status">正在把球拍递给你…</p>
       <div class="bm-controls">

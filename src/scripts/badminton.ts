@@ -1,3 +1,4 @@
+import { comboCall, popStyle } from './badminton-combo';
 import { createShuttle, followPointer, stepShuttle, type Racket } from './badminton-physics';
 import type { BadmintonLayout, createBadmintonScene } from './badminton-scene';
 
@@ -18,6 +19,12 @@ function initializeBadminton() {
   const loading = root.querySelector<HTMLElement>('[data-badminton-loading]');
   const status = root.querySelector<HTMLElement>('[data-badminton-status]');
   const hint = root.querySelector<HTMLElement>('[data-badminton-hint]');
+  const effects = root.querySelector<HTMLElement>('[data-badminton-effects]');
+  const clock = root.querySelector<HTMLElement>('[data-badminton-clock]');
+  const params = new URLSearchParams(location.search);
+  // Development only: ?preview=17 (a number pop) or ?preview=30 (a cheer) freezes that moment for screenshots.
+  const previewStreak = import.meta.env.DEV ? Number.parseInt(params.get('preview') ?? '', 10) : Number.NaN;
+
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = matchMedia('(pointer: coarse)');
 
@@ -25,7 +32,11 @@ function initializeBadminton() {
   let layout: BadmintonLayout | undefined;
   let disposed = false, active = false, playing = false, stopped = false;
   try { stopped = sessionStorage.getItem(MOTION_KEY) === 'off'; } catch {}
-  let frame = 0, previous = 0, elapsed = 0, swing = 0, streak = 0, best = 0;
+  // A preview holds the scene still (static mode) while the call-out animations still play.
+  if (Number.isFinite(previewStreak) && previewStreak > 0) stopped = true;
+  let frame = 0, previous = 0, elapsed = 0, swing = 0, streak = 0, best = 0, rallyTime = 0;
+  /** Set by the development preview so a frozen frame is not re-posed or cleaned up. */
+  let previewing = false;
   try { best = Math.max(0, Number.parseInt(localStorage.getItem(BEST_KEY) ?? '0', 10) || 0); } catch {}
   let ratio = Math.min(devicePixelRatio || 1, innerWidth < 800 ? 1.25 : 1.5), slowFrames = 0;
   let observer: ResizeObserver | undefined;
@@ -49,6 +60,73 @@ function initializeBadminton() {
     countOutput.classList.remove('is-bumped');
     void countOutput.offsetWidth;
     countOutput.classList.add('is-bumped');
+  };
+  /** Place an effect at a play-plane point, as percentages of the stage, kept inside a margin. */
+  const place = (element: HTMLElement, x: number, y: number, margin: { x: [number, number]; y: [number, number] }) => {
+    if (!scene) return;
+    const point = scene.toScreen(x, y);
+    element.style.left = `${(Math.min(margin.x[1], Math.max(margin.x[0], point.x)) * 100).toFixed(2)}%`;
+    element.style.top = `${(Math.min(margin.y[1], Math.max(margin.y[0], point.y)) * 100).toFixed(2)}%`;
+  };
+  const spawn = (element: HTMLElement, life: number) => {
+    if (!effects) return;
+    // Keep the layer light: the oldest effects make way if strokes come very fast.
+    while (effects.childElementCount > 6) effects.firstElementChild?.remove();
+    effects.append(element);
+    if (!previewing) setTimeout(() => element.remove(), life);
+  };
+  /**
+   * Celebrate a stroke: a tilted number beside the shuttle, an English cheer on every tenth stroke,
+   * or a quiet note when a long rally ends. `heading` is the shuttle's sideways speed after the stroke.
+   */
+  const celebrate = (count: number, ended: boolean, x: number, y: number, heading: number) => {
+    const call = comboCall(count, ended);
+    if (!effects || !scene || !call) return;
+    if (call.kind === 'pop' || call.kind === 'end') {
+      const style = popStyle(count, heading);
+      const pop = document.createElement('span');
+      pop.className = call.kind === 'end' ? 'bm-pop bm-pop-end' : 'bm-pop';
+      pop.textContent = call.text;
+      if (call.kind === 'pop') pop.dataset.text = call.text;
+      pop.style.setProperty('--rot', `${style.rotate}deg`);
+      pop.style.setProperty('--scale', String(style.scale));
+      pop.style.setProperty('--drift', `${style.drift}px`);
+      place(pop, x + style.side * .7, y + .25, { x: [.06, .94], y: [.1, .9] });
+      spawn(pop, call.kind === 'end' ? 1800 : 1100);
+      return;
+    }
+    const cheer = document.createElement('div');
+    cheer.className = 'bm-cheer';
+    cheer.dataset.level = String(call.level);
+    const rays = document.createElement('span'); rays.className = 'bm-cheer-rays';
+    // Two stacked copies: a thick dark outline underneath, the glossy gradient fill on top.
+    const word = document.createElement('strong'); word.className = 'bm-cheer-word';
+    const edge = document.createElement('span'); edge.className = 'bm-cheer-edge'; edge.textContent = call.text;
+    const fill = document.createElement('span'); fill.className = 'bm-cheer-fill'; fill.textContent = call.text; fill.dataset.text = call.text;
+    word.append(edge, fill);
+    const sub = document.createElement('span'); sub.className = 'bm-cheer-sub'; sub.textContent = `${call.count} HITS`;
+    cheer.append(rays);
+    for (let index = 0; index < 6; index++) {
+      const sparkle = document.createElement('span'); sparkle.className = 'bm-sparkle';
+      sparkle.style.setProperty('--x', `${Math.round(Math.cos(index * 1.05 + .4) * (150 + (index % 2) * 60))}px`);
+      sparkle.style.setProperty('--y', `${Math.round(Math.sin(index * 1.05 + .4) * (70 + (index % 3) * 22))}px`);
+      sparkle.style.setProperty('--delay', `${120 + index * 70}ms`);
+      cheer.append(sparkle);
+    }
+    for (let index = 0; index < 10 + call.level * 4; index++) {
+      const bit = document.createElement('i');
+      bit.style.setProperty('--a', `${Math.round(index * (360 / (10 + call.level * 4)) + Math.random() * 14)}deg`);
+      bit.style.setProperty('--d', `${Math.round(130 + Math.random() * 120 + call.level * 18)}px`);
+      bit.style.setProperty('--spin', `${Math.round(Math.random() * 720 - 360)}deg`);
+      cheer.append(bit);
+    }
+    cheer.append(word, sub);
+    // Cheers sit beside the action but stay well inside the stage so the whole word is readable.
+    // Wide screens keep it over the court on the right, clear of the copy and scoreboard; phones centre it.
+    const compact = layout?.compact ?? false;
+    place(cheer, x + (heading >= 0 ? -1.1 : 1.1), y + 1.1, { x: compact ? [.5, .5] : [.56, .72], y: [.28, .58] });
+    spawn(cheer, 2200);
+    root.classList.remove('is-shaking'); void root.offsetWidth; root.classList.add('is-shaking');
   };
   const clampTarget = () => {
     if (!layout) return;
@@ -80,13 +158,18 @@ function initializeBadminton() {
       const event = stepShuttle(shuttle, racket, layout.bounds, delta);
       if (event === 'hit') {
         streak += 1; swing = 1; bump();
+        celebrate(streak, false, shuttle.x, shuttle.y, shuttle.vx);
         if (streak > best) { best = streak; try { localStorage.setItem(BEST_KEY, String(best)); } catch {} }
         renderScore();
       } else if (event === 'drop') {
+        celebrate(streak, true, shuttle.x, layout.bounds.floor + .9, 0);
         if (streak > 0) setStatus(streak >= best && streak > 1 ? `新纪录：连续 ${streak} 次！` : `这一轮连续 ${streak} 次。`);
-        streak = 0; renderScore();
+        streak = 0; rallyTime = 0; renderScore();
       }
       swing = Math.max(0, swing - delta * 4.5);
+      // The clock times the current rally, like a broadcast's rally timer.
+      if (streak > 0) rallyTime += delta;
+      if (clock) clock.textContent = `${String(Math.floor(rallyTime / 60)).padStart(2, '0')}:${String(Math.floor(rallyTime % 60)).padStart(2, '0')}`;
     }
     scene.update({ delta, time: elapsed, shuttle, racket, swing, reduced: !active });
     slowFrames = interval > 29 ? slowFrames + 1 : Math.max(0, slowFrames - 1);
@@ -99,7 +182,7 @@ function initializeBadminton() {
     if (!scene) return;
     const bounds = canvas.getBoundingClientRect();
     layout = scene.resize(bounds.width, bounds.height, ratio);
-    if (!active) pose(); else clampTarget();
+    if (!active && !previewing) pose(); else clampTarget();
     schedule();
   };
 
@@ -193,6 +276,25 @@ function initializeBadminton() {
       racket.x = target.x = centre; racket.y = target.y = layout.racketArea.bottom + .8;
       shuttle.x = centre; shuttle.y = layout.bounds.top;
       setMotion();
+      // Development preview: freeze one celebration part-way so it can be screenshotted.
+      const preview = previewStreak;
+      if (import.meta.env.DEV && Number.isFinite(preview) && preview > 0) {
+        if (hint) hint.textContent = coarse.matches ? '点「开始颠球」，拖动球拍向上挥' : '移动鼠标控制球拍 · 向上挥拍击球';
+        if (motion) motion.textContent = '静态模式';
+        previewing = true;
+        streak = preview; best = Math.max(best, preview + 8); renderScore();
+        if (clock) clock.textContent = '01:42';
+        Object.assign(shuttle, { x: racket.x + .3, y: racket.y + .55, angle: Math.PI / 2 + .35 });
+        scene.update({ delta: 0, time: 0, shuttle, racket, swing: .7, reduced: true });
+        celebrate(preview, false, shuttle.x, shuttle.y, 1.6);
+        const at = Number.parseFloat(params.get('at') ?? '.3');
+        requestAnimationFrame(() => root.getAnimations({ subtree: true }).forEach(animation => {
+          animation.pause();
+          const timing = animation.effect?.getTiming();
+          animation.currentTime = Number(timing?.delay ?? 0) + Number(timing?.duration ?? 0) * at;
+        }));
+        root.dataset.preview = 'ready';
+      }
     } catch {
       if (disposed) return;
       root.dataset.renderer = 'fallback'; surface.hidden = true;
