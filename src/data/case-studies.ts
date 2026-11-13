@@ -91,6 +91,21 @@ export const caseStudies: CaseStudy[] = [
     evidence: '教学职责摘要 · 2024.03—2024.10',
     evidenceNote: '仅介绍本人教学职责；出于隐私与授权考虑，不公开学生身份、课堂照片或学生作品。',
   },
+  {
+    ...source(5), slug: 'obstacle-car', category: 'product', categoryLabel: '个人项目',
+    role: '个人项目', organization: '齐鲁理工学院（本科期间）',
+    contribution: ['自学 Arduino', '超声波测距', '自动避障'],
+    problem: '本科期间的个人动手项目：自学 Arduino 语言，让小车自己发现前方路障并绕开。',
+    implementation: [
+      { title: '自学 Arduino', text: '自学 Arduino 语言与开发板的使用，完成小车的程序编写。' },
+      { title: '超声波测距', text: '通过超声波传感器检测前方路障。' },
+      { title: '自动避障', text: '检测到路障后控制小车自动避让。' },
+    ],
+    decisions: [],
+    lessons: [],
+    evidence: '个人项目 · 本科期间',
+    evidenceNote: '早期动手项目，暂无公开的源码、电路图或演示视频。',
+  },
 ];
 
 export const caseCategories: { key: CaseCategory; label: string }[] = [

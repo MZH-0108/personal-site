@@ -128,3 +128,6 @@ html:not([data-site-tools]) [data-search-open], html:not([data-site-tools]) [dat
   .shell-header, .shell-footer, .tools-back-top, .tools-search, .tools-toast, .skip-link { display: none !important; }
   html, body { color-scheme: light !important; background: #fff !important; color: #171715 !important; }
 }
+.shell-footer-contact > p.shell-alt-emails { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.shell-alt-emails a { color: var(--muted); text-decoration: none; overflow-wrap: anywhere; }
+.shell-alt-emails a:hover { color: var(--text); }

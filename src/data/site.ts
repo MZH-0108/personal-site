@@ -25,7 +25,7 @@ export type Project = {
   imageAlt?: string;
   visualTitle?: string;
   visualSubtitle?: string;
-  category: 'selected' | 'work' | 'research' | 'training';
+  category: 'selected' | 'work' | 'research' | 'training' | 'maker';
   accent: string;
 };
 
@@ -45,6 +45,8 @@ export const site = {
   tagline: '计算机科学与岩土工程交叉背景，关注 AI、图像识别、微信小程序与工程软件开发。',
   location: '山东',
   email: 'mazhihao0108@gmail.com',
+  /** Every public address, primary first. Domestic mailboxes help readers in mainland China. */
+  emails: ['mazhihao0108@gmail.com', '2865574175@qq.com', 'mazhihao0108@163.com'],
   avatar: 'images/avatar-20260625.png',
   badges: ['硕士在读', 'Java / Vue / 小程序', 'AI & 图像识别'],
   sourceUrl: 'https://github.com/MZH-0108/personal-site',
@@ -117,6 +119,18 @@ export const projects: Project[] = [
     visualSubtitle: '编程教学 · 项目辅导',
     category: 'training',
     accent: '#a78bfa',
+  },
+  {
+    title: '智能避障小车',
+    subtitle: '个人项目 / Arduino',
+    description:
+      '本科期间自学 Arduino，基于 Arduino 开发板实现超声波检测路障与自动避障。',
+    tags: ['Arduino', '超声波传感器', '嵌入式'],
+    year: '本科期间',
+    visualTitle: 'OBSTACLE CAR',
+    visualSubtitle: '超声波测距 · 自动避障',
+    category: 'maker',
+    accent: '#f472b6',
   },
 ];
 

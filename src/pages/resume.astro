@@ -13,7 +13,7 @@ const resumeSections = [
   { id: 'projects', label: '项目索引' },
   { id: 'awards', label: '荣誉与责任' },
 ];
-const projectSlugs = ['mage-xiaoguan', 'procurement', 'tunnel-ai', 'takeout-training', 'coding-class'];
+const projectSlugs = ['mage-xiaoguan', 'procurement', 'tunnel-ai', 'takeout-training', 'coding-class', 'obstacle-car'];
 const experienceProjects: Record<string, { slug: string; label: string }> = {
   '辽宁省交通科学研究院': { slug: 'tunnel-ai', label: '隧道病害图像识别' },
   '莱凯创客机器人编程俱乐部': { slug: 'coding-class', label: '编程教学实践' },
@@ -44,7 +44,7 @@ const capabilities = [
         <p class="journey-eyebrow">RESUME / THE JOURNEY</p>
         <h1>{site.name}<span>全栈开发 · 图像识别 · 岩土工程</span></h1>
         <p class="cv-intro">计算机科学本科，岩土工程硕士在读。企业前端、个人产品、研究与教学经历。</p>
-        <p class="cv-contact"><span>{site.role}</span><span>{site.location}</span><a href={'mailto:' + site.email}>{site.email}</a></p>
+        <p class="cv-contact"><span>{site.role}</span><span>{site.location}</span>{site.emails.map((address) => <a href={'mailto:' + address}>{address}</a>)}</p>
       </div>
       <div class="cv-actions">
         <button class="cv-print-button" type="button" data-print-resume>

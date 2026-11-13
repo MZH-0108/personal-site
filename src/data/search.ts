@@ -9,6 +9,7 @@ const projectAliases: Record<string, string> = {
   'tunnel-ai': 'ai 人工智能 计算机视觉 深度学习 标注 岩土 辽宁 裂缝 衬砌 公路隧道 研究方向',
   'takeout-training': '外卖 项目组长 阿里 东软 数据库',
   'coding-class': '教学 老师 讲师 机器人 编程 课程 c',
+  'obstacle-car': '小车 避障 arduino 超声波 嵌入式 硬件 本科',
 };
 
 export const searchEntries: SearchEntry[] = [
@@ -19,7 +20,7 @@ export const searchEntries: SearchEntry[] = [
   { title: '经历与简历', description: '工作、教育、技能与获奖经历', href: '/resume', group: '页面', keywords: `resume experience education 简历 下载 ${education.map(item => `${item.organization} ${item.summary}`).join(' ')}` },
   { title: '关于我', description: '我的路径、思考与工作方式', href: '/about', group: '页面', keywords: 'about 介绍 故事' },
   { title: '笔记与思考', description: '开发复盘、工程方法与学习记录', href: '/writing', group: '页面', keywords: 'writing blog 文章' },
-  { title: '联系我', description: site.email, href: '/contact', group: '页面', keywords: 'contact email 邮箱 微信 github 合作 面试' },
+  { title: '联系我', description: site.email, href: '/contact', group: '页面', keywords: `contact email 邮箱 qq 163 github csdn 合作 ${site.emails.join(' ')}` },
   { title: '成长足迹', description: '跨学科经历与持续学习', href: '/stats', group: '页面', keywords: 'stats 统计 技能' },
   ...caseStudies.map((project): SearchEntry => ({
     title: project.title,
