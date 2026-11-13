@@ -1,5 +1,6 @@
 export type ParticleSeed = { x: number; y: number; z: number; radius: number; blue: boolean; scatterX: number; scatterY: number; scatterZ: number };
-export type ParticleField = { seeds: readonly ParticleSeed[]; positions: Float32Array; velocities: Float32Array; lastPulse: number };
+/** `targets` is where each particle rests; it starts as the word and can be retargeted to morph into other shapes. */
+export type ParticleField = { seeds: readonly ParticleSeed[]; positions: Float32Array; velocities: Float32Array; targets: Float32Array; lastPulse: number };
 export type ParticleInput = { delta: number; time: number; pointer: { x: number; y: number; active: boolean }; released: boolean; pulse: number; reduced: boolean; count?: number };
 
 export function particleRandom(seed = 147) {
@@ -10,7 +11,7 @@ export function particleRandom(seed = 147) {
 export function createParticleField(seeds: readonly ParticleSeed[]): ParticleField {
   const positions = new Float32Array(seeds.length * 3);
   seeds.forEach((seed, index) => { positions[index * 3] = seed.x; positions[index * 3 + 1] = seed.y; positions[index * 3 + 2] = seed.z; });
-  return { seeds, positions, velocities: new Float32Array(positions.length), lastPulse: 0 };
+  return { seeds, positions, velocities: new Float32Array(positions.length), targets: positions.slice(), lastPulse: 0 };
 }
 
 /** Local spring forces are O(n); particles do not run an all-pairs collision solver. */
@@ -28,10 +29,11 @@ export function updateParticleField(field: ParticleField, input: ParticleInput) 
   for (let index = 0; index < count; index++) {
     const seed = field.seeds[index];
     const offset = index * 3;
-    const targetX = seed.x + (input.released ? seed.scatterX : 0);
-    const targetY = seed.y + (input.released ? seed.scatterY : 0);
-    const targetZ = seed.z + (input.released ? seed.scatterZ : 0);
-    const dx = seed.x - centerX, dy = seed.y - centerY;
+    const baseX = field.targets[offset], baseY = field.targets[offset + 1];
+    const targetX = baseX + (input.released ? seed.scatterX : 0);
+    const targetY = baseY + (input.released ? seed.scatterY : 0);
+    const targetZ = field.targets[offset + 2] + (input.released ? seed.scatterZ : 0);
+    const dx = baseX - centerX, dy = baseY - centerY;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const safeDistance = Math.max(.08, distance);
     const pointerForce = hasPointer ? Math.max(0, 1 - distance / 1.5) ** 2 : 0;
@@ -61,4 +63,42 @@ export function updateParticleField(field: ParticleField, input: ParticleInput) 
     }
   }
   field.lastPulse = Number.isFinite(input.pulse) ? input.pulse : field.lastPulse;
+}
+
+const smooth = (edge0: number, edge1: number, value: number) => {
+  const t = Math.min(1, Math.max(0, (value - edge0) / (edge1 - edge0)));
+  return t * t * (3 - 2 * t);
+};
+
+/**
+ * Blend the resting targets between consecutive shapes. `progress` 0 is the first shape, 1 the second, and so on.
+ * Mid-transition the particles loosen along their scatter vectors so one shape visibly dissolves into the next.
+ */
+export function retargetParticleField(field: ParticleField, shapes: readonly Float32Array[], progress: number, reduced = false) {
+  if (!shapes.length) return;
+  const last = shapes.length - 1;
+  const clamped = Math.min(last, Math.max(0, Number.isFinite(progress) ? progress : 0));
+  const index = Math.min(Math.max(0, last - 1), Math.floor(clamped));
+  const from = shapes[index], to = shapes[Math.min(last, index + 1)];
+  const fraction = clamped - index;
+  const blend = reduced ? (fraction < .5 ? 0 : 1) : smooth(.18, .82, fraction);
+  const loosen = reduced ? 0 : Math.sin(blend * Math.PI) * .42;
+  const length = Math.min(field.targets.length, from.length, to.length);
+  for (let offset = 0; offset < length; offset += 3) {
+    const seed = field.seeds[offset / 3];
+    field.targets[offset] = from[offset] + (to[offset] - from[offset]) * blend + seed.scatterX * loosen;
+    field.targets[offset + 1] = from[offset + 1] + (to[offset + 1] - from[offset + 1]) * blend + seed.scatterY * loosen;
+    field.targets[offset + 2] = from[offset + 2] + (to[offset + 2] - from[offset + 2]) * blend + seed.scatterZ * loosen;
+  }
+}
+
+/** Map a scroll offset onto chapter positions: 0 at the first chapter's top, 1 at the second's, clamped at both ends. */
+export function chapterProgress(tops: readonly number[], offset: number) {
+  if (tops.length < 2 || !Number.isFinite(offset)) return 0;
+  if (offset <= tops[0]) return 0;
+  for (let index = 0; index < tops.length - 1; index++) {
+    const start = tops[index], end = tops[index + 1];
+    if (offset < end) return index + (end > start ? (offset - start) / (end - start) : 0);
+  }
+  return tops.length - 1;
 }

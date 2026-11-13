@@ -2,16 +2,25 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import { withBase } from '../paths';
+import { caseStudies } from '../data/case-studies';
+
+// Scroll chapters. Their order must match the shape list in scripts/creative-scene.ts.
+const chapters = [
+  { id: 'product', eyebrow: '做产品', tag: 'PRODUCT', lines: ['一桌家常菜，', '一套小系统。'], body: '馬哥小馆儿：家庭点餐微信小程序，从菜单、微信登录到后端与测试。', cta: '查看馬哥小馆儿', href: '/projects/mage-xiaoguan' },
+  { id: 'engineering', eyebrow: '看工程', tag: 'ENGINEERING AI', lines: ['让机器，', '看懂隧道。'], body: '在辽宁省交通科学研究院参与隧道病害图像识别代码开发与人工标注。', cta: '查看研究实践', href: '/projects/tunnel-ai' },
+  { id: 'teaching', eyebrow: '教与学', tag: 'TEACHING', lines: ['把代码，', '讲给孩子听。'], body: '教授 C、Python、Scratch 与 XRmaker，根据学生基础安排课程和项目练习。', cta: '查看教学实践', href: '/projects/coding-class' },
+];
 import '../styles/creative.css';
 ---
-<BaseLayout title="创意空间" description="马志昊的创意空间：拨动 MZH 粒子字场，点击震荡，释放粒子，再让它们重新聚合。" showFooter={false}>
+<BaseLayout title="创意空间" description="马志昊的创意空间：拨动 MZH 粒子字场与漂浮的三维物体，向下滚动，看粒子依次变形成小程序、隧道与代码。" showFooter={false}>
   <section class="creative-space" data-creative data-renderer="fallback" data-motion="on" aria-labelledby="creative-title">
     <div class="creative-stage">
       <img class="creative-fallback" src={withBase('/images/creative/particle-fallback.webp')} width="1440" height="720" alt="由银白与钴蓝粒子构成的 MZH 三维字形" loading="eager" decoding="async" />
       <canvas class="creative-canvas" data-creative-canvas aria-hidden="true"></canvas>
+      <div class="creative-progress" aria-hidden="true"><span data-creative-counter>01 / 06</span><span class="creative-meter"><i data-creative-meter></i></span></div>
     </div>
     <div class="creative-interaction" data-creative-surface role="group" aria-label="MZH 粒子字场" aria-describedby="creative-instructions creative-keyboard" tabindex="-1" hidden></div>
-    <div class="creative-layout">
+    <div class="creative-layout" data-creative-chapter>
       <div class="creative-copy">
         <p class="creative-eyebrow">创意空间 <span aria-hidden="true">/</span> TYPE FIELD</p>
         <h1 id="creative-title">把想法，<br />推成形。</h1>
@@ -27,10 +36,52 @@ import '../styles/creative.css';
         <button class="creative-motion" type="button" data-creative-motion aria-pressed="false" disabled>静态模式</button>
       </div>
       <p class="creative-status" data-creative-status role="status" aria-live="polite"></p>
-      <div class="creative-footer"><p>为好奇而写的代码。</p><a href={withBase('/')}>返回个人网站 <Icon name="arrow-up-right-from-square" /></a></div>
+      <div class="creative-footer"><p class="creative-scroll-cue">向下滚动，看粒子变形 <span aria-hidden="true">↓</span></p><a href={withBase('/')}>返回个人网站 <Icon name="arrow-up-right-from-square" /></a></div>
       <p class="creative-sr-only" id="creative-keyboard">触屏左右拖动扰动粒子，上下滑动浏览。键盘左右方向键移动扰动位置，Enter 震荡，空格释放或聚合，Escape 重新聚合。</p>
       <noscript><p class="creative-noscript">当前为静态展示。启用 JavaScript 后，可拨动、释放与重新聚合粒子。</p></noscript>
     </div>
+    {chapters.map(chapter => (
+      <section class="creative-chapter" data-creative-chapter aria-labelledby={`creative-${chapter.id}`}>
+        <div class="creative-chapter-copy">
+          <p class="creative-eyebrow">{chapter.eyebrow} <span aria-hidden="true">/</span> {chapter.tag}</p>
+          <h2 id={`creative-${chapter.id}`}>{chapter.lines.map(line => <span class="creative-line"><span>{line}</span></span>)}</h2>
+          <p class="creative-description creative-rise">{chapter.body}</p>
+          <a class="creative-link creative-rise" href={withBase(chapter.href)}>{chapter.cta} <Icon name="arrow-right" /></a>
+        </div>
+      </section>
+    ))}
+    <section class="creative-chapter creative-works" data-creative-chapter data-creative-dim aria-labelledby="creative-works">
+      <div class="creative-chapter-copy">
+        <p class="creative-eyebrow">作品 <span aria-hidden="true">/</span> WORK</p>
+        <h2 id="creative-works"><span class="creative-line"><span>做过的，</span></span><span class="creative-line"><span>都在这里。</span></span></h2>
+      </div>
+      <ul class="creative-cards creative-rise">
+        {caseStudies.map(project => (
+          <li><a class="creative-card" href={withBase(`/projects/${project.slug}`)}>
+            <span class="creative-card-meta"><span>{project.categoryLabel}</span><span>{project.year}</span></span>
+            <strong>{project.title}</strong>
+            <span class="creative-card-tags">{project.tags.slice(0, 3).join(' · ')}</span>
+            <span class="creative-card-open" aria-hidden="true"><Icon name="arrow-right" /></span>
+          </a></li>
+        ))}
+        <li><a class="creative-card creative-card-all" href={withBase('/projects')}>
+          <span class="creative-card-meta"><span>项目索引</span><span>{caseStudies.length} 项</span></span>
+          <strong>全部项目</strong>
+          <span class="creative-card-tags">分类与关键词搜索</span>
+          <span class="creative-card-open" aria-hidden="true"><Icon name="arrow-right" /></span>
+        </a></li>
+      </ul>
+    </section>
+    <section class="creative-chapter creative-finale" data-creative-chapter aria-labelledby="creative-finale">
+      <div class="creative-chapter-copy">
+        <p class="creative-eyebrow">回到起点 <span aria-hidden="true">/</span> FULL CIRCLE</p>
+        <h2 id="creative-finale"><span class="creative-line"><span>为好奇，</span></span><span class="creative-line"><span>而写的代码。</span></span></h2>
+        <div class="creative-finale-actions creative-rise">
+          <a class="creative-link" href="#creative-title">回到顶部 <span aria-hidden="true">↑</span></a>
+          <a class="creative-link" href={withBase('/')}>返回个人网站 <Icon name="arrow-up-right-from-square" /></a>
+        </div>
+      </div>
+    </section>
   </section>
 </BaseLayout>
 <script>import '../scripts/creative';</script>
