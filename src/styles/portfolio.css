@@ -37,4 +37,10 @@ a.intro-portrait-frame,a.intro-portrait-frame:hover{color:#182125;text-decoratio
 .creative-home-entry strong { color: var(--text); font-size: 21px; font-weight: 650; }
 .creative-home-entry > span:first-child > span { color: var(--muted); font-size: 13px; }
 .creative-home-open { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; color: var(--blue); font-size: 13px; }
+.play-entries { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; margin-top: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.play-entries .creative-home-entry { margin-top: 0; border: 0; }
+.play-entries .creative-home-entry + .creative-home-entry { padding-left: 40px; border-left: 1px solid var(--line); }
+.badminton-home-entry .creative-home-open { color: #1f7a52; }
+:root[data-theme='dark'] .badminton-home-entry .creative-home-open { color: #7fd3a4; }
+@media (max-width: 900px) { .play-entries { grid-template-columns: 1fr; } .play-entries .creative-home-entry + .creative-home-entry { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
 @media (max-width: 540px) { .creative-home-entry { align-items: start; flex-direction: column; gap: 14px; padding-block: 22px; } }
