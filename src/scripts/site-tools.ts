@@ -42,7 +42,7 @@ function applyTheme(theme: 'dark' | 'light') {
     button.title = `切换为${next}模式`;
     button.setAttribute('aria-pressed', String(theme === 'dark'));
   });
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#121a1e' : '#f7f7f2');
+  document.querySelector('meta[name="theme-color"]:not([data-fixed])')?.setAttribute('content', theme === 'dark' ? '#121a1e' : '#f7f7f2');
 }
 
 applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');

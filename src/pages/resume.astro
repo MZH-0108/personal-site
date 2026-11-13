@@ -27,6 +27,8 @@ const experienceIds: Record<string, string> = {
   '禹王投资控股有限公司': 'procurement',
   '东软教育集团（培训）': 'takeout-training',
 };
+const mainExperience = experience.filter((item) => !item.side);
+const sideExperience = experience.filter((item) => item.side);
 const capabilities = [
   { title: '前端与小程序', description: '业务页面开发、接口联调与数据迁移。', tools: ['JavaScript', 'Vue', 'ElementUI', '微信小程序'], slug: 'procurement', evidence: '查看企业采购与招标项目' },
   { title: '后端与部署', description: '点餐接口、微信登录、云部署与测试。', tools: ['Java', 'Spring Boot', 'MySQL', 'JUnit', '云托管'], slug: 'mage-xiaoguan', evidence: '查看馬哥小馆儿' },
@@ -49,6 +51,7 @@ const capabilities = [
           <Icon name="print" />
           打印 / 保存为 PDF
         </button>
+        <a class="cv-download" href={withBase('/resume-mazhihao.pdf')} download>下载 PDF 简历 <Icon name="download" /></a>
         <a href={withBase('/contact')}>联系我 <span aria-hidden="true">↗</span></a>
       </div>
     </header>
@@ -69,7 +72,7 @@ const capabilities = [
         <section class="cv-section anchor-section" id="experience" aria-labelledby="experience-title">
           <div class="journey-section-heading"><span>01</span><div><p class="journey-eyebrow">EXPERIENCE</p><h2 id="experience-title">工作与实践</h2></div></div>
           <div class="journey-timeline">
-            {experience.map((item) => (
+            {mainExperience.map((item) => (
               <article class="journey-entry" id={`experience-${experienceIds[item.organization]}`}>
                 <p class="journey-period">{item.period}</p>
                 <h3>{item.title}</h3>
@@ -79,6 +82,18 @@ const capabilities = [
               </article>
             ))}
           </div>
+          {sideExperience.length > 0 && (
+            <div class="cv-side-experience">
+              <h3 class="journey-eyebrow">其他经历</h3>
+              {sideExperience.map((item) => (
+                <article id={`experience-${experienceIds[item.organization]}`}>
+                  <p class="journey-period">{item.period}</p>
+                  <p><strong>{item.title}</strong> · {item.organization}</p>
+                  <p class="cv-side-summary">{item.summary}</p>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
 
         <section class="cv-section anchor-section" id="education" aria-labelledby="education-title">

@@ -10,7 +10,8 @@
     "check": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "astro check"
+    "lint": "astro check",
+    "resume:pdf": "node scripts/export-resume-pdf.mjs"
   },
   "dependencies": {
     "@fontsource/raleway": "^5.2.8",
