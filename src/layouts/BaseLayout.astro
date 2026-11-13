@@ -16,7 +16,7 @@ type Props = {
 };
 
 // Pages that draw their own fixed dark canvas pin the browser chrome colour instead of following the site theme.
-const fixedThemeColors: Record<string, string> = { creative: '#0b1018', immersive: '#03050a' };
+const fixedThemeColors: Record<string, string> = { creative: '#0b1018', immersive: '#03050a', badminton: '#0f2a21' };
 
 const { title = site.name, description = site.tagline, noindex = false, showFooter = true } = Astro.props;
 const themeColor = fixedThemeColors[Astro.url.pathname.split('/').filter(Boolean).pop() ?? ''];
