@@ -28,7 +28,7 @@ const person = {
   '@context': 'https://schema.org', '@type': 'Person', name: site.name,
   description: site.tagline, jobTitle: site.role, email: `mailto:${site.email}`,
   ...(productionSite ? { url: new URL(withBase('/'), productionSite).href, image: socialImage } : {}),
-  sameAs: ['https://github.com/MZH-0108'],
+  sameAs: ['https://github.com/MZH-0108', site.csdnUrl],
   alumniOf: { '@type': 'CollegeOrUniversity', name: '齐鲁理工学院' },
   knowsAbout: ['Java', 'Vue', '微信小程序', '图像识别', '岩土工程'],
 };

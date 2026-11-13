@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
-import projectScene from '../../public/images/projects/mage-xiaoguan-feature.png';
+import PhoneShots from '../components/PhoneShots.astro';
 import { caseStudies, caseCategories } from '../data/case-studies';
 import { withBase } from '../paths';
 import '../styles/projects.css';
@@ -27,8 +26,8 @@ import '../styles/projects.css';
         {caseStudies.map((project, index) => (
           <a href={withBase(`/projects/${project.slug}`)} id={project.slug} class:list={['work-card', { 'work-card-featured': index === 0 }]} data-work-card data-category={project.category} data-search={`${project.title} ${project.title.replaceAll('馬', '马')} ${project.subtitle} ${project.description} ${project.organization} ${project.tags.join(' ')}`}>
             <div class:list={['work-visual-link', `work-visual-${project.slug}`]} aria-hidden="true">
-              {index === 0 ? <Image src={projectScene} alt="" widths={[480, 760, 1100]} sizes="(max-width: 700px) 100vw, 55vw" format="webp" loading="eager" /> : <div class="work-type-visual"><span class="work-visual-index">0{index + 1}</span><span class="work-visual-label">{project.category === 'work' ? 'BUILDING\nFOR BUSINESS' : project.category === 'research' ? 'CODE MEETS\nENGINEERING' : project.slug === 'coding-class' ? 'TEACH.\nBUILD. REPEAT.' : 'FROM LEARNING\nTO BUILDING'}</span><span class="work-visual-detail">{project.tags.slice(0, 3).join(' / ')}</span><span class="work-visual-arrow">↗</span></div>}
-              {index === 0 && <><span class="work-feature-flag">FEATURED · 代表作品</span><span class="work-scene-label">项目场景示意</span></>}
+              {index === 0 ? <PhoneShots variant="fan" decorative eager /> : <div class="work-type-visual"><span class="work-visual-index">0{index + 1}</span><span class="work-visual-label">{project.category === 'work' ? 'BUILDING\nFOR BUSINESS' : project.category === 'research' ? 'CODE MEETS\nENGINEERING' : project.slug === 'coding-class' ? 'TEACH.\nBUILD. REPEAT.' : 'FROM LEARNING\nTO BUILDING'}</span><span class="work-visual-detail">{project.tags.slice(0, 3).join(' / ')}</span><span class="work-visual-arrow">↗</span></div>}
+              {index === 0 && <><span class="work-feature-flag">FEATURED · 代表作品</span><span class="work-scene-label">真实界面截图</span></>}
             </div>
             <div class="work-card-body"><div class="work-card-meta"><span>{project.categoryLabel}</span><span>{project.year}</span></div><h2>{project.title}<span aria-hidden="true">↗</span></h2><p class="work-card-role">{project.role} · {project.organization}</p><p class="work-card-description">{project.description}</p><ul class="work-tags" aria-label="技术与技能">{project.tags.slice(0, 4).map((tag) => <li>{tag}</li>)}</ul><div class="work-card-footer"><span>{project.contribution[0]}</span><span class="work-card-cta">查看项目 <span aria-hidden="true">→</span></span></div></div>
           </a>

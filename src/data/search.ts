@@ -6,7 +6,7 @@ export type SearchEntry = { title: string; description: string; href: string; gr
 const projectAliases: Record<string, string> = {
   'mage-xiaoguan': '马哥小馆儿 馬哥小馆儿 家庭 点餐 mysql java',
   procurement: '采购 招标 工作 企业 element ui 前端',
-  'tunnel-ai': 'ai 人工智能 计算机视觉 深度学习 标注 岩土 辽宁',
+  'tunnel-ai': 'ai 人工智能 计算机视觉 深度学习 标注 岩土 辽宁 裂缝 衬砌 公路隧道 研究方向',
   'takeout-training': '外卖 项目组长 阿里 东软 数据库',
   'coding-class': '教学 老师 讲师 机器人 编程 课程 c',
 };

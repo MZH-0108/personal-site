@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import stirFry from '../assets/mage/kitchen-stir-fry.jpg';
+import meat from '../assets/mage/kitchen-meat.jpg';
+import snacks from '../assets/mage/kitchen-snacks.jpg';
+import drinks from '../assets/mage/kitchen-drinks.jpg';
+
+// Real screenshots of the mini program's kitchen page, one per menu category.
+export const kitchenShots = [
+  { src: stirFry, label: '炒菜' },
+  { src: meat, label: '荤菜' },
+  { src: snacks, label: '小吃' },
+  { src: drinks, label: '饮品' },
+];
+
+type Props = {
+  /** `gallery` lays every shot out in a row with labels; `fan` overlaps three as a cover image. */
+  variant: 'gallery' | 'fan';
+  /** Decorative uses (inside a link that already has a label) pass an empty alt. */
+  decorative?: boolean;
+  eager?: boolean;
+};
+const { variant, decorative = false, eager = false } = Astro.props;
+const shots = variant === 'fan' ? [kitchenShots[2], kitchenShots[0], kitchenShots[1]] : kitchenShots;
+const widths = variant === 'fan' ? [220, 330, 440] : [240, 360, 480];
+const sizes = variant === 'fan' ? '(max-width: 700px) 38vw, 200px' : '(max-width: 700px) 62vw, 260px';
+---
+
+<div class:list={['phone-shots', `phone-shots-${variant}`]}>
+  {shots.map((shot) => (
+    <figure class="phone-shot">
+      <Image
+        src={shot.src}
+        alt={decorative ? '' : `馬哥小馆儿小程序厨房页：${shot.label}分类的菜品列表`}
+        widths={widths}
+        sizes={sizes}
+        format="webp"
+        quality={80}
+        loading={eager ? 'eager' : 'lazy'}
+      />
+      {variant === 'gallery' && <figcaption>{shot.label}</figcaption>}
+    </figure>
+  ))}
+</div>
+
+<style>
+  .phone-shots { display: flex; justify-content: center; }
+  .phone-shot { margin: 0; }
+  /* Host cards style their cover <img> as a full-bleed photo; reset that for framed screenshots. */
+  .phone-shot img { position: static; inset: auto; max-height: none; object-fit: contain; transform: none !important; }
+  .phone-shot img { display: block; width: 100%; height: auto; border: 1px solid #1e28251f; border-radius: 22px; background: #fbf6ec; box-shadow: 0 18px 42px -22px #1b26214d; }
+  .phone-shot figcaption { margin-top: 10px; color: var(--muted, #69716d); font-size: 11px; text-align: center; letter-spacing: .04em; }
+
+  .phone-shots-gallery { gap: 22px; padding: 36px 28px 26px; border-radius: 22px; background: linear-gradient(160deg, #f4efe4, #e6efe9); }
+  .phone-shots-gallery .phone-shot { flex: 0 1 230px; }
+
+  /* Fan: the centre shot sits forward, its neighbours tilt back behind it. */
+  /* Sized against the card in both directions (container units) so the centre phone always fits its height. */
+  .phone-shots-fan { position: absolute; inset: 0; align-items: center; container-type: size; background: linear-gradient(160deg, #f4efe4, #dfece5); }
+  .phone-shots-fan .phone-shot { width: min(31cqw, 43cqh, 200px); transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+  .phone-shots-fan .phone-shot:nth-child(1) { transform: translateX(34%) rotate(-7deg) scale(.88); }
+  .phone-shots-fan .phone-shot:nth-child(2) { position: relative; z-index: 1; }
+  .phone-shots-fan .phone-shot:nth-child(3) { transform: translateX(-34%) rotate(7deg) scale(.88); }
+  .phone-shots-fan .phone-shot img { border-radius: 16px; }
+  :global(a:hover) > .phone-shots-fan .phone-shot:nth-child(1) { transform: translateX(26%) rotate(-9deg) scale(.88); }
+  :global(a:hover) > .phone-shots-fan .phone-shot:nth-child(3) { transform: translateX(-26%) rotate(9deg) scale(.88); }
+
+  :global([data-theme='dark']) .phone-shots-gallery,
+  :global([data-theme='dark']) .phone-shots-fan { background: linear-gradient(160deg, #1d2421, #17201d); }
+
+  @media (max-width: 700px) {
+    /* The gallery scrolls sideways inside its own frame; the page itself never scrolls horizontally. */
+    .phone-shots-gallery { justify-content: flex-start; gap: 14px; padding: 22px 18px 16px; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 16px; }
+    .phone-shots-gallery .phone-shot { flex: 0 0 62%; scroll-snap-align: center; }
+    .phone-shot img { border-radius: 16px; }
+    .phone-shots-fan .phone-shot img { border-radius: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .phone-shots-fan .phone-shot { transition: none; } }
+</style>
