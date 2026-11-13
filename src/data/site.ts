@@ -25,7 +25,7 @@ export type Project = {
   imageAlt?: string;
   visualTitle?: string;
   visualSubtitle?: string;
-  category: 'selected' | 'work' | 'research' | 'training';
+  category: 'selected' | 'work' | 'research' | 'training' | 'maker';
   accent: string;
 };
 
@@ -45,6 +45,8 @@ export const site = {
   tagline: '计算机科学与岩土工程交叉背景，关注 AI、图像识别、微信小程序与工程软件开发。',
   location: '山东',
   email: 'mazhihao0108@gmail.com',
+  /** Every public address, primary first. Domestic mailboxes help readers in mainland China. */
+  emails: ['mazhihao0108@gmail.com', '2865574175@qq.com', 'mazhihao0108@163.com'],
   avatar: 'images/avatar-20260625.png',
   badges: ['硕士在读', 'Java / Vue / 小程序', 'AI & 图像识别'],
   sourceUrl: 'https://github.com/MZH-0108/personal-site',
@@ -62,7 +64,7 @@ export const projects: Project[] = [
     title: '馬哥小馆儿',
     subtitle: '微信小程序 / 家庭点餐',
     description:
-      '家庭点餐微信小程序：浏览菜谱、选择菜品、查看记录，支持微信登录与家庭管理。',
+      '已上线的家庭点餐微信小程序（微信搜索「馬哥小馆儿」）：浏览菜谱、选择菜品、查看记录，支持微信登录与家庭管理。',
     tags: ['微信小程序', 'Spring Boot', 'MySQL', '云托管', 'JUnit'],
     year: '2026',
     image: 'images/projects/mage-xiaoguan-feature.png',
@@ -75,7 +77,7 @@ export const projects: Project[] = [
     subtitle: '前端开发工程师 / 企业项目',
     description:
       '参与采购平台与招标小程序的前端开发、接口联调和数据迁移。',
-    tags: ['Vue', 'ElementUI', 'Spring Boot', 'Redis', 'MyBatis'],
+    tags: ['Vue', 'ElementUI', 'Spring Boot', 'Redis', 'MyBatis-Plus'],
     year: '2022–2024',
     visualTitle: 'PROCUREMENT',
     visualSubtitle: '采购 · 招标 · 小程序',
@@ -118,6 +120,18 @@ export const projects: Project[] = [
     category: 'training',
     accent: '#a78bfa',
   },
+  {
+    title: '智能避障小车',
+    subtitle: '个人项目 / Arduino',
+    description:
+      '本科期间自学 Arduino，基于 Arduino 开发板实现超声波检测路障与自动避障。',
+    tags: ['Arduino', '超声波传感器', '嵌入式'],
+    year: '本科期间',
+    visualTitle: 'OBSTACLE CAR',
+    visualSubtitle: '超声波测距 · 自动避障',
+    category: 'maker',
+    accent: '#f472b6',
+  },
 ];
 
 export const posts = [
@@ -143,14 +157,15 @@ export const posts = [
 
 export const experience: ResumeEntry[] = [
   {
-    title: '行政实习',
-    organization: '山东省禹城市住房与城乡建设局',
+    title: '实习（青鸟计划）',
+    organization: '山东省禹城市住房和城乡建设局',
     side: true,
     period: '2026.01 – 2026.02',
-    summary: '参与办公室文档处理、材料整理、问题分析与跨部门沟通协作。',
+    summary: '稿件与文案撰写、内部文件分析，以及与其他政府部门的沟通对接；获评青鸟计划优秀社会实践人员。',
     bullets: [
-      '负责部分文件撰写、编辑与归档，提升行政材料的结构化和可读性。',
-      '协助分析内部文件与业务问题，并与相关部门保持沟通推进。',
+      '根据题目方向完成相关稿件、文案的撰写与编辑。',
+      '理解、分析内部文件，发现问题并及时修改。',
+      '负责与其他政府部门的沟通对接。',
     ],
   },
   {
@@ -159,8 +174,9 @@ export const experience: ResumeEntry[] = [
     period: '2025.03 – 2025.08',
     summary: '参与隧道病害图像识别相关代码开发、数据标注与内部文档沉淀。',
     bullets: [
-      '围绕隧道病害检测场景开发图像识别代码，并参与人工标注流程。',
-      '整理项目内部文档和技术资料，涉及保密内容不在公开网站展示细节。',
+      '负责隧道病害图像识别相关代码开发，参与训练数据的人工标注。',
+      '将深度学习图像识别技术应用于交通隧道病害检测，积累 AI + 工程检测的交叉实践经验。',
+      '撰写内部技术文件；涉及保密的内容不在公开网站展示细节。',
     ],
   },
   {
@@ -169,8 +185,8 @@ export const experience: ResumeEntry[] = [
     period: '2024.03 – 2024.10',
     summary: '教授少儿编程、机器人与竞赛相关课程，覆盖 C、Python、Scratch、XRmaker 等内容。',
     bullets: [
-      '独立完成课程备课、课堂讲授、学习反馈与比赛信息跟进。',
-      '结合学生基础设计教学节奏，提升编程兴趣和动手能力。',
+      '讲授 C 语言、Python 编程语法、Scratch 图形化编程与 XRmaker 基础课程。',
+      '负责竞赛信息跟进，参与课程规划与备课。',
     ],
   },
   {
@@ -179,8 +195,8 @@ export const experience: ResumeEntry[] = [
     period: '2022.02 – 2024.03',
     summary: '参与采购平台与公司招标小程序建设，长期承担前端开发、接口联调和文档沉淀。',
     bullets: [
-      '使用 Vue、JavaScript、ElementUI 等完成登录注册、首页、分类、商品详情和邀标列表等页面。',
-      '与 Spring Boot / Spring Cloud / MyBatis / Redis 等后端服务联调，参与数据迁移和流程优化。',
+      '负责采购平台（电采项目）登录、注册模块，以及首页、分类、商品详情、邀标列表等页面的前端开发。',
+      '负责电采项目小程序开发；与 Spring Boot / Spring Cloud / MyBatis-Plus / Redis 后端联调，参与大数据迁移和流程优化。',
       '沉淀项目文档和知识库，并曾持续撰写 30 篇 CSDN 原创技术文章。',
     ],
   },
@@ -200,16 +216,16 @@ export const education = [
   {
     title: '岩土工程 硕士研究生',
     organization: '沈阳建筑大学',
-    period: '2025.09 – 至今',
+    period: '2025.09 – 2028.07（预计）',
     summary:
-      '研究方向为公路隧道衬砌裂缝的图像识别；担任班级团支书、研究生会学术部成员；获得校级奖学金二等奖。',
+      '研究方向为公路隧道衬砌裂缝的图像识别；担任班级团支书、研究生会学术部成员；获 2025–2026 学年硕士学业二等奖学金与“优秀研究生干部”称号。',
   },
   {
     title: '计算机科学与技术 本科',
     organization: '齐鲁理工学院',
     period: '2018.09 – 2022.07',
     summary:
-      '专业成绩前 10%，GPA 3.66；曾任班级副班长，获得国家励志奖学金和山东省电子与信息大赛三等奖。',
+      '专业成绩前 10%，GPA 3.66；曾任班级副班长，获得国家励志奖学金和第八届山东省电子与信息大赛三等奖。',
   },
 ];
 
@@ -220,14 +236,19 @@ export const skills = [
   '微信小程序',
   'Spring Boot',
   'Spring Cloud',
-  'MyBatis',
+  'MyBatis-Plus',
+  'MySQL',
   'Redis',
+  'HTML5 / CSS3',
+  'ElementUI',
   'Python',
   'C / C++',
   '深度学习',
   '图像识别',
+  '大模型 / Agent',
   'Linux',
   'CAD',
-  'PhotoShop',
+  'Photoshop',
+  'Premiere',
   'Office',
 ];

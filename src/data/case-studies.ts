@@ -16,18 +16,18 @@ const source = (index: number) => {
 export const caseStudies: CaseStudy[] = [
   {
     ...source(0), slug: 'mage-xiaoguan', category: 'product', categoryLabel: '个人产品',
-    role: '微信小程序 / 全栈实践', organization: '个人项目',
+    role: '个人全栈项目', organization: '个人项目 · 已上线',
     contribution: ['点餐页面', '登录与家庭管理', '后端与测试'],
-    problem: '面向家庭的微信小程序：浏览菜谱、选择菜品、查看点餐记录。',
+    problem: '面向家庭的微信小程序，已上线，在微信中搜索「馬哥小馆儿」即可使用。独立完成前后端开发、部署与测试。',
     implementation: [
-      { title: '点餐页面', text: '开发菜单浏览、已选菜与历史记录页面。' },
-      { title: '登录与家庭管理', text: '接入微信登录，支持家庭管理员、菜品图片上传、订阅提醒与操作审计。' },
+      { title: '点餐页面', text: '开发菜谱浏览、选菜、提交菜单与订单状态、历史记录页面。' },
+      { title: '登录与家庭管理', text: '接入微信登录，支持菜谱管理、家庭成员与管理员权限、菜品图片上传、订阅提醒与操作审计。' },
       { title: '后端与测试', text: '使用 Spring Boot、MySQL 与云托管构建后端，以 JUnit 编写自动化测试。' },
     ],
     decisions: [],
     lessons: [],
-    evidence: '演示说明',
-    evidenceNote: '页首截图来自真实小程序的厨房页。下方点餐演示使用本站示例数据，不连接真实小程序。源码与小程序码暂未公开。',
+    evidence: '微信搜索「馬哥小馆儿」',
+    evidenceNote: '小程序已上线，在微信中搜索「馬哥小馆儿」即可使用，进入后首页标题为「御膳房点菜本」。页首为真实界面截图；下方点餐演示使用本站示例数据，不连接真实小程序。源码暂未公开。',
   },
   {
     ...source(1), slug: 'procurement', category: 'work', categoryLabel: '企业实践',
@@ -36,8 +36,8 @@ export const caseStudies: CaseStudy[] = [
     problem: '参与企业采购平台与招标小程序开发，主要负责前端页面和接口联调。',
     implementation: [
       { title: '采购平台页面', text: '使用 Vue、JavaScript、ElementUI 开发登录注册、首页、分类、商品详情与邀标列表。' },
-      { title: '招标小程序与联调', text: '参与招标小程序页面开发及接口联调；后端协作栈为 Spring Boot、Spring Cloud、MyBatis、Redis。' },
-      { title: '数据迁移与文档', text: '参与数据迁移、流程优化，整理项目文档与知识库；工作期间撰写 30 篇 CSDN 原创文章。' },
+      { title: '招标小程序与联调', text: '负责电采项目小程序开发，参与接口联调；后端协作栈为 Spring Boot、Spring Cloud、MyBatis-Plus、Redis。' },
+      { title: '数据迁移与文档', text: '参与大数据迁移、流程优化，整理项目文档与知识库；工作期间撰写 30 篇 CSDN 原创文章。' },
     ],
     decisions: [
       { title: '职责边界', text: '上述后端技术属于接口协作范围，不代表独立负责全部后端服务。' },
@@ -90,6 +90,21 @@ export const caseStudies: CaseStudy[] = [
     lessons: [],
     evidence: '教学职责摘要 · 2024.03—2024.10',
     evidenceNote: '仅介绍本人教学职责；出于隐私与授权考虑，不公开学生身份、课堂照片或学生作品。',
+  },
+  {
+    ...source(5), slug: 'obstacle-car', category: 'product', categoryLabel: '个人项目',
+    role: '个人项目', organization: '齐鲁理工学院（本科期间）',
+    contribution: ['自学 Arduino', '超声波测距', '自动避障'],
+    problem: '本科期间的个人动手项目：自学 Arduino 语言，让小车自己发现前方路障并绕开。',
+    implementation: [
+      { title: '自学 Arduino', text: '自学 Arduino 语言与开发板的使用，完成小车的程序编写。' },
+      { title: '超声波测距', text: '通过超声波传感器检测前方路障。' },
+      { title: '自动避障', text: '检测到路障后控制小车自动避让。' },
+    ],
+    decisions: [],
+    lessons: [],
+    evidence: '个人项目 · 本科期间',
+    evidenceNote: '早期动手项目，暂无公开的源码、电路图或演示视频。',
   },
 ];
 

@@ -26,7 +26,7 @@ const canonical = productionSite ? new URL(Astro.url.pathname, productionSite).h
 const socialImage = productionSite ? new URL(withBase('images/avatar-home-ivory.png'), productionSite).href : undefined;
 const person = {
   '@context': 'https://schema.org', '@type': 'Person', name: site.name,
-  description: site.tagline, jobTitle: site.role, email: `mailto:${site.email}`,
+  description: site.tagline, jobTitle: site.role, email: site.emails.map((address) => `mailto:${address}`),
   ...(productionSite ? { url: new URL(withBase('/'), productionSite).href, image: socialImage } : {}),
   sameAs: ['https://github.com/MZH-0108', site.csdnUrl],
   alumniOf: { '@type': 'CollegeOrUniversity', name: '齐鲁理工学院' },

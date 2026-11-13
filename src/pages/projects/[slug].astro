@@ -34,7 +34,9 @@ const related = isMage
   ? { href: '/writing/family-ordering-boundaries', title: '开发笔记', text: '权限设计、菜单状态与验证清单' }
   : project.slug === 'tunnel-ai'
     ? { href: '/writing/engineering-image-workflow', title: '研究笔记', text: '工程图像、标注规则与验证思路' }
-    : { href: `/resume#experience-${project.slug}`, title: '对应经历', text: `${project.organization} · ${project.year}` };
+    : project.slug === 'obstacle-car'
+      ? { href: '/resume#education', title: '对应经历', text: `${project.organization} · 计算机科学与技术本科` }
+      : { href: `/resume#experience-${project.slug}`, title: '对应经历', text: `${project.organization} · ${project.year}` };
 const sampleDishes = [
   { name: '番茄炒蛋', detail: '家常经典 · 清爽下饭', icon: '🍅' },
   { name: '红烧肉', detail: '慢炖入味 · 软糯鲜香', icon: '🍲' },
@@ -51,7 +53,7 @@ const sampleDishes = [
       <ul class="work-tags" aria-label="技术与技能">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
       <div class="case-header-actions"><a class="work-action" href={isMage ? '#demo' : '#contribution'}>{isMage ? '体验点餐演示' : '查看我的工作'} <span aria-hidden="true">↓</span></a><a class="work-text-link" href={withBase(related.href)}>{related.title} <span aria-hidden="true">→</span></a></div>
     </header>
-    {isMage && <figure class="case-cover"><PhoneShots variant="gallery" eager /><figcaption>真实小程序界面：厨房页按分类浏览菜品，底部汇总已选菜品，可邀请家人点菜或提交菜单。</figcaption></figure>}
+    {isMage && <figure class="case-cover"><PhoneShots variant="gallery" eager /><figcaption>真实小程序界面（微信搜索「馬哥小馆儿」，进入后首页标题为「御膳房点菜本」）：厨房页按分类浏览菜品，底部汇总已选菜品，可邀请家人点菜或提交菜单。</figcaption></figure>}
     <div class="case-body-grid">
       <div class="case-toc"><p>本页目录</p><SectionNav label="本页目录" items={sectionItems} /></div>
       <div class="case-content">

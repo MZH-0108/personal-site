@@ -13,7 +13,7 @@ const resumeSections = [
   { id: 'projects', label: '项目索引' },
   { id: 'awards', label: '荣誉与责任' },
 ];
-const projectSlugs = ['mage-xiaoguan', 'procurement', 'tunnel-ai', 'takeout-training', 'coding-class'];
+const projectSlugs = ['mage-xiaoguan', 'procurement', 'tunnel-ai', 'takeout-training', 'coding-class', 'obstacle-car'];
 const experienceProjects: Record<string, { slug: string; label: string }> = {
   '辽宁省交通科学研究院': { slug: 'tunnel-ai', label: '隧道病害图像识别' },
   '莱凯创客机器人编程俱乐部': { slug: 'coding-class', label: '编程教学实践' },
@@ -21,7 +21,7 @@ const experienceProjects: Record<string, { slug: string; label: string }> = {
   '东软教育集团（培训）': { slug: 'takeout-training', label: '外卖平台训练项目' },
 };
 const experienceIds: Record<string, string> = {
-  '山东省禹城市住房与城乡建设局': 'housing-internship',
+  '山东省禹城市住房和城乡建设局': 'housing-internship',
   '辽宁省交通科学研究院': 'tunnel-ai',
   '莱凯创客机器人编程俱乐部': 'coding-class',
   '禹王投资控股有限公司': 'procurement',
@@ -32,7 +32,7 @@ const sideExperience = experience.filter((item) => item.side);
 const capabilities = [
   { title: '前端与小程序', description: '业务页面开发、接口联调与数据迁移。', tools: ['JavaScript', 'Vue', 'ElementUI', '微信小程序'], slug: 'procurement', evidence: '查看企业采购与招标项目' },
   { title: '后端与部署', description: '点餐接口、微信登录、云部署与测试。', tools: ['Java', 'Spring Boot', 'MySQL', 'JUnit', '云托管'], slug: 'mage-xiaoguan', evidence: '查看馬哥小馆儿' },
-  { title: '图像识别', description: '识别代码开发、人工标注与资料整理。', tools: ['Python', '图像识别', '数据标注'], slug: 'tunnel-ai', evidence: '查看隧道病害识别实践' },
+  { title: '图像识别', description: '深度学习识别代码、训练数据标注与资料整理。', tools: ['Python', '深度学习', '图像识别', '数据标注'], slug: 'tunnel-ai', evidence: '查看隧道病害识别实践' },
   { title: '编程教学', description: '备课、课堂讲授、学习反馈与项目辅导。', tools: ['C', 'Python', 'Scratch', 'XRmaker'], slug: 'coding-class', evidence: '查看课程与教学实践' },
 ];
 ---
@@ -44,7 +44,7 @@ const capabilities = [
         <p class="journey-eyebrow">RESUME / THE JOURNEY</p>
         <h1>{site.name}<span>全栈开发 · 图像识别 · 岩土工程</span></h1>
         <p class="cv-intro">计算机科学本科，岩土工程硕士在读。企业前端、个人产品、研究与教学经历。</p>
-        <p class="cv-contact"><span>{site.role}</span><span>{site.location}</span><a href={'mailto:' + site.email}>{site.email}</a></p>
+        <p class="cv-contact"><span>{site.role}</span><span>{site.location}</span>{site.emails.map((address) => <a href={'mailto:' + address}>{address}</a>)}</p>
       </div>
       <div class="cv-actions">
         <button class="cv-print-button" type="button" data-print-resume>
@@ -120,9 +120,11 @@ const capabilities = [
         <section class="cv-section anchor-section" id="awards" aria-labelledby="awards-title">
           <div class="journey-section-heading"><span>05</span><div><p class="journey-eyebrow">RECOGNITION & RESPONSIBILITY</p><h2 id="awards-title">荣誉与责任</h2></div></div>
           <div class="cv-recognition">
-            <article><span class="journey-eyebrow">硕士阶段 / 沈阳建筑大学</span><h3>校级奖学金二等奖</h3></article>
-            <article><span class="journey-eyebrow">本科阶段 / 齐鲁理工学院</span><h3>国家励志奖学金</h3><p>专业成绩前 10%，GPA 3.66。</p></article>
-            <article><span class="journey-eyebrow">省级竞赛 / 山东省</span><h3>电子与信息大赛三等奖</h3></article>
+            <article><span class="journey-eyebrow">2025–2026 学年 / 沈阳建筑大学</span><h3>“优秀研究生干部”称号</h3><p>同学年获硕士学业二等奖学金。</p></article>
+            <article><span class="journey-eyebrow">2026 / 社会实践</span><h3>青鸟计划优秀社会实践人员</h3><p>寒假返家乡社会实践，禹城市住房和城乡建设局。</p></article>
+            <article><span class="journey-eyebrow">2025 / 沈阳建筑大学</span><h3>文化素养一等奖</h3></article>
+            <article><span class="journey-eyebrow">2021 / 省级竞赛</span><h3>第八届山东省电子与信息大赛三等奖</h3></article>
+            <article><span class="journey-eyebrow">2020 / 齐鲁理工学院</span><h3>国家励志奖学金</h3><p>专业成绩前 10%，GPA 3.66。</p></article>
             <article><span class="journey-eyebrow">学生工作</span><h3>班级与研究生会任职</h3><p>本科副班长；硕士班级团支书、研究生会学术部成员。</p></article>
           </div>
         </section>
